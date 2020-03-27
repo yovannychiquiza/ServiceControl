@@ -28,27 +28,27 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/"><b>ServiceControl</b></a>
+            <a href="/"><b>Service Control</b></a>
         </div>
         <div class="card">
-            @if (MultiTenancyConfig.IsEnabled)
+            @*@if (MultiTenancyConfig.IsEnabled)
             {
                 <div class="card-header">
                     <vc:tenant-change></vc:tenant-change>
                 </div>
-            }
+            }*@
             <div class="card-body login-card-body">
                 @RenderBody()
             </div>
-            <div class="card-footer">
+            @*<div class="card-footer">
                 <vc:account-languages></vc:account-languages>
-            </div>
+            </div>*@
         </div>
-        <div class="row">
+        @*<div class="row">
             <div class="col-md-12 text-center">
                 <small>&copy; @DateTime.Now.Year ServiceControl. <b>Version </b> @AppVersionHelper.Version [@AppVersionHelper.ReleaseDate.ToString("yyyyMMdd")]</small>
             </div>
-        </div>
+        </div>*@
     </div>
     @await Html.PartialAsync("_Scripts.cshtml")
     @RenderSection("scripts", required: false)
