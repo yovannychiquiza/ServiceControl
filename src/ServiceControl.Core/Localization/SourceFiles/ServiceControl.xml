@@ -105,5 +105,30 @@
     <text name="RoleDeleteWarningMessage">Role {0} will be deleted and unassigned from all assigned users.</text>
     <text name="TenantDeleteWarningMessage">Tenant {0} will be deleted.</text>
     <text name="SearchWithThreeDot">Search...</text>
+    <text name="Orders" value="Orders" />
+    <text name="Company" value="Company" />
+    <text name="Serial" value="Serial" />
+    <text name="DateBooked" value="Date Booked" />
+    <text name="EditOrder" value="Edit Order" />
+    <text name="CreateNewOrder" value="Create New Order" />
+    <text name="Sgi" value="Sgi" />
+    <text name="SalesRep" value="Sales Rep" />
+    <text name="CustomerFirstName" value="Customer First Name" />
+    <text name="CustomerLastName" value="Customer Last Name" />
+    <text name="ContactPhone" value="Contact Phone" />
+    <text name="Email" value="Email" />
+    <text name="DateOfBirth" value="Date Of Birth" />
+    <text name="PrimaryId" value="Primary Id" />
+    <text name="SecondaryId" value="Secondary Id" />
+    <text name="ExistingAccountNo" value="Existing Account No" />
+    <text name="StreetNo" value="Street No" />
+    <text name="CustomerAddress" value="Customer Address" />
+    <text name="Unit" value="Unit" />
+    <text name="City" value="City" />
+    <text name="PostalCode" value="Postal Code" />
+    <text name="PromoDetails" value="Promo Details" />
+    <text name="Notes" value="Notes" />
+    <text name="CreationDate" value="Creation Date" />
+
   </texts>
 </localizationDictionary>

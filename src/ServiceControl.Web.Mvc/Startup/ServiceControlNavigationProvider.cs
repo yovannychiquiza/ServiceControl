@@ -21,14 +21,7 @@ namespace ServiceControl.Web.Startup
                         icon: "fas fa-home",
                         requiresAuthentication: true
                     )
-                //).AddItem(
-                //    new MenuItemDefinition(
-                //        PageNames.Tenants,
-                //        L("Tenants"),
-                //        url: "Tenants",
-                //        icon: "fas fa-building",
-                //        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Tenants)
-                //    )
+                
                 ).AddItem(
                     new MenuItemDefinition(
                         PageNames.Users,
@@ -46,14 +39,16 @@ namespace ServiceControl.Web.Startup
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Roles)
                             )
                 )
-                //.AddItem(
-                //    new MenuItemDefinition(
-                //        PageNames.About,
-                //        L("About"),
-                //        url: "About",
-                //        icon: "fas fa-info-circle"
-                //    )
-                //)
+                .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Roles,
+                        L("Orders"),
+                        url: "Orders",
+                        icon: "fas fa-theater-masks",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Users)
+                            )
+                )
+               
                 .AddItem( // Menu items below is just for demonstration!
                     new MenuItemDefinition(
                         "MultiLevelMenu",
@@ -68,7 +63,7 @@ namespace ServiceControl.Web.Startup
                             new MenuItemDefinition(
                                 "AspNetBoilerplateHome",
                                 new FixedLocalizableString("Booking status"),
-                                url: "",
+                                url: "Orders",
                                 icon: "far fa-dot-circle"
                             )
                         ).AddItem(
@@ -79,21 +74,7 @@ namespace ServiceControl.Web.Startup
                                 icon: "far fa-dot-circle"
                             )
                         )
-                        //).AddItem(
-                        //    new MenuItemDefinition(
-                        //        "AspNetBoilerplateSamples",
-                        //        new FixedLocalizableString("Samples"),
-                        //        url: "https://aspnetboilerplate.com/Samples?ref=abptmpl",
-                        //        icon: "far fa-dot-circle"
-                        //    )
-                        //).AddItem(
-                        //    new MenuItemDefinition(
-                        //        "AspNetBoilerplateDocuments",
-                        //        new FixedLocalizableString("Documents"),
-                        //        url: "https://aspnetboilerplate.com/Pages/Documents?ref=abptmpl",
-                        //        icon: "far fa-dot-circle"
-                        //    )
-                        //)
+                       
                     ).AddItem(
                         new MenuItemDefinition(
                             "AspNetZero",
@@ -121,21 +102,7 @@ namespace ServiceControl.Web.Startup
                                 icon: "far fa-dot-circle"
                             )
                         )
-                        //).AddItem(
-                        //    new MenuItemDefinition(
-                        //        "AspNetZeroFaq",
-                        //        new FixedLocalizableString("Faq"),
-                        //        url: "https://aspnetzero.com/Faq?ref=abptmpl",
-                        //        icon: "far fa-dot-circle"
-                        //    )
-                        //).AddItem(
-                        //    new MenuItemDefinition(
-                        //        "AspNetZeroDocuments",
-                        //        new FixedLocalizableString("Documents"),
-                        //        url: "https://aspnetzero.com/Documents?ref=abptmpl",
-                        //        icon: "far fa-dot-circle"
-                        //    )
-                        //)
+                       
                     )
                 );
         }
