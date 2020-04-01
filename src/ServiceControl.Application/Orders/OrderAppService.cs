@@ -28,6 +28,10 @@ namespace ServiceControl.Orders
             var query = _orderRepository.GetAllIncluding(t => t.OrderState);
             if (!input.Keyword.IsNullOrWhiteSpace())
                 query = query.Where(x => x.Serial.Contains(input.Keyword) || x.Company.Contains(input.Keyword) || x.OrderState.Name.Contains(input.Keyword));
+            if (input.DateFrom.HasValue)
+                query = query.Where(x => x.DateBooked >= input.DateFrom);
+            if (input.DateTo.HasValue)
+                query = query.Where(x => x.DateBooked <= input.DateTo);
 
             var ordersList = query.OrderByDescending(t => t.Id).ToList();
 

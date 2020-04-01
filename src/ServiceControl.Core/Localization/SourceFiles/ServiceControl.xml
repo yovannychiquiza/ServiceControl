@@ -130,6 +130,8 @@
     <text name="Notes" value="Notes" />
     <text name="CreationDate" value="Creation Date" />
     <text name="OrderState" value="Order State" />
+    <text name="DateFrom" value="Date From" />
+    <text name="DateTo" value="Date To" />
 
   </texts>
 </localizationDictionary>

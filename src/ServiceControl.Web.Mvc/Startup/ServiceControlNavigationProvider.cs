@@ -45,7 +45,7 @@ namespace ServiceControl.Web.Startup
                         L("Orders"),
                         url: "Orders",
                         icon: "fas fa-list-alt",
-                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Users)
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Roles)
                             )
                 )
                
