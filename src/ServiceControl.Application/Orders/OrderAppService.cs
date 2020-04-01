@@ -1,6 +1,8 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Microsoft.EntityFrameworkCore;
 using ServiceControl.Orders.Dto;
 using System;
@@ -21,17 +23,17 @@ namespace ServiceControl.Orders
         }
 
 
-        public async Task<ListResultDto<OrderListDto>> GetAll()
+        public async Task<ListResultDto<OrderListDto>> GetAll(PagedOrderResultRequestDto input)
         {
-            var tasks = await _orderRepository
-                .GetAll()
-                .OrderByDescending(t => t.Company)
-                .ToListAsync();
+            var query = _orderRepository.GetAllIncluding(t => t.OrderState);
+            if (!input.Keyword.IsNullOrWhiteSpace())
+                query = query.Where(x => x.Serial.Contains(input.Keyword) || x.Company.Contains(input.Keyword) || x.OrderState.Name.Contains(input.Keyword));
+
+            var ordersList = query.OrderByDescending(t => t.Id).ToList();
 
             return new ListResultDto<OrderListDto>(
-                ObjectMapper.Map<List<OrderListDto>>(tasks)
+                ObjectMapper.Map<List<OrderListDto>>(ordersList)
             );
-  
         }
 
         public async Task Create(OrderDto input)

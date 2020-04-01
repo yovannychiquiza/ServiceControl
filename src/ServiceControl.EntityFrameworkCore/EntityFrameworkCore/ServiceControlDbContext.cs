@@ -10,6 +10,7 @@ namespace ServiceControl.EntityFrameworkCore
     {
         /* Define a DbSet for each entity of the application */
         public DbSet<ServiceControl.Orders.Orders> Orders { get; set; }
+        public DbSet<ServiceControl.Orders.OrderState> OrderState { get; set; }
 
         public ServiceControlDbContext(DbContextOptions<ServiceControlDbContext> options)
             : base(options)

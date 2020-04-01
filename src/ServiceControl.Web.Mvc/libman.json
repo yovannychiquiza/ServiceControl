@@ -180,6 +180,10 @@
         "dist/Chart.js"
       ]
     },
+    {
+      "library": "bootstrap-datepicker@1.9.0",
+      "destination": "wwwroot/libs/bootstrap-datepicker"
+    },
     //admin-lte libs end
 
     //other libs start

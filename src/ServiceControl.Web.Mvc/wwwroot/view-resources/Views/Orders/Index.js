@@ -17,7 +17,7 @@
             filter.skipCount = data.start;
 
             abp.ui.setBusy(_$table);
-            _orderService.getAll().done(function (result) {
+            _orderService.getAll(filter).done(function (result) {
                 callback({
                     recordsTotal: result.items.length,
                     recordsFiltered: result.items.length,
@@ -62,9 +62,8 @@
             },
             {
                 targets: 4,
-                data: 'serial',
+                data: 'orderState.name',
                 sortable: false,
-                render: data => `<input type="checkbox" disabled ${data ? 'checked' : ''}>`
             },
             {
                 targets: 5,

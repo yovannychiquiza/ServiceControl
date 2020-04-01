@@ -129,6 +129,7 @@
     <text name="PromoDetails" value="Promo Details" />
     <text name="Notes" value="Notes" />
     <text name="CreationDate" value="Creation Date" />
+    <text name="OrderState" value="Order State" />
 
   </texts>
 </localizationDictionary>

@@ -36,6 +36,8 @@ namespace ServiceControl.Orders.Dto
         public string PromoDetails { get; set; }
         public string Notes { get; set; }
         public DateTime CreationDate { get; set; }
+        public int OrderStateId { get; set; }
+        public OrderState OrderState { get; set; }
 
     }
 }

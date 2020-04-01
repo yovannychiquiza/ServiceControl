@@ -41,10 +41,10 @@ namespace ServiceControl.Web.Startup
                 )
                 .AddItem(
                     new MenuItemDefinition(
-                        PageNames.Roles,
+                        PageNames.Orders,
                         L("Orders"),
                         url: "Orders",
-                        icon: "fas fa-theater-masks",
+                        icon: "fas fa-list-alt",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Users)
                             )
                 )

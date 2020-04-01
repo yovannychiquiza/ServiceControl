@@ -33,7 +33,7 @@ namespace ServiceControl.Orders.Dto
         public string PostalCode { get; set; }
         public string PromoDetails { get; set; }
         public string Notes { get; set; }
-
+        public OrderState OrderState { get; set; }
 
     }
 }

@@ -37,6 +37,8 @@ namespace ServiceControl.Orders
         public string PostalCode { get; set; }
         public string PromoDetails { get; set; }
         public string Notes { get; set; }
-
+        public int OrderStateId { get; set; }
+        [ForeignKey(nameof(OrderStateId))]
+        public OrderState OrderState { get; set; }
     }
 }
