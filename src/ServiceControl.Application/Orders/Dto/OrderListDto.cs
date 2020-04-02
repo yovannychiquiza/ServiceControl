@@ -10,7 +10,7 @@ namespace ServiceControl.Orders.Dto
     [AutoMapFrom(typeof(Orders))]
     public class OrderListDto : EntityDto
     {
-        public string Company { get; set; }
+        public int CompanyId { get; set; }
 
         public string Serial { get; set; }
 
@@ -34,6 +34,7 @@ namespace ServiceControl.Orders.Dto
         public string PromoDetails { get; set; }
         public string Notes { get; set; }
         public OrderState OrderState { get; set; }
+        public Company Company { get; set; }
 
     }
 }

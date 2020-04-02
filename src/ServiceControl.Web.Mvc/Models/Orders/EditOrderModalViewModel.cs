@@ -8,6 +8,9 @@ namespace ServiceControl.Web.Models.Orders
     {
         public OrderDto Order { get; set; }
         public List<SelectListItem> OrderState { get; set; }
-
+        public List<SelectListItem> Company { get; set; }
+        public List<SelectListItem> ExistingAccountNo { get; set; }
+        public List<SelectListItem> Identification { get; set; }
+        
     }
 }

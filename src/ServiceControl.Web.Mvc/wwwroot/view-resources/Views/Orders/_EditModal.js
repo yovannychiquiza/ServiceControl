@@ -1,6 +1,8 @@
 ﻿(function ($) {
 
-    $('.datepicker').datepicker();
+    $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy'
+    });
 
     var _orderService = abp.services.app.order,
         l = abp.localization.getSource('ServiceControl'),

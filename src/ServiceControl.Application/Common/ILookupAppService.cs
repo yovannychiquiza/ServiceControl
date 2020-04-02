@@ -10,5 +10,8 @@ namespace ServiceControl.Common
     public interface ILookupAppService : IApplicationService
     {
         Task<ListResultDto<ComboboxItemDto>> GetOrderStateComboboxItems();
+        Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems();
+        ListResultDto<ComboboxItemDto> GetExistingAccountNoItems();
+        ListResultDto<ComboboxItemDto> GetIdentificationItems();
     }
 }

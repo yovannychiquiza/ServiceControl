@@ -14,9 +14,9 @@ namespace ServiceControl.Orders
         public const int MaxTitleLength = 256;
         public const int MaxDescriptionLength = 64 * 1024; //64KB
 
-        [Required]
-        [MaxLength(MaxTitleLength)]
-        public string Company { get; set; }
+        [ForeignKey(nameof(CompanyId))]
+        public Company Company { get; set; }
+        public int CompanyId { get; set; }
         [MaxLength(MaxDescriptionLength)]
         public string Serial { get; set; }
         public DateTime DateBooked { get; set; }
@@ -26,7 +26,7 @@ namespace ServiceControl.Orders
         public string CustomerLastName { get; set; }
         public string ContactPhone { get; set; }
         public string Email { get; set; }
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string PrimaryId { get; set; }
         public string SecondaryId { get; set; }
         public string ExistingAccountNo { get; set; }

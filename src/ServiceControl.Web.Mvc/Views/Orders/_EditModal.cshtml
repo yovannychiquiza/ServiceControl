@@ -13,7 +13,7 @@
             <div class="form-group row required">
                 <label class="col-md-3 col-form-label" for="company">@L("Company")</label>
                 <div class="col-md-9">
-                    <input id="company" type="text" class="form-control" name="Company" value="@Model.Order.Company" required maxlength="@AbpUserBase.MaxUserNameLength" minlength="2">
+                    @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId" })
                 </div>
             </div>
             <div class="form-group row required">
@@ -68,13 +68,13 @@
             <div class="form-group row required">
                 <label class="col-md-3 col-form-label" for="DateOfBirth">@L("DateOfBirth")</label>
                 <div class="col-md-9">
-                    <input id="DateOfBirth" type="text" class="form-control" name="DateOfBirth" value="@Model.Order.DateOfBirth" required maxlength="@AbpUserBase.MaxUserNameLength">
+                    <input id="DateOfBirth" type="text" class="form-control datepicker" name="DateOfBirth" value="@Model.Order.DateOfBirth" required maxlength="@AbpUserBase.MaxUserNameLength">
                 </div>
             </div>
             <div class="form-group row required">
                 <label class="col-md-3 col-form-label" for="PrimaryId">@L("PrimaryId")</label>
                 <div class="col-md-9">
-                    <input id="PrimaryId" type="text" class="form-control" name="PrimaryId" value="@Model.Order.PrimaryId" required maxlength="@AbpUserBase.MaxUserNameLength">
+                    @Html.DropDownList("PrimaryId", Model.Identification, new { @class = "form-control", id = "PrimaryId" })
                 </div>
             </div>
             <div class="form-group row required">
@@ -86,7 +86,7 @@
             <div class="form-group row required">
                 <label class="col-md-3 col-form-label" for="ExistingAccountNo">@L("ExistingAccountNo")</label>
                 <div class="col-md-9">
-                    <input id="ExistingAccountNo" type="text" class="form-control" name="ExistingAccountNo" value="@Model.Order.ExistingAccountNo" required maxlength="@AbpUserBase.MaxUserNameLength">
+                    @Html.DropDownList("ExistingAccountNo", Model.ExistingAccountNo, new { @class = "form-control", id = "ExistingAccountNo" })
                 </div>
             </div>
             <div class="form-group row required">

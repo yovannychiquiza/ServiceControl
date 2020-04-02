@@ -10,9 +10,8 @@ namespace ServiceControl.Orders.Dto
     [AutoMapTo(typeof(Orders))]
     public class OrderDto : EntityDto<long>
     {
-        [Required]
-        [MaxLength(Orders.MaxTitleLength)]
-        public string Company { get; set; }
+
+        public int CompanyId { get; set; }
 
         [MaxLength(Orders.MaxDescriptionLength)]
         public string Serial { get; set; }
@@ -24,7 +23,7 @@ namespace ServiceControl.Orders.Dto
         public string CustomerLastName { get; set; }
         public string ContactPhone { get; set; }
         public string Email { get; set; }
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string PrimaryId { get; set; }
         public string SecondaryId { get; set; }
         public string ExistingAccountNo { get; set; }
@@ -38,6 +37,7 @@ namespace ServiceControl.Orders.Dto
         public DateTime CreationDate { get; set; }
         public int OrderStateId { get; set; }
         public OrderState OrderState { get; set; }
+        public Company Company { get; set; }
 
     }
 }

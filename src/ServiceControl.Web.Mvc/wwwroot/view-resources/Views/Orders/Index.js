@@ -1,6 +1,8 @@
 ﻿(function ($) {
 
-    $('.datepicker').datepicker();
+    $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy'
+    });
 
     var _orderService = abp.services.app.order,
         l = abp.localization.getSource('ServiceControl'),
@@ -47,7 +49,7 @@
             },
             {
                 targets: 1,
-                data: 'company',
+                data: 'company.name',
                 sortable: false
             },
             {

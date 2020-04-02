@@ -25,15 +25,20 @@ namespace ServiceControl.Orders
 
         public async Task<ListResultDto<OrderListDto>> GetAll(PagedOrderResultRequestDto input)
         {
-            var query = _orderRepository.GetAllIncluding(t => t.OrderState);
+            var query = _orderRepository.GetAll();
+                
             if (!input.Keyword.IsNullOrWhiteSpace())
-                query = query.Where(x => x.Serial.Contains(input.Keyword) || x.Company.Contains(input.Keyword) || x.OrderState.Name.Contains(input.Keyword));
+                query = query.Where(x => x.Serial.Contains(input.Keyword) || x.Company.Name.Contains(input.Keyword) || x.OrderState.Name.Contains(input.Keyword));
             if (input.DateFrom.HasValue)
                 query = query.Where(x => x.DateBooked >= input.DateFrom);
             if (input.DateTo.HasValue)
                 query = query.Where(x => x.DateBooked <= input.DateTo);
 
-            var ordersList = query.OrderByDescending(t => t.Id).ToList();
+            var ordersList = query
+                .Include(t => t.OrderState)
+                .Include(t => t.Company)
+                .OrderByDescending(t => t.Id)
+                .ToList();
 
             return new ListResultDto<OrderListDto>(
                 ObjectMapper.Map<List<OrderListDto>>(ordersList)
