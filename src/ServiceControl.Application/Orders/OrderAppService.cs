@@ -23,7 +23,7 @@ namespace ServiceControl.Orders
         }
 
 
-        public async Task<ListResultDto<OrderListDto>> GetAll(PagedOrderResultRequestDto input)
+        public async Task<PagedOrderResultResponseDto> GetAll(PagedOrderResultRequestDto input)
         {
             var query = _orderRepository.GetAll();
                 
@@ -40,9 +40,17 @@ namespace ServiceControl.Orders
                 .OrderByDescending(t => t.Id)
                 .ToList();
 
-            return new ListResultDto<OrderListDto>(
-                ObjectMapper.Map<List<OrderListDto>>(ordersList)
-            );
+            int count = ordersList.Count();
+            var newList = ordersList.Skip(input.SkipCount).Take(input.MaxResultCount);
+
+            ListResultDto<OrderListDto> ss = new ListResultDto<OrderListDto>();
+
+            PagedOrderResultResponseDto pagedOrderResultResponseDto = new PagedOrderResultResponseDto();
+            pagedOrderResultResponseDto.TotalCount = count;
+            pagedOrderResultResponseDto.Data = new ListResultDto<OrderListDto>(
+                ObjectMapper.Map<List<OrderListDto>>(newList));
+
+            return pagedOrderResultResponseDto;
         }
 
         public async Task Create(OrderDto input)

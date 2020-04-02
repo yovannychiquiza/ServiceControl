@@ -62,7 +62,7 @@
             <div class="form-group row required">
                 <label class="col-md-3 col-form-label" for="Email">@L("Email")</label>
                 <div class="col-md-9">
-                    <input id="Email" type="text" class="form-control" name="Email" value="@Model.Order.Email" required maxlength="@AbpUserBase.MaxUserNameLength">
+                    <input id="Email" type="email" class="form-control" name="Email" value="@Model.Order.Email" required maxlength="@AbpUserBase.MaxUserNameLength" placeholder="name@example.com">
                 </div>
             </div>
             <div class="form-group row required">

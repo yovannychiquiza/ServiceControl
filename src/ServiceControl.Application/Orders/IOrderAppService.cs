@@ -7,7 +7,7 @@ namespace ServiceControl.Orders
 {
     public interface IOrderAppService : IApplicationService
     {
-        Task<ListResultDto<OrderListDto>> GetAll(PagedOrderResultRequestDto input);
+        Task<PagedOrderResultResponseDto> GetAll(PagedOrderResultRequestDto input);
         Task Create(OrderDto input);
         Task GetOrderDelete(long id);
         Task<OrderDto> GetOrder(long id);

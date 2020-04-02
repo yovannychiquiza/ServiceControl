@@ -21,9 +21,9 @@
             abp.ui.setBusy(_$table);
             _orderService.getAll(filter).done(function (result) {
                 callback({
-                    recordsTotal: result.items.length,
-                    recordsFiltered: result.items.length,
-                    data: result.items
+                    recordsTotal: result.totalCount,
+                    recordsFiltered: result.totalCount,
+                    data: result.data.items
                 });
             }).always(function () {
                 abp.ui.clearBusy(_$table);
