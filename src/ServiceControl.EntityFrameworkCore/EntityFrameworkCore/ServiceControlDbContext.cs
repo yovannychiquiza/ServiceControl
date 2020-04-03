@@ -12,6 +12,10 @@ namespace ServiceControl.EntityFrameworkCore
         public DbSet<ServiceControl.Orders.Orders> Orders { get; set; }
         public DbSet<ServiceControl.Orders.OrderState> OrderState { get; set; }
         public DbSet<ServiceControl.Orders.Company> Company { get; set; }
+        public DbSet<ServiceControl.Orders.FirstIdentification> FirstIdentification { get; set; }
+        public DbSet<ServiceControl.Orders.SecondIdentification> SecondIdentification { get; set; }
+        public DbSet<ServiceControl.Orders.TimeSlot> TimeSlot { get; set; }
+        
 
         public ServiceControlDbContext(DbContextOptions<ServiceControlDbContext> options)
             : base(options)

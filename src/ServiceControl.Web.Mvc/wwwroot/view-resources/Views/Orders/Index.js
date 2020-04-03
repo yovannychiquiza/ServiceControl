@@ -60,15 +60,106 @@
             {
                 targets: 3,
                 data: 'dateBooked',
-                sortable: false
+                sortable: false,
             },
             {
                 targets: 4,
                 data: 'orderState.name',
-                sortable: false,
+                sortable: false
             },
             {
                 targets: 5,
+                data: 'sgi',
+                sortable: false,
+            },
+            {
+                targets: 6,
+                data: 'salesRep.fullName',
+                sortable: false,
+            },
+            {
+                targets: 7,
+                data: 'customerFirstName',
+                sortable: false,
+            },
+            {
+                targets: 8,
+                data: 'customerLastName',
+                sortable: false,
+            },
+            {
+                targets: 9,
+                data: 'contactPhone',
+                sortable: false,
+            },
+            {
+                targets: 10,
+                data: 'email',
+                sortable: false,
+            },
+            {
+                targets: 11,
+                data: 'dateOfBirth',
+                sortable: false,
+            },
+            {
+                targets: 12,
+                data: 'firstIdentification.name',
+                sortable: false,
+            },
+            {
+                targets: 13,
+                data: 'secondIdentification.name',
+                sortable: false,
+            },
+            {
+                targets: 14,
+                data: 'existingAccountNo',
+                sortable: false,
+            },
+            {
+                targets: 15,
+                data: 'streetNo',
+                sortable: false,
+            },
+            {
+                targets: 16,
+                data: 'customerAddress',
+                sortable: false,
+            },
+            {
+                targets: 17,
+                data: 'unit',
+                sortable: false,
+            },
+            {
+                targets: 18,
+                data: 'city',
+                sortable: false,
+            },
+            {
+                targets: 19,
+                data: 'postalCode',
+                sortable: false,
+            },
+            {
+                targets: 20,
+                data: 'promoDetails',
+                sortable: false,
+            },
+            {
+                targets: 21,
+                data: 'notes',
+                sortable: false,
+            },
+            {
+                targets: 22,
+                data: 'timeSlot.name',
+                sortable: false,
+            },
+           
+            {
+                targets: 23,
                 data: null,
                 sortable: false,
                 autoWidth: false,

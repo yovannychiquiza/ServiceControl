@@ -8,8 +8,8 @@ using System.Text;
 
 namespace ServiceControl.Orders
 {
-    [Table("OrderState")]
-    public class OrderState : Entity
+    [Table("SecondIdentification")]
+    public class SecondIdentification : Entity
     {
         [Required]
         public string Name { get; set; }

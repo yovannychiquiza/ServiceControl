@@ -30,14 +30,16 @@ namespace ServiceControl.Web.Controllers
         {
             var order = await _orderAppService.GetOrder(orderId);
 
-          
             var orderStateList = _lookupAppService.GetOrderStateComboboxItems().Result;
-            var companyList = _lookupAppService.GetCompanyComboboxItems().Result;
+            var orderStateSelectListItems = (from res in orderStateList.Items
+                                             select new SelectListItem()
+                                             {
+                                                 Text = res.DisplayText,
+                                                 Value = res.Value,
+                                                 Selected = res.Value == order.OrderStateId.ToString()
+                                             }).ToList();
 
-            var orderStateSelectListItems = (from res in orderStateList.Items select new SelectListItem()
-            {
-                Text = res.DisplayText, Value = res.Value, Selected = res.Value == order.OrderStateId.ToString()
-            }).ToList();
+            var companyList = _lookupAppService.GetCompanyComboboxItems().Result;
             var companySelectListItems = (from res in companyList.Items
                                              select new SelectListItem()
                                              {
@@ -46,33 +48,42 @@ namespace ServiceControl.Web.Controllers
                                                  Selected = res.Value == order.CompanyId.ToString()
                                              }).ToList();
 
-
-            var existingAccountNoList = _lookupAppService.GetExistingAccountNoItems();
-            var existingAccountNoItems = (from res in existingAccountNoList.Items
-                                             select new SelectListItem()
-                                             {
-                                                 Text = res.DisplayText,
-                                                 Value = res.Value,
-                                                 Selected = res.Value == order.ExistingAccountNo.ToString()
-                                             }).ToList();
-
-
-            var identificationList = _lookupAppService.GetIdentificationItems();
-            var identificationItems = (from res in identificationList.Items
+            var firstIdentificationList = _lookupAppService.GetFirstIdentificationItems().Result;
+            var firstIdentificationSelectListItems = (from res in firstIdentificationList.Items
                                           select new SelectListItem()
                                           {
                                               Text = res.DisplayText,
                                               Value = res.Value,
-                                              Selected = res.Value == order.PrimaryId.ToString()
+                                              Selected = res.Value == order.FirstIdentificationId.ToString()
                                           }).ToList();
+
+            var secondIdentificationList = _lookupAppService.GetSecondIdentificationItems().Result;
+            var secondIdentificationSelectListItems = (from res in secondIdentificationList.Items
+                                                 select new SelectListItem()
+                                                 {
+                                                     Text = res.DisplayText,
+                                                     Value = res.Value,
+                                                     Selected = res.Value == order.SecondIdentificationId.ToString()
+                                                 }).ToList();
+
+            var timeSlotList = _lookupAppService.GetTimeSlotComboboxItems().Result;
+            var timeSlotSelectListItems = (from res in timeSlotList.Items
+                                             select new SelectListItem()
+                                             {
+                                                 Text = res.DisplayText,
+                                                 Value = res.Value,
+                                                 Selected = res.Value == order.TimeSlotId.ToString()
+                                             }).ToList();
+           
 
             var model = new EditOrderModalViewModel
             {
                 Order = order,
                 OrderState = orderStateSelectListItems,
                 Company = companySelectListItems,
-                ExistingAccountNo = existingAccountNoItems,
-                Identification = identificationItems
+                FirstIdentification = firstIdentificationSelectListItems,
+                SecondIdentification = secondIdentificationSelectListItems,
+                TimeSlot = timeSlotSelectListItems
             };
 
             return PartialView("_EditModal", model);
@@ -81,15 +92,14 @@ namespace ServiceControl.Web.Controllers
         public async Task<ActionResult> Index()
         {
             var orderStateList = _lookupAppService.GetOrderStateComboboxItems().Result;
-            var companyList = _lookupAppService.GetCompanyComboboxItems().Result;
-
-
             var orderStateSelectListItems = (from res in orderStateList.Items
                                              select new SelectListItem()
                                              {
                                                  Text = res.DisplayText,
                                                  Value = res.Value,
                                              }).ToList();
+
+            var companyList = _lookupAppService.GetCompanyComboboxItems().Result;
             var companySelectListItems = (from res in companyList.Items
                                           select new SelectListItem()
                                           {
@@ -97,30 +107,38 @@ namespace ServiceControl.Web.Controllers
                                               Value = res.Value,
                                           }).ToList();
 
-            var existingAccountNoList = _lookupAppService.GetExistingAccountNoItems();
-            var existingAccountNoItems = (from res in existingAccountNoList.Items
-                                          select new SelectListItem()
-                                          {
-                                              Text = res.DisplayText,
-                                              Value = res.Value,
-                                          }).ToList();
+            var firstIdentificationList = _lookupAppService.GetFirstIdentificationItems().Result;
+            var firstIdentificationSelectListItems = (from res in firstIdentificationList.Items
+                                                      select new SelectListItem()
+                                                      {
+                                                          Text = res.DisplayText,
+                                                          Value = res.Value,
+                                                      }).ToList();
 
-            var identificationList = _lookupAppService.GetIdentificationItems();
-            var identificationItems = (from res in identificationList.Items
-                                       select new SelectListItem()
-                                       {
-                                           Text = res.DisplayText,
-                                           Value = res.Value,
-                                       }).ToList();
+            var secondIdentificationList = _lookupAppService.GetSecondIdentificationItems().Result;
+            var secondIdentificationSelectListItems = (from res in secondIdentificationList.Items
+                                                       select new SelectListItem()
+                                                       {
+                                                           Text = res.DisplayText,
+                                                           Value = res.Value,
+                                                       }).ToList();
+
+            var timeSlotList = _lookupAppService.GetTimeSlotComboboxItems().Result;
+            var timeSlotSelectListItems = (from res in timeSlotList.Items
+                                           select new SelectListItem()
+                                           {
+                                               Text = res.DisplayText,
+                                               Value = res.Value,
+                                           }).ToList();
 
             var model = new EditOrderModalViewModel
             {
                 Order = new OrderDto(),
                 OrderState = orderStateSelectListItems,
                 Company = companySelectListItems,
-                ExistingAccountNo = existingAccountNoItems,
-                Identification = identificationItems
-
+                FirstIdentification = firstIdentificationSelectListItems,
+                SecondIdentification = secondIdentificationSelectListItems,
+                TimeSlot = timeSlotSelectListItems
             };
             return View(model);
         }

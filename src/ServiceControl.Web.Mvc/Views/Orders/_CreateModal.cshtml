@@ -24,21 +24,9 @@
                         </div>
                     </div>
                     <div class="form-group row required">
-                        <label class="col-md-3 col-form-label" for="datebooked">@L("DateBooked")</label>
-                        <div class="col-md-9">
-                            <input id="datebooked" type="text" class="form-control datepicker" name="DateBooked" value="@Model.Order.DateBooked" required maxlength="@AbpUserBase.MaxSurnameLength">
-                        </div>
-                    </div>
-                    <div class="form-group row required">
                         <label class="col-md-3 col-form-label" for="sgi">@L("Sgi")</label>
                         <div class="col-md-9">
                             <input id="sgi" type="text" class="form-control" name="sgi" value="@Model.Order.Sgi" required maxlength="@AbpUserBase.MaxUserNameLength">
-                        </div>
-                    </div>
-                    <div class="form-group row required">
-                        <label class="col-md-3 col-form-label" for="SalesRep">@L("SalesRep")</label>
-                        <div class="col-md-9">
-                            <input id="SalesRep" type="text" class="form-control" name="SalesRep" value="@Model.Order.SalesRep" required maxlength="@AbpUserBase.MaxUserNameLength">
                         </div>
                     </div>
                     <div class="form-group row required">
@@ -71,22 +59,22 @@
                             <input id="DateOfBirth" type="text" class="form-control datepicker" name="DateOfBirth" value="@Model.Order.DateOfBirth" required maxlength="@AbpUserBase.MaxUserNameLength">
                         </div>
                     </div>
-                    <div class="form-group row required">
-                        <label class="col-md-3 col-form-label" for="PrimaryId">@L("PrimaryId")</label>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="PrimaryId">@L("FirstIdentification")</label>
                         <div class="col-md-9">
-                            @Html.DropDownList("PrimaryId", Model.Identification, new { @class = "form-control", id = "PrimaryId" })
+                            @Html.DropDownList("FirstIdentificationId", Model.FirstIdentification, new { @class = "form-control", id = "FirstIdentificationId" })
                         </div>
                     </div>
-                    <div class="form-group row required">
-                        <label class="col-md-3 col-form-label" for="SecondaryId">@L("SecondaryId")</label>
+                    <div class="form-group row ">
+                        <label class="col-md-3 col-form-label" for="SecondaryId">@L("SecondIdentification")</label>
                         <div class="col-md-9">
-                            <input id="SecondaryId" type="text" class="form-control" name="SecondaryId" value="@Model.Order.SecondaryId" required maxlength="@AbpUserBase.MaxUserNameLength">
+                            @Html.DropDownList("SecondIdentificationId", Model.SecondIdentification, new { @class = "form-control", id = "SecondIdentificationId" })
                         </div>
                     </div>
-                    <div class="form-group row required">
+                    <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="ExistingAccountNo">@L("ExistingAccountNo")</label>
                         <div class="col-md-9">
-                            @Html.DropDownList("ExistingAccountNo", Model.ExistingAccountNo, new { @class = "form-control", id = "ExistingAccountNo" })
+                            <input id="ExistingAccountNo" type="text" class="form-control" name="ExistingAccountNo" value="@Model.Order.ExistingAccountNo" maxlength="@AbpUserBase.MaxUserNameLength">
                         </div>
                     </div>
                     <div class="form-group row required">
@@ -132,9 +120,9 @@
                         </div>
                     </div>
                     <div class="form-group row required">
-                        <label class="col-md-3 col-form-label" for="OrderStateId">@L("OrderState")</label>
+                        <label class="col-md-3 col-form-label" for="TimeSlotId">@L("TimeSlot")</label>
                         <div class="col-md-9">
-                            @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control", id = "OrderStateId" })
+                            @Html.DropDownList("TimeSlotId", Model.TimeSlot, new { @class = "form-control", id = "TimeSlotId" })
                         </div>
                     </div>
                 </div>

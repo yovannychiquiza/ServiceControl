@@ -3,6 +3,7 @@ using Abp.Application.Services.Dto;
 using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
+using Abp.Runtime.Session;
 using Microsoft.EntityFrameworkCore;
 using ServiceControl.Orders.Dto;
 using System;
@@ -13,13 +14,21 @@ using System.Threading.Tasks;
 
 namespace ServiceControl.Orders
 {
+    public enum OrderStateEnum
+    {
+        Booked = 1,
+        Cancelled = 2,
+        Delayed = 3,
+        To_be_follow = 4
+    }
     public class OrderAppService : ApplicationService, IOrderAppService
     {
         private readonly IRepository<Orders> _orderRepository;
-
-        public OrderAppService(IRepository<Orders> repository)
+        private readonly IAbpSession _session;
+        public OrderAppService(IRepository<Orders> repository, IAbpSession session)
         {
             _orderRepository = repository;
+            _session = session;
         }
 
 
@@ -37,6 +46,10 @@ namespace ServiceControl.Orders
             var ordersList = query
                 .Include(t => t.OrderState)
                 .Include(t => t.Company)
+                .Include(t => t.SalesRep)
+                .Include(t => t.TimeSlot)
+                .Include(t => t.FirstIdentification)
+                .Include(t => t.SecondIdentification)
                 .OrderByDescending(t => t.Id)
                 .ToList();
 
@@ -57,6 +70,9 @@ namespace ServiceControl.Orders
         {
             try
             {
+                input.SalesRepId = _session.UserId.GetValueOrDefault();
+                input.OrderStateId = (int)OrderStateEnum.Booked;
+                input.DateBooked = DateTime.Now;
                 var task = ObjectMapper.Map<Orders>(input);
                 await _orderRepository.InsertAsync(task);
             }

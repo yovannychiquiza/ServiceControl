@@ -118,8 +118,8 @@
     <text name="ContactPhone" value="Contact Phone" />
     <text name="Email" value="Email" />
     <text name="DateOfBirth" value="Date Of Birth" />
-    <text name="PrimaryId" value="Primary Id" />
-    <text name="SecondaryId" value="Secondary Id" />
+    <text name="FirstIdentification" value="First Identification" />
+    <text name="SecondIdentification" value="Second Identification" />
     <text name="ExistingAccountNo" value="Existing Account No" />
     <text name="StreetNo" value="Street No" />
     <text name="CustomerAddress" value="Customer Address" />
@@ -132,6 +132,6 @@
     <text name="OrderState" value="Order State" />
     <text name="DateFrom" value="Date From" />
     <text name="DateTo" value="Date To" />
-
+    <text name="TimeSlot" value="Time Slot" />
   </texts>
 </localizationDictionary>

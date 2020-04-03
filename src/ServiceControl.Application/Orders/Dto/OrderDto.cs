@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
+using ServiceControl.Authorization.Users;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,14 +19,14 @@ namespace ServiceControl.Orders.Dto
 
         public DateTime DateBooked { get; set; }
         public string Sgi { get; set; }
-        public string SalesRep { get; set; }
+        public long SalesRepId { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
         public string ContactPhone { get; set; }
         public string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string PrimaryId { get; set; }
-        public string SecondaryId { get; set; }
+        public int FirstIdentificationId { get; set; }
+        public int SecondIdentificationId { get; set; }
         public string ExistingAccountNo { get; set; }
         public string StreetNo { get; set; }
         public string CustomerAddress { get; set; }
@@ -36,8 +37,13 @@ namespace ServiceControl.Orders.Dto
         public string Notes { get; set; }
         public DateTime CreationDate { get; set; }
         public int OrderStateId { get; set; }
+        public int TimeSlotId { get; set; }
         public OrderState OrderState { get; set; }
         public Company Company { get; set; }
+        public User SalesRep { get; set; }
+        public TimeSlot TimeSlot { get; set; }
+        public FirstIdentification FirstIdentification { get; set; }
+        public SecondIdentification SecondIdentification { get; set; }
 
     }
 }
