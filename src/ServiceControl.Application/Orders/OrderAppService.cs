@@ -24,7 +24,6 @@ namespace ServiceControl.Orders
     }
     public class OrderAppService : ApplicationService, IOrderAppService
     {
-        static string DATE_FORMAT = "dd/MM/yyyy";
 
         private readonly IRepository<Orders> _orderRepository;
         private readonly IAbpSession _session;
@@ -144,13 +143,13 @@ namespace ServiceControl.Orders
                     col = 1;
                     worksheet.Cells[row, col++].Value = item.Company.Name;
                     worksheet.Cells[row, col++].Value = item.Serial;
-                    worksheet.Cells[row, col++].Value = item.DateBooked.ToString(DATE_FORMAT);
+                    worksheet.Cells[row, col++].Value = item.DateBooked.ToString(L("DateFormat"));
                     worksheet.Cells[row, col++].Value = item.SalesRep.Name;
                     worksheet.Cells[row, col++].Value = item.CustomerFirstName;
                     worksheet.Cells[row, col++].Value = item.CustomerLastName;
                     worksheet.Cells[row, col++].Value = item.ContactPhone;
                     worksheet.Cells[row, col++].Value = item.Email;
-                    worksheet.Cells[row, col++].Value = item.DateOfBirth.ToString(DATE_FORMAT);
+                    worksheet.Cells[row, col++].Value = item.DateOfBirth.ToString(L("DateFormat"));
                     worksheet.Cells[row, col++].Value = item.FirstIdentification.Name;
                     worksheet.Cells[row, col++].Value = item.SecondIdentification.Name;
                     worksheet.Cells[row, col++].Value = item.ExistingAccountNo;

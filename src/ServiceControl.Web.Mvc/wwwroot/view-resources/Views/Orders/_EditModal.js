@@ -1,13 +1,13 @@
 ﻿(function ($) {
 
-    $('.datepicker').datepicker({
-        format: 'mm/dd/yyyy'
-    });
-
     var _orderService = abp.services.app.order,
         l = abp.localization.getSource('ServiceControl'),
         _$modal = $('#OrderEditModal'),
         _$form = _$modal.find('form');
+
+    $('.datepicker').datepicker({
+        format: l('DateFormatView')
+    });
 
     function save() {
         if (!_$form.valid()) {

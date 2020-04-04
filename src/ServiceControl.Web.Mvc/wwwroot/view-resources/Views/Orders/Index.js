@@ -1,14 +1,14 @@
 ﻿(function ($) {
 
-    $('.datepicker').datepicker({
-        format: 'mm/dd/yyyy'
-    });
-
     var _orderService = abp.services.app.order,
         l = abp.localization.getSource('ServiceControl'),
         _$modal = $('#OrderCreateModal'),
         _$form = _$modal.find('form'),
         _$table = $('#OrdersTable');
+
+    $('.datepicker').datepicker({
+        format: l('DateFormatView')
+    });
 
     var _$ordersTable = _$table.DataTable({
         paging: true,

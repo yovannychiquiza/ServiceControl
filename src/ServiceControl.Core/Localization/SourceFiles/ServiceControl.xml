@@ -133,5 +133,7 @@
     <text name="DateFrom" value="Date From" />
     <text name="DateTo" value="Date To" />
     <text name="TimeSlot" value="Time Slot" />
+    <text name="DateFormatView" value="dd/mm/yyyy" />
+    <text name="DateFormat" value="dd/MM/yyyy" />
   </texts>
 </localizationDictionary>
