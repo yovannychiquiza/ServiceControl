@@ -6,138 +6,129 @@
     Layout = null;
 }
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("EditOrder")))
-    <form name="OrderEditForm" role="form" class="form-horizontal">
-        <input type="hidden" name="Id" value="@Model.Order.Id" />
-        <input type="hidden" name="SalesRepId" value="@Model.Order.SalesRepId" />
-        <input type="hidden" name="OrderStateId" value="@Model.Order.OrderStateId" />
-        <input type="hidden" name="DateBooked" value="@Model.Order.DateBooked" />
-        
-        <div class="modal-body">
-            <div role="tabpanel" class="tab-pane container animated fadeIn active" id="edit-order-details">
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="company">@L("Company")</label>
-                    <div class="col-md-9">
-                        @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId" })
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="serial">@L("Serial")</label>
-                    <div class="col-md-9">
-                        <input id="serial" type="text" class="form-control" name="Serial" value="@Model.Order.Serial" required maxlength="@AbpUserBase.MaxNameLength">
-                    </div>
-                </div>
-               
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="sgi">@L("Sgi")</label>
-                    <div class="col-md-9">
-                        <input id="sgi" type="text" class="form-control" name="sgi" value="@Model.Order.Sgi" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="CustomerFirstName">@L("CustomerFirstName")</label>
-                    <div class="col-md-9">
-                        <input id="CustomerFirstName" type="text" class="form-control" name="CustomerFirstName" value="@Model.Order.CustomerFirstName" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="CustomerLastName">@L("CustomerLastName")</label>
-                    <div class="col-md-9">
-                        <input id="CustomerLastName" type="text" class="form-control" name="CustomerLastName" value="@Model.Order.CustomerLastName" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="ContactPhone">@L("ContactPhone")</label>
-                    <div class="col-md-9">
-                        <input id="ContactPhone" type="text" class="form-control" name="ContactPhone" value="@Model.Order.ContactPhone" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="Email">@L("Email")</label>
-                    <div class="col-md-9">
-                        <input id="Email" type="email" class="form-control" name="Email" value="@Model.Order.Email" required maxlength="@AbpUserBase.MaxUserNameLength" placeholder="name@example.com">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="DateOfBirth">@L("DateOfBirth")</label>
-                    <div class="col-md-9">
-                        <input id="DateOfBirth" type="text" class="form-control datepicker" name="DateOfBirth" value="@Model.Order.DateOfBirth" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="PrimaryId">@L("FirstIdentification")</label>
-                    <div class="col-md-9">
-                        @Html.DropDownList("FirstIdentificationId", Model.FirstIdentification, new { @class = "form-control", id = "FirstIdentificationId" })
-                    </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-md-3 col-form-label" for="SecondaryId">@L("SecondIdentification")</label>
-                    <div class="col-md-9">
-                        @Html.DropDownList("SecondIdentificationId", Model.SecondIdentification, new { @class = "form-control", id = "SecondIdentificationId" })
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="ExistingAccountNo">@L("ExistingAccountNo")</label>
-                    <div class="col-md-9">
-                        <input id="ExistingAccountNo" type="text" class="form-control" name="ExistingAccountNo" value="@Model.Order.ExistingAccountNo" maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="StreetNo">@L("StreetNo")</label>
-                    <div class="col-md-9">
-                        <input id="StreetNo" type="text" class="form-control" name="StreetNo" value="@Model.Order.StreetNo" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="CustomerAddress">@L("CustomerAddress")</label>
-                    <div class="col-md-9">
-                        <input id="CustomerAddress" type="text" class="form-control" name="CustomerAddress" value="@Model.Order.CustomerAddress" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="Unit">@L("Unit")</label>
-                    <div class="col-md-9">
-                        <input id="Unit" type="text" class="form-control" name="Unit" value="@Model.Order.Unit" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="City">@L("City")</label>
-                    <div class="col-md-9">
-                        <input id="City" type="text" class="form-control" name="City" value="@Model.Order.City" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="PostalCode">@L("PostalCode")</label>
-                    <div class="col-md-9">
-                        <input id="PostalCode" type="text" class="form-control" name="PostalCode" value="@Model.Order.PostalCode" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="PromoDetails">@L("PromoDetails")</label>
-                    <div class="col-md-9">
-                        <input id="PromoDetails" type="text" class="form-control" name="PromoDetails" value="@Model.Order.PromoDetails" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="Notes">@L("Notes")</label>
-                    <div class="col-md-9">
-                        <input id="Notes" type="text" class="form-control" name="Notes" value="@Model.Order.Notes" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    </div>
-                </div>
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="TimeSlotId">@L("TimeSlot")</label>
-                    <div class="col-md-9">
-                        @Html.DropDownList("TimeSlotId", Model.TimeSlot, new { @class = "form-control", id = "TimeSlotId" })
-                    </div>
-                </div>
-                @*<div class="form-group row required">
-            <label class="col-md-3 col-form-label" for="OrderStateId">@L("OrderState")</label>
+<form name="OrderEditForm" role="form" class="form-horizontal">
+    <input type="hidden" name="Id" value="@Model.Order.Id" />
+    <input type="hidden" name="SalesRepId" value="@Model.Order.SalesRepId" />
+    <input type="hidden" name="OrderStateId" value="@Model.Order.OrderStateId" />
+    <input type="hidden" name="DateBooked" value="@Model.Order.DateBooked" />
+
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="company">@L("Company")</label>
             <div class="col-md-9">
-                @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control", id = "OrderStateId" })
-            </div>
-        </div>*@
+                @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId" })
             </div>
         </div>
-        @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
-    </form>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="serial">@L("Serial")</label>
+            <div class="col-md-9">
+                <input id="serial" type="text" class="form-control" name="Serial" value="@Model.Order.Serial" required maxlength="@AbpUserBase.MaxNameLength">
+            </div>
+        </div>
 
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="sgi">@L("Sgi")</label>
+            <div class="col-md-9">
+                <input id="sgi" type="text" class="form-control" name="sgi" value="@Model.Order.Sgi" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="CustomerFirstName">@L("CustomerFirstName")</label>
+            <div class="col-md-9">
+                <input id="CustomerFirstName" type="text" class="form-control" name="CustomerFirstName" value="@Model.Order.CustomerFirstName" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="CustomerLastName">@L("CustomerLastName")</label>
+            <div class="col-md-9">
+                <input id="CustomerLastName" type="text" class="form-control" name="CustomerLastName" value="@Model.Order.CustomerLastName" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="ContactPhone">@L("ContactPhone")</label>
+            <div class="col-md-9">
+                <input id="ContactPhone" type="text" class="form-control" name="ContactPhone" value="@Model.Order.ContactPhone" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="Email">@L("Email")</label>
+            <div class="col-md-9">
+                <input id="Email" type="email" class="form-control" name="Email" value="@Model.Order.Email" required maxlength="@AbpUserBase.MaxUserNameLength" placeholder="name@example.com">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="DateOfBirth">@L("DateOfBirth")</label>
+            <div class="col-md-9">
+                <input id="DateOfBirth" type="text" class="form-control datepicker" name="DateOfBirth" value="@Model.Order.DateOfBirth" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="PrimaryId">@L("FirstIdentification")</label>
+            <div class="col-md-9">
+                @Html.DropDownList("FirstIdentificationId", Model.FirstIdentification, new { @class = "form-control", id = "FirstIdentificationId" })
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label class="col-md-3 col-form-label" for="SecondaryId">@L("SecondIdentification")</label>
+            <div class="col-md-9">
+                @Html.DropDownList("SecondIdentificationId", Model.SecondIdentification, new { @class = "form-control", id = "SecondIdentificationId" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="ExistingAccountNo">@L("ExistingAccountNo")</label>
+            <div class="col-md-9">
+                <input id="ExistingAccountNo" type="text" class="form-control" name="ExistingAccountNo" value="@Model.Order.ExistingAccountNo" maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="StreetNo">@L("StreetNo")</label>
+            <div class="col-md-9">
+                <input id="StreetNo" type="text" class="form-control" name="StreetNo" value="@Model.Order.StreetNo" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="CustomerAddress">@L("CustomerAddress")</label>
+            <div class="col-md-9">
+                <input id="CustomerAddress" type="text" class="form-control" name="CustomerAddress" value="@Model.Order.CustomerAddress" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="Unit">@L("Unit")</label>
+            <div class="col-md-9">
+                <input id="Unit" type="text" class="form-control" name="Unit" value="@Model.Order.Unit" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="City">@L("City")</label>
+            <div class="col-md-9">
+                <input id="City" type="text" class="form-control" name="City" value="@Model.Order.City" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="PostalCode">@L("PostalCode")</label>
+            <div class="col-md-9">
+                <input id="PostalCode" type="text" class="form-control" name="PostalCode" value="@Model.Order.PostalCode" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="PromoDetails">@L("PromoDetails")</label>
+            <div class="col-md-9">
+                <input id="PromoDetails" type="text" class="form-control" name="PromoDetails" value="@Model.Order.PromoDetails" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="Notes">@L("Notes")</label>
+            <div class="col-md-9">
+                <input id="Notes" type="text" class="form-control" name="Notes" value="@Model.Order.Notes" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="TimeSlotId">@L("TimeSlot")</label>
+            <div class="col-md-9">
+                @Html.DropDownList("TimeSlotId", Model.TimeSlot, new { @class = "form-control", id = "TimeSlotId" })
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</form>
 <script src="~/view-resources/Views/Orders/_EditModal.js" asp-append-version="true"></script>

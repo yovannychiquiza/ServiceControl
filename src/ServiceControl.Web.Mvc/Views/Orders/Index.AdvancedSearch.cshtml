@@ -1,17 +1,17 @@
 ﻿<form id="OrdersSearchForm" class="form-horizontal">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="dateFrom">@L("DateFrom")</label>
-                <div class="col-md-9">
+                <label class="col-md-5 col-form-label" for="dateFrom">@L("DateFrom")</label>
+                <div class="col-md-7">
                     <input id="dateFrom" type="text" class="form-control datepicker" name="dateFrom">
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="dateTo">@L("DateTo")</label>
-                <div class="col-md-9">
+                <label class="col-md-4 col-form-label" for="dateTo">@L("DateTo")</label>
+                <div class="col-md-8">
                     <input id="dateTo" type="text" class="form-control datepicker" name="dateTo">
                 </div>
             </div>
@@ -27,6 +27,11 @@
                     <input type="text" name="Keyword" class="form-control txt-search" />
                 </div>
             </div>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn bg-green btn-search export-button">
+                <span class="fas fa-table" aria-hidden="true"></span> Excel
+            </button>
         </div>
     </div>
 </form>

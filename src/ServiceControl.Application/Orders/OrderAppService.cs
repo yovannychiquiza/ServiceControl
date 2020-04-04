@@ -5,6 +5,7 @@ using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Runtime.Session;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using ServiceControl.Orders.Dto;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,13 @@ namespace ServiceControl.Orders
     }
     public class OrderAppService : ApplicationService, IOrderAppService
     {
+        static string DATE_FORMAT = "dd/MM/yyyy";
+
         private readonly IRepository<Orders> _orderRepository;
         private readonly IAbpSession _session;
         public OrderAppService(IRepository<Orders> repository, IAbpSession session)
         {
+            LocalizationSourceName = ServiceControlConsts.LocalizationSourceName;
             _orderRepository = repository;
             _session = session;
         }
@@ -99,6 +103,77 @@ namespace ServiceControl.Orders
             dto = ObjectMapper.Map(model, dto);
             return Task.FromResult(dto);        
         }
-       
+
+
+        public Task<ExportResultResponse> GetExportExcel(PagedOrderResultRequestDto input)
+        {
+            var result = GetAll(input).Result.Data.Items;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Orders");
+
+                int row = 1, col = 1;
+
+                worksheet.Cells[row, col++].Value = L("Company");
+                worksheet.Cells[row, col++].Value = L("Serial");
+                worksheet.Cells[row, col++].Value = L("DateBooked");
+                worksheet.Cells[row, col++].Value = L("SalesRep");
+                worksheet.Cells[row, col++].Value = L("CustomerFirstName");
+                worksheet.Cells[row, col++].Value = L("CustomerLastName");
+                worksheet.Cells[row, col++].Value = L("ContactPhone");
+                worksheet.Cells[row, col++].Value = L("Email");
+                worksheet.Cells[row, col++].Value = L("DateOfBirth");
+                worksheet.Cells[row, col++].Value = L("FirstIdentification");
+                worksheet.Cells[row, col++].Value = L("SecondIdentification");
+                worksheet.Cells[row, col++].Value = L("ExistingAccountNo");
+                worksheet.Cells[row, col++].Value = L("StreetNo");
+                worksheet.Cells[row, col++].Value = L("CustomerAddress");
+                worksheet.Cells[row, col++].Value = L("Unit");
+                worksheet.Cells[row, col++].Value = L("City");
+                worksheet.Cells[row, col++].Value = L("PostalCode");
+                worksheet.Cells[row, col++].Value = L("PromoDetails");
+                worksheet.Cells[row, col++].Value = L("TimeSlot");
+                worksheet.Cells[row, col++].Value = L("Notes");
+
+                worksheet.Cells[ExcelRange.GetAddress(1, 1, 1, col)].Style.Font.Bold = true;
+
+                foreach (var item in result.ToList())
+                {
+                    row++;
+                    col = 1;
+                    worksheet.Cells[row, col++].Value = item.Company.Name;
+                    worksheet.Cells[row, col++].Value = item.Serial;
+                    worksheet.Cells[row, col++].Value = item.DateBooked.ToString(DATE_FORMAT);
+                    worksheet.Cells[row, col++].Value = item.SalesRep.Name;
+                    worksheet.Cells[row, col++].Value = item.CustomerFirstName;
+                    worksheet.Cells[row, col++].Value = item.CustomerLastName;
+                    worksheet.Cells[row, col++].Value = item.ContactPhone;
+                    worksheet.Cells[row, col++].Value = item.Email;
+                    worksheet.Cells[row, col++].Value = item.DateOfBirth.ToString(DATE_FORMAT);
+                    worksheet.Cells[row, col++].Value = item.FirstIdentification.Name;
+                    worksheet.Cells[row, col++].Value = item.SecondIdentification.Name;
+                    worksheet.Cells[row, col++].Value = item.ExistingAccountNo;
+                    worksheet.Cells[row, col++].Value = item.StreetNo;
+                    worksheet.Cells[row, col++].Value = item.CustomerAddress;
+                    worksheet.Cells[row, col++].Value = item.Unit;
+                    worksheet.Cells[row, col++].Value = item.City;
+                    worksheet.Cells[row, col++].Value = item.PostalCode;
+                    worksheet.Cells[row, col++].Value = item.PromoDetails;
+                    worksheet.Cells[row, col++].Value = item.TimeSlot.Name;
+                    worksheet.Cells[row, col++].Value = item.Notes;
+                }
+
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                var response = Task.FromResult( new ExportResultResponse {
+                    FileName = "Orders.xlsx",
+                    Data = package.GetAsByteArray()
+                });
+
+                return response;
+            }
+        }
+
     }
 }

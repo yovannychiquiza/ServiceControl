@@ -11,6 +11,9 @@
     <RootNamespace>ServiceControl</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="5.0.4" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ServiceControl.Core\ServiceControl.Core.csproj" />
   </ItemGroup>
 </Project>
