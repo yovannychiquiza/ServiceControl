@@ -76,7 +76,10 @@
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-danger edit-user delete-user" data-user-id="${row.id}" data-user-name="${row.name}">`,
                         `       <i class="fas fa-trash"></i> ${l('Delete')}`,
-                        '   </button>'
+                        '   </button>',
+                        `   <button type="button" class="btn btn-sm bg-primary edit-company" data-user-id="${row.id}" data-toggle="modal" data-target="#UserEditModal">`,
+                        `       <i class="fas fa-building"></i> ${l('Company')}`,
+                        '   </button>',
                     ].join('');
                 }
             }
@@ -185,4 +188,21 @@
             return false;
         }
     });
+
+
+    $(document).on('click', '.edit-company', function (e) {
+        var userId = $(this).attr("data-user-id");
+
+        e.preventDefault();
+        abp.ajax({
+            url: abp.appPath + 'Users/EditCompanyModal?userId=' + userId,
+            type: 'POST',
+            dataType: 'html',
+            success: function (content) {
+                $('#UserEditModal div.modal-content').html(content);
+            },
+            error: function (e) { }
+        });
+    });
+
 })(jQuery);

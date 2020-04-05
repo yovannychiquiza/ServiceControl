@@ -12,6 +12,8 @@ namespace ServiceControl.Orders
         Task GetOrderDelete(long id);
         Task<OrderDto> GetOrder(long id);
         Task<ExportResultResponse> GetExportExcel(PagedOrderResultRequestDto input);
+        Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems(long id);
+
     }
 
 }

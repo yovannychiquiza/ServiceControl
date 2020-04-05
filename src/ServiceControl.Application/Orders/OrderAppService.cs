@@ -7,6 +7,7 @@ using Abp.Runtime.Session;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using ServiceControl.Orders.Dto;
+using ServiceControl.UserCompany;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +28,14 @@ namespace ServiceControl.Orders
 
         private readonly IRepository<Orders> _orderRepository;
         private readonly IAbpSession _session;
-        public OrderAppService(IRepository<Orders> repository, IAbpSession session)
+        private readonly IRepository<SalesRepCompany> _salesRepCompanyRepository;
+
+        public OrderAppService(IRepository<Orders> repository, IAbpSession session, IRepository<SalesRepCompany> salesRepCompanyRepository)
         {
             LocalizationSourceName = ServiceControlConsts.LocalizationSourceName;
             _orderRepository = repository;
             _session = session;
+            _salesRepCompanyRepository = salesRepCompanyRepository;
         }
 
 
@@ -103,6 +107,16 @@ namespace ServiceControl.Orders
             return Task.FromResult(dto);        
         }
 
+        public async Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems(long id)
+        {
+            List<SalesRepCompany> list = _salesRepCompanyRepository.GetAll()
+                .Include(t => t.SalesRep)
+                .Include(t => t.Company)
+                .Where(t => t.SalesRepId == id).ToList();
+            return new ListResultDto<ComboboxItemDto>(
+                list.Select(p => new ComboboxItemDto(p.Company.Id.ToString("D"), p.Company.Name)).ToList()
+            );
+        }
 
         public Task<ExportResultResponse> GetExportExcel(PagedOrderResultRequestDto input)
         {

@@ -11,6 +11,7 @@ using ServiceControl.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Collections.Generic;
+using Abp.Runtime.Session;
 
 namespace ServiceControl.Web.Controllers
 {
@@ -19,11 +20,14 @@ namespace ServiceControl.Web.Controllers
     {
         private readonly IOrderAppService _orderAppService;
         private readonly ILookupAppService _lookupAppService;
+        private readonly IAbpSession _session;
 
-        public OrdersController(IOrderAppService orderAppService, ILookupAppService lookupAppService)
+
+        public OrdersController(IOrderAppService orderAppService, ILookupAppService lookupAppService, IAbpSession session)
         {
             _orderAppService = orderAppService;
             _lookupAppService = lookupAppService;
+            _session = session;
         }
 
         public async Task<ActionResult> EditModal(long orderId)
@@ -39,7 +43,7 @@ namespace ServiceControl.Web.Controllers
                                                  Selected = res.Value == order.OrderStateId.ToString()
                                              }).ToList();
 
-            var companyList = _lookupAppService.GetCompanyComboboxItems().Result;
+            var companyList = _orderAppService.GetCompanyComboboxItems(_session.UserId.GetValueOrDefault()).Result;
             var companySelectListItems = (from res in companyList.Items
                                              select new SelectListItem()
                                              {
@@ -99,7 +103,7 @@ namespace ServiceControl.Web.Controllers
                                                  Value = res.Value,
                                              }).ToList();
 
-            var companyList = _lookupAppService.GetCompanyComboboxItems().Result;
+            var companyList = _orderAppService.GetCompanyComboboxItems(_session.UserId.GetValueOrDefault()).Result;
             var companySelectListItems = (from res in companyList.Items
                                           select new SelectListItem()
                                           {

@@ -3,6 +3,7 @@ using Abp.Zero.EntityFrameworkCore;
 using ServiceControl.Authorization.Roles;
 using ServiceControl.Authorization.Users;
 using ServiceControl.MultiTenancy;
+using ServiceControl.UserCompany;
 
 namespace ServiceControl.EntityFrameworkCore
 {
@@ -15,6 +16,7 @@ namespace ServiceControl.EntityFrameworkCore
         public DbSet<ServiceControl.Orders.FirstIdentification> FirstIdentification { get; set; }
         public DbSet<ServiceControl.Orders.SecondIdentification> SecondIdentification { get; set; }
         public DbSet<ServiceControl.Orders.TimeSlot> TimeSlot { get; set; }
+        public DbSet<SalesRepCompany> SalesRepCompany { get; set; }
         
 
         public ServiceControlDbContext(DbContextOptions<ServiceControlDbContext> options)
