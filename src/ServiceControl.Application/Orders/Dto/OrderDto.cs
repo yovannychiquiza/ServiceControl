@@ -44,6 +44,10 @@ namespace ServiceControl.Orders.Dto
         public TimeSlot TimeSlot { get; set; }
         public FirstIdentification FirstIdentification { get; set; }
         public SecondIdentification SecondIdentification { get; set; }
+        public string OrderNo { get; set; }
+        public string AccountNo { get; set; }
+        public DateTime? InstallDate { get; set; }
+        public string Remarks { get; set; }
 
     }
 }

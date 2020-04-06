@@ -1,0 +1,45 @@
+﻿@using Abp.Authorization.Users
+@using ServiceControl.Web.Models.Common.Modals
+@using ServiceControl.Web.Models.Orders
+@model EditOrderModalViewModel
+@{
+    Layout = null;
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Booking")))
+<form name="OrderEditForm" role="form" class="form-horizontal">
+    <input type="hidden" name="Id" value="@Model.Order.Id" />
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="OrderNo">@L("OrderNo")</label>
+            <div class="col-md-9">
+                <input id="OrderNo" type="text" class="form-control" name="OrderNo" value="@Model.Order.OrderNo" required maxlength="@AbpUserBase.MaxNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="AccountNo">@L("AccountNo")</label>
+            <div class="col-md-9">
+                <input id="AccountNo" type="text" class="form-control" name="AccountNo" value="@Model.Order.AccountNo" required maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="InstallDate">@L("InstallDate")</label>
+            <div class="col-md-9">
+                <input id="InstallDate" type="text" class="form-control datepicker" name="InstallDate" value="@Model.Order.InstallDate" maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="Remarks">@L("Remarks")</label>
+            <div class="col-md-9">
+                <input id="Remarks" type="text" class="form-control" name="Remarks" value="@Model.Order.Remarks" maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="OrderStateId">@L("OrderState")</label>
+            <div class="col-md-9">
+                @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control", id = "OrderStateId" })
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</form>
+<script src="~/view-resources/Views/Orders/_BookingModal.js" asp-append-version="true"></script>

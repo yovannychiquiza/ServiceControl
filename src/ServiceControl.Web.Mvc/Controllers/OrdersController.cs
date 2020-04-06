@@ -151,5 +151,29 @@ namespace ServiceControl.Web.Controllers
         {
             return View();
         }
+
+
+
+        public async Task<ActionResult> BookingModal(long orderId)
+        {
+            var order = await _orderAppService.GetOrder(orderId);
+
+            var orderStateList = _lookupAppService.GetOrderStateComboboxItems().Result;
+            var orderStateSelectListItems = (from res in orderStateList.Items
+                                             select new SelectListItem()
+                                             {
+                                                 Text = res.DisplayText,
+                                                 Value = res.Value,
+                                                 Selected = res.Value == order.OrderStateId.ToString()
+                                             }).ToList();
+
+            var model = new EditOrderModalViewModel
+            {
+                Order = order,
+                OrderState = orderStateSelectListItems
+            };
+
+            return PartialView("_BookingModal", model);
+        }
     }
 }

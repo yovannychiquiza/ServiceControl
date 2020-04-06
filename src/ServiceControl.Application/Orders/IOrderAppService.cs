@@ -13,6 +13,7 @@ namespace ServiceControl.Orders
         Task<OrderDto> GetOrder(long id);
         Task<ExportResultResponse> GetExportExcel(PagedOrderResultRequestDto input);
         Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems(long id);
+        Task GetOrderBooking(OrderDto input);
 
     }
 

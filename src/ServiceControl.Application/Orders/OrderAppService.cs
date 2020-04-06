@@ -118,6 +118,24 @@ namespace ServiceControl.Orders
             );
         }
 
+        public async Task GetOrderBooking(OrderDto input)
+        {
+            try
+            {
+                Orders model = _orderRepository.FirstOrDefault(t => t.Id == input.Id);
+                model.OrderNo = input.OrderNo;
+                model.AccountNo = input.AccountNo;
+                model.InstallDate = input.InstallDate;
+                model.Remarks = input.Remarks;
+                model.OrderStateId = input.OrderStateId;
+                await _orderRepository.UpdateAsync(model);
+            }
+            catch (Exception e)
+            {
+                string mess = e.Message;
+            }
+        }
+
         public Task<ExportResultResponse> GetExportExcel(PagedOrderResultRequestDto input)
         {
             var result = GetAll(input).Result.Data.Items;

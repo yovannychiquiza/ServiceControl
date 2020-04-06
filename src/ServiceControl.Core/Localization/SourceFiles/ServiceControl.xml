@@ -135,5 +135,10 @@
     <text name="TimeSlot" value="Time Slot" />
     <text name="DateFormatView" value="dd/mm/yyyy" />
     <text name="DateFormat" value="dd/MM/yyyy" />
+    <text name="OrderNo" value="Order No" />
+    <text name="AccountNo" value="Account No" />
+    <text name="InstallDate" value="Install Date" />
+    <text name="Remarks" value="Remarks" />
+    <text name="Booking" value="Booking" />
   </texts>
 </localizationDictionary>

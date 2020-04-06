@@ -52,7 +52,10 @@ namespace ServiceControl.Orders
         public SecondIdentification SecondIdentification { get; set; }
         [ForeignKey(nameof(FirstIdentificationId))]
         public FirstIdentification FirstIdentification { get; set; }
-
+        public string OrderNo { get; set; }
+        public string AccountNo { get; set; }
+        public DateTime? InstallDate { get; set; }
+        public string Remarks { get; set; }
 
     }
 }

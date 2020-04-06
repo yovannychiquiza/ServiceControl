@@ -171,7 +171,10 @@
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-danger edit-order delete-order" data-order-id="${row.id}" data-order-serial="${row.serial}">`,
                         `       <i class="fas fa-trash"></i> ${l('Delete')}`,
-                        '   </button>'
+                        '   </button>',
+                        `   <button type="button" class="btn btn-sm bg-primary booking-order" data-order-id="${row.id}" data-toggle="modal" data-target="#OrderEditModal">`,
+                        `       <i class="far fa-calendar-check"></i> ${l('Booking')}`,
+                        '   </button>',
                     ].join('');
                 }
             }
@@ -295,4 +298,18 @@
         document.body.removeChild(link);
     }
 
+    $(document).on('click', '.booking-order', function (e) {
+        var orderId = $(this).attr("data-order-id");
+
+        e.preventDefault();
+        abp.ajax({
+            url: abp.appPath + 'Orders/BookingModal?orderId=' + orderId,
+            type: 'POST',
+            dataType: 'html',
+            success: function (content) {
+                $('#OrderEditModal div.modal-content').html(content);
+            },
+            error: function (e) { }
+        });
+    });
 })(jQuery);
