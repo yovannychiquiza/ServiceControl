@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
   <texts>
+    <text name="DateFormatView" value="mm/dd/yyyy" />
+    <text name="DateFormat" value="MM/dd/yyyy" />
     <text name="HomePage" value="Home page" />
     <text name="About" value="About" />
     <text name="WelcomeMessage" value="Welcome to ServiceControl!" />
@@ -133,8 +135,6 @@
     <text name="DateFrom" value="Date From" />
     <text name="DateTo" value="Date To" />
     <text name="TimeSlot" value="Time Slot" />
-    <text name="DateFormatView" value="dd/mm/yyyy" />
-    <text name="DateFormat" value="dd/MM/yyyy" />
     <text name="OrderNo" value="Order No" />
     <text name="AccountNo" value="Account No" />
     <text name="InstallDate" value="Install Date" />

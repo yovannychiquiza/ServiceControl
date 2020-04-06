@@ -157,9 +157,28 @@
                 data: 'timeSlot.name',
                 sortable: false,
             },
-           
             {
                 targets: 23,
+                data: 'orderNo',
+                sortable: false,
+            },
+            {
+                targets: 24,
+                data: 'accountNo',
+                sortable: false,
+            },
+            {
+                targets: 25,
+                data: 'installDate',
+                sortable: false,
+            },
+            {
+                targets: 26,
+                data: 'remarks',
+                sortable: false,
+            },
+            {
+                targets: 27,
                 data: null,
                 sortable: false,
                 autoWidth: false,
