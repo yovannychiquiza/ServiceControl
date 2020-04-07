@@ -22,10 +22,13 @@
                 <h1>@L("Orders")</h1>
             </div>
             <div class="col-sm-6">
-                <a href="javascript:;" data-toggle="modal" data-target="#OrderCreateModal" class="btn bg-blue float-sm-right">
-                    <i class="fa fa-plus-square"></i>
-                    @L("Create")
-                </a>
+                @if (IsGranted(ServiceControl.Authorization.PermissionNames.Pages_Orders_Admin))
+                {
+                    <a href="javascript:;" data-toggle="modal" data-target="#OrderCreateModal" class="btn bg-blue float-sm-right">
+                        <i class="fa fa-plus-square"></i>
+                        @L("Create")
+                    </a>
+                }
             </div>
         </div>
     </div>

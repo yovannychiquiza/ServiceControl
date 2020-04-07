@@ -108,6 +108,7 @@
     <text name="TenantDeleteWarningMessage">Tenant {0} will be deleted.</text>
     <text name="SearchWithThreeDot">Search...</text>
     <text name="Orders" value="Orders" />
+    <text name="OrdersAdmin" value="Orders Admin" />
     <text name="Company" value="Company" />
     <text name="Serial" value="Serial" />
     <text name="DateBooked" value="Date Booked" />

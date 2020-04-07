@@ -15,7 +15,7 @@ using Abp.Runtime.Session;
 
 namespace ServiceControl.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Users)]
+    [AbpMvcAuthorize(PermissionNames.Pages_Orders)]
     public class OrdersController : ServiceControlControllerBase
     {
         private readonly IOrderAppService _orderAppService;

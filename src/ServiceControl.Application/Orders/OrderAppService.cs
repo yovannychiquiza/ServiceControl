@@ -1,11 +1,13 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Runtime.Session;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using ServiceControl.Authorization;
 using ServiceControl.Orders.Dto;
 using ServiceControl.UserCompany;
 using System;
@@ -23,6 +25,8 @@ namespace ServiceControl.Orders
         Delayed = 3,
         To_be_follow = 4
     }
+
+    [AbpAuthorize(PermissionNames.Pages_Orders)]
     public class OrderAppService : ApplicationService, IOrderAppService
     {
 

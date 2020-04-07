@@ -1,5 +1,8 @@
 ﻿(function ($) {
 
+    var displayAdmin = abp.auth.isGranted('Pages.Orders.Admin') === true ? '': 'none';
+    var displayBooking = abp.auth.isGranted('Pages.Booking') === true ? '': 'none';
+
     var _orderService = abp.services.app.order,
         l = abp.localization.getSource('ServiceControl'),
         _$modal = $('#OrderCreateModal'),
@@ -185,13 +188,13 @@
                 defaultContent: '',
                 render: (data, type, row, meta) => {
                     return [
-                        `   <button type="button" class="btn btn-sm bg-secondary edit-order" data-order-id="${row.id}" data-toggle="modal" data-target="#OrderEditModal">`,
+                        `   <button type="button" style="display:${displayAdmin}" class="btn btn-sm bg-secondary edit-order" data-order-id="${row.id}" data-toggle="modal" data-target="#OrderEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> ${l('Edit')}`,
                         '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-danger edit-order delete-order" data-order-id="${row.id}" data-order-serial="${row.serial}">`,
+                        `   <button type="button" style="display:${displayAdmin}" class="btn btn-sm bg-danger edit-order delete-order" data-order-id="${row.id}" data-order-serial="${row.serial}">`,
                         `       <i class="fas fa-trash"></i> ${l('Delete')}`,
                         '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-primary booking-order" data-order-id="${row.id}" data-toggle="modal" data-target="#OrderEditModal">`,
+                        `   <button type="button" style="display:${displayBooking}" class="btn btn-sm bg-primary booking-order" data-order-id="${row.id}" data-toggle="modal" data-target="#OrderEditModal">`,
                         `       <i class="far fa-calendar-check"></i> ${l('Booking')}`,
                         '   </button>',
                     ].join('');

@@ -31,12 +31,15 @@
         <div class="col-md-2">
             <div class="form-group row">
                 <div class="col-md-4"></div>
-                <div class="col-md-8">
-                    <button type="button" class="btn bg-green btn-search export-button">
-                        <span class="fas fa-table" aria-hidden="true"></span> Excel
-                    </button>
-                </div>
-                </div>
-            </div>
+                @if (IsGranted(ServiceControl.Authorization.PermissionNames.Pages_Orders_Admin))
+                {
+                    <div class="col-md-8">
+                        <button type="button" class="btn bg-green btn-search export-button">
+                            <span class="fas fa-table" aria-hidden="true"></span> Excel
+                        </button>
+                    </div>
+                }
+             </div>
+        </div>
     </div>
 </form>

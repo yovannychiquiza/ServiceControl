@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using ServiceControl.UserCompany.Dto;
 using ServiceControl.Orders;
 using System;
+using Abp.Authorization;
+using ServiceControl.Authorization;
 
 namespace ServiceControl.UserCompany
 {
-   
+    [AbpAuthorize(PermissionNames.Pages_Orders)]
     public class CompanyAppService : ApplicationService, ICompanyAppService
     {
 
