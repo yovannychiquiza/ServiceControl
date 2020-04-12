@@ -175,5 +175,10 @@ namespace ServiceControl.Web.Controllers
 
             return PartialView("_BookingModal", model);
         }
+
+        public ActionResult Booking()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,26 @@
+﻿@using ServiceControl.Web.Startup
+@using ServiceControl.Web.Models.Orders
+@{
+    ViewBag.Title = L("Booking");
+    ViewBag.CurrentPageName = PageNames.Booking;
+}
+
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/view-resources/Views/Orders/Booking.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/Orders/Booking.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<script src="~/libs/jexcel/jexcel.js" asp-append-version="true"></script>
+<script src="~/libs/jsuites/dist/jsuites.js" asp-append-version="true"></script>
+
+<link href="~/libs/jsuites/dist/jsuites.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/libs/jexcel/jexcel.css" rel="stylesheet" asp-append-version="true" />
+
+<div id="spreadsheet"></div>
+

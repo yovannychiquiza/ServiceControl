@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using ServiceControl.Orders.Dto;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ServiceControl.Orders
@@ -14,6 +15,8 @@ namespace ServiceControl.Orders
         Task<ExportResultResponse> GetExportExcel(PagedOrderResultRequestDto input);
         Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems(long id);
         Task GetOrderBooking(OrderDto input);
+        Task GetBookingUpdate(OrderDto input);
+        List<OrderDto> GetBooking();
 
     }
 

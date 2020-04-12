@@ -48,7 +48,16 @@ namespace ServiceControl.Web.Startup
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Orders)
                             )
                 )
-               
+                .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Booking,
+                        L("Booking"),
+                        url: "Orders/Booking",
+                        icon: "fas fa-list-alt",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Booking)
+                            )
+                )
+
                 .AddItem( // Menu items below is just for demonstration!
                     new MenuItemDefinition(
                         "MultiLevelMenu",

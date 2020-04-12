@@ -39,6 +39,7 @@ namespace ServiceControl.Orders.Dto
         public int OrderStateId { get; set; }
         public int TimeSlotId { get; set; }
         public OrderState OrderState { get; set; }
+        public string OrderStateName { get; set; }
         public Company Company { get; set; }
         public User SalesRep { get; set; }
         public TimeSlot TimeSlot { get; set; }

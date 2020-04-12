@@ -184,6 +184,15 @@
       "library": "bootstrap-datepicker@1.9.0",
       "destination": "wwwroot/libs/bootstrap-datepicker"
     },
+    {
+      "library": "jexcel@3.9.1",
+      "destination": "wwwroot/libs/jexcel"
+    },
+    {
+      "library": "jsuites@2.7.2",
+      "provider": "jsdelivr",
+      "destination": "wwwroot/libs/jsuites"
+    },
     //admin-lte libs end
 
     //other libs start

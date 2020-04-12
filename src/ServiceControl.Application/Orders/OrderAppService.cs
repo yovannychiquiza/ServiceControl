@@ -23,7 +23,7 @@ namespace ServiceControl.Orders
         Booked = 1,
         Cancelled = 2,
         Delayed = 3,
-        To_be_follow = 4
+        Follow = 4
     }
 
     [AbpAuthorize(PermissionNames.Pages_Orders)]
@@ -46,7 +46,7 @@ namespace ServiceControl.Orders
         public async Task<PagedOrderResultResponseDto> GetAll(PagedOrderResultRequestDto input)
         {
             var query = _orderRepository.GetAll();
-                
+
             if (!input.Keyword.IsNullOrWhiteSpace())
                 query = query.Where(x => x.Serial.Contains(input.Keyword) || x.Company.Name.Contains(input.Keyword) || x.OrderState.Name.Contains(input.Keyword));
             if (input.DateFrom.HasValue)
@@ -106,9 +106,9 @@ namespace ServiceControl.Orders
         public Task<OrderDto> GetOrder(long id)
         {
             Orders model = _orderRepository.FirstOrDefault(t => t.Id == id);
-            OrderDto dto = new OrderDto(); 
+            OrderDto dto = new OrderDto();
             dto = ObjectMapper.Map(model, dto);
-            return Task.FromResult(dto);        
+            return Task.FromResult(dto);
         }
 
         public async Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems(long id)
@@ -138,6 +138,38 @@ namespace ServiceControl.Orders
             {
                 string mess = e.Message;
             }
+        }
+        public async Task GetBookingUpdate(OrderDto input)
+        {
+            Orders model = _orderRepository.FirstOrDefault(t => t.Id == input.Id);
+            model.Sgi = input.Sgi;
+            model.CustomerFirstName = input.CustomerFirstName;
+            model.CustomerLastName = input.CustomerLastName;
+            model.ContactPhone = input.ContactPhone;
+            model.Email = input.Email;
+            model.DateOfBirth = input.DateOfBirth;
+            model.ExistingAccountNo = input.ExistingAccountNo;
+            model.StreetNo = input.StreetNo;
+            model.CustomerAddress = input.CustomerAddress;
+            model.Unit = input.Unit;
+            model.City = input.City;
+            model.PostalCode = input.PostalCode;
+            model.PromoDetails = input.PromoDetails;
+            model.Notes = input.Notes;
+            model.OrderNo = input.OrderNo;
+            model.AccountNo = input.AccountNo;
+            model.InstallDate = input.InstallDate;
+            model.Remarks = input.Remarks;
+            if (OrderStateEnum.Booked.ToString().Equals(input.OrderStateName))
+                model.OrderStateId = (int)OrderStateEnum.Booked;
+            if (OrderStateEnum.Cancelled.ToString().Equals(input.OrderStateName))
+                model.OrderStateId = (int)OrderStateEnum.Cancelled;
+            if (OrderStateEnum.Delayed.ToString().Equals(input.OrderStateName))
+                model.OrderStateId = (int)OrderStateEnum.Delayed;
+            if (OrderStateEnum.Follow.ToString().Equals(input.OrderStateName))
+                model.OrderStateId = (int)OrderStateEnum.Follow;
+
+            await _orderRepository.UpdateAsync(model);
         }
 
         public Task<ExportResultResponse> GetExportExcel(PagedOrderResultRequestDto input)
@@ -201,7 +233,7 @@ namespace ServiceControl.Orders
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-                var response = Task.FromResult( new ExportResultResponse {
+                var response = Task.FromResult(new ExportResultResponse {
                     FileName = "Orders.xlsx",
                     Data = package.GetAsByteArray()
                 });
@@ -210,5 +242,17 @@ namespace ServiceControl.Orders
             }
         }
 
+        public List<OrderDto> GetBooking()
+        {
+            var query = _orderRepository.GetAll()
+                .Include(t => t.OrderState)
+                .Include(t => t.Company)
+                .Include(t => t.TimeSlot)
+                .Include(t => t.FirstIdentification)
+                .Include(t => t.SecondIdentification)
+                .ToList();
+            return new List<OrderDto>(
+                ObjectMapper.Map<List<OrderDto>>(query));
+        }
     }
 }
