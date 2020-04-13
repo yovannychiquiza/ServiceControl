@@ -10,12 +10,16 @@ var changed = function (instance, cell, x, y, value) {
    
     var dateSaved = myTable.getValueFromCoords([x], [y]);
     model.id = myTable.getValueFromCoords([column++], [y]);
+    model.serial = myTable.getValueFromCoords([column++], [y]);
+    model.dateBooked = myTable.getValueFromCoords([column++], [y]);
     model.sgi = myTable.getValueFromCoords([column++], [y]);
     model.customerFirstName = myTable.getValueFromCoords([column++], [y]);
     model.customerLastName = myTable.getValueFromCoords([column++], [y]);
     model.contactPhone = myTable.getValueFromCoords([column++], [y]);
     model.email = myTable.getValueFromCoords([column++], [y]);
     model.dateOfBirth = myTable.getValueFromCoords([column++], [y]);
+    model.firstIdentification = myTable.getValueFromCoords([column++], [y]);
+    model.secondIdentification = myTable.getValueFromCoords([column++], [y]);
     model.existingAccountNo = myTable.getValueFromCoords([column++], [y]);
     model.streetNo = myTable.getValueFromCoords([column++], [y]);
     model.customerAddress = myTable.getValueFromCoords([column++], [y]);
@@ -23,11 +27,12 @@ var changed = function (instance, cell, x, y, value) {
     model.city = myTable.getValueFromCoords([column++], [y]);
     model.postalCode = myTable.getValueFromCoords([column++], [y]);
     model.promoDetails = myTable.getValueFromCoords([column++], [y]);
+    model.timeSlot = myTable.getValueFromCoords([column++], [y]);
     model.notes = myTable.getValueFromCoords([column++], [y]);
-    model.orderStateName = myTable.getValueFromCoords([column++], [y]);
     model.orderNo = myTable.getValueFromCoords([column++], [y]);
     model.accountNo = myTable.getValueFromCoords([column++], [y]);
     model.installDate = myTable.getValueFromCoords([column++], [y]);
+    model.orderStateName = myTable.getValueFromCoords([column++], [y]);
     model.remarks = myTable.getValueFromCoords([column++], [y]);
   
     $.ajax({
@@ -35,7 +40,8 @@ var changed = function (instance, cell, x, y, value) {
         data: model
     })
     .done(function (msg) {
-        abp.notify.info(l('SavedSuccessfully') +" "+ dateSaved);
+        abp.notify.info(l('SavedSuccessfully') + " " + dateSaved);
+        setStyleSpread(model.orderStateName, parseInt(y) + 1);
     })
     .fail(function (xhr, status, error) {
         abp.message.error(xhr.responseJSON.error.details, xhr.responseJSON.error.message);
@@ -51,13 +57,17 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
     rowResize: true,
     columnDrag: true,
     columns: [
-        { type: 'text', width: '50', title: l('Id'), readOnly: true},
-        { type: 'text', width: '100', title: l('Sgi') },
+        { type: 'text', width: '50', title: l('Id'), readOnly: true },
+        { type: 'text', width: '100', title: l('Serial'), readOnly: true, },
+        { type: 'text', width: '100', title: l('DateBooked'), readOnly: true, },
+        { type: 'text', width: '100', title: l('Sgi'), readOnly: true, },
         { type: 'text', width: '100', title: l('CustomerFirstName') },
         { type: 'text', width: '100', title: l('CustomerLastName') },
         { type: 'text', width: '100', title: l('ContactPhone') },
         { type: 'text', width: '100', title: l('Email') },
         { type: 'text', width: '100', title: l('DateOfBirth') },
+        { type: 'text', width: '100', title: l('FirstIdentification'), readOnly: true, },
+        { type: 'text', width: '100', title: l('SecondIdentification'), readOnly: true, },
         { type: 'text', width: '100', title: l('ExistingAccountNo') },
         { type: 'text', width: '100', title: l('StreetNo') },
         { type: 'text', width: '100', title: l('CustomerAddress') },
@@ -65,7 +75,11 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
         { type: 'text', width: '100', title: l('City') },
         { type: 'text', width: '100', title: l('PostalCode') },
         { type: 'text', width: '100', title: l('PromoDetails') },
+        { type: 'text', width: '100', title: l('TimeSlot'), readOnly: true,},
         { type: 'text', width: '100', title: l('Notes') },
+        { type: 'text', width: '100', title: l('OrderNo') },
+        { type: 'text', width: '100', title: l('AccountNo') },
+        { type: 'text', width: '200', title: l('InstallDate') },
         {
             type: 'dropdown', width: '150', title: l('OrderState'), source: [
                 "Booked",
@@ -74,15 +88,9 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
                 "Follow",
             ]
         },
-        { type: 'text', width: '100', title: l('OrderNo') },
-        { type: 'text', width: '100', title: l('AccountNo') },
-        { type: 'text', width: '200', title: l('InstallDate') },
         { type: 'text', width: '100', title: l('Remarks') },
-        { type: 'text', width: '100', title: l('Serial'), readOnly: true, },
-        { type: 'text', width: '100', title: l('DateBooked'), readOnly: true, },
-        { type: 'text', width: '100', title: l('FirstIdentification'), readOnly: true,},
-        { type: 'text', width: '100', title: l('SecondIdentification'), readOnly: true,},
-        { type: 'text', width: '100', title: l('TimeSlot'), readOnly: true,},
+       
+       
 
     ],
     onchange: changed
@@ -99,16 +107,21 @@ function start() {
     $.ajax({
         url: "/api/services/app/Order/GetBooking"
     })
-    .done(function (result) {
+        .done(function (result) {
+            var row = 2;
         result.result.forEach(function (item) {
             myTable.insertRow([
                 item.id,
+                item.serial,
+                item.dateBooked,
                 item.sgi,
                 item.customerFirstName,
                 item.customerLastName,
                 item.contactPhone,
                 item.email,
                 item.dateOfBirth,
+                item.firstIdentification.name,
+                item.secondIdentification.name,
                 item.existingAccountNo,
                 item.streetNo,
                 item.customerAddress,
@@ -116,20 +129,61 @@ function start() {
                 item.city,
                 item.postalCode,
                 item.promoDetails,
+                item.timeSlot.name,
                 item.notes,
-                item.orderState.name,
                 item.orderNo,
                 item.accountNo,
                 item.installDate,
+                item.orderState.name,
                 item.remarks,
-                item.serial,
-                item.dateBooked,
-                item.firstIdentification.name,
-                item.secondIdentification.name,
-                item.timeSlot.name,
             ]);
+            setStyleSpread(item.orderState.name, row++);
         });
         myTable.deleteRow(0, 1);
     });
+}
+
+
+function setStyleSpread(orderState, row) {
+    var color = '';
+    if (orderState === 'Booked')
+        color = 'green';
+    if (orderState === 'Cancelled')
+        color = 'red';
+    if (orderState === 'Delayed')
+        color = 'yellow';
+    if (orderState === 'Follow')
+        color = 'yellow';
+
+    var style = myTable.getStyle('A' + row);
+
+    if (!style.includes(color)) {
+        myTable.setStyle('A' + row, 'background-color', color);
+        myTable.setStyle('B' + row, 'background-color', color);
+        myTable.setStyle('C' + row, 'background-color', color);
+        myTable.setStyle('D' + row, 'background-color', color);
+        myTable.setStyle('E' + row, 'background-color', color);
+        myTable.setStyle('F' + row, 'background-color', color);
+        myTable.setStyle('G' + row, 'background-color', color);
+        myTable.setStyle('H' + row, 'background-color', color);
+        myTable.setStyle('I' + row, 'background-color', color);
+        myTable.setStyle('J' + row, 'background-color', color);
+        myTable.setStyle('K' + row, 'background-color', color);
+        myTable.setStyle('L' + row, 'background-color', color);
+        myTable.setStyle('M' + row, 'background-color', color);
+        myTable.setStyle('N' + row, 'background-color', color);
+        myTable.setStyle('O' + row, 'background-color', color);
+        myTable.setStyle('P' + row, 'background-color', color);
+        myTable.setStyle('Q' + row, 'background-color', color);
+        myTable.setStyle('R' + row, 'background-color', color);
+        myTable.setStyle('S' + row, 'background-color', color);
+        myTable.setStyle('T' + row, 'background-color', color);
+        myTable.setStyle('U' + row, 'background-color', color);
+        myTable.setStyle('V' + row, 'background-color', color);
+        myTable.setStyle('W' + row, 'background-color', color);
+        myTable.setStyle('X' + row, 'background-color', color);
+        myTable.setStyle('Y' + row, 'background-color', color);
+    }
+
 }
 

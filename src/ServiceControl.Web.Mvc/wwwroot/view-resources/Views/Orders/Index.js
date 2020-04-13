@@ -299,26 +299,7 @@
         }
     });
 
-    $('.export-button').on('click', (e) => {
-        var filter = $('#OrdersSearchForm').serializeFormToObject(true);
-        filter.maxResultCount = 100;
-        filter.skipCount = 0;
-
-        _orderService.getExportExcel(filter).done(function (result) {
-            saveAsFile(result.fileName, result.data);
-        }).always(function () {
-            
-        });
-    });
-
-    function saveAsFile(filename, bytes) {
-        var link = document.createElement('a');
-        link.download = filename;
-        link.href = "data:application/octet-stream;base64," + bytes;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+   
 
     $(document).on('click', '.booking-order', function (e) {
         var orderId = $(this).attr("data-order-id");

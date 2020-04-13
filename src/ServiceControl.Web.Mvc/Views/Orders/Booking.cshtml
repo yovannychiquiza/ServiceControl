@@ -9,10 +9,12 @@
 {
     <environment names="Development">
         <script src="~/view-resources/Views/Orders/Booking.js" asp-append-version="true"></script>
+        <script src="~/view-resources/Views/Orders/Export.js" asp-append-version="true"></script>
     </environment>
 
     <environment names="Staging,Production">
         <script src="~/view-resources/Views/Orders/Booking.js" asp-append-version="true"></script>
+        <script src="~/view-resources/Views/Orders/Export.js" asp-append-version="true"></script>
     </environment>
 }
 
@@ -22,5 +24,22 @@
 <link href="~/libs/jsuites/dist/jsuites.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/libs/jexcel/jexcel.css" rel="stylesheet" asp-append-version="true" />
 
-<div id="spreadsheet"></div>
+<div class="card">
+    <div class="card-header">
+        <form id="OrdersSearchForm" class="form-horizontal">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn bg-green btn-search export-button">
+                                <span class="fas fa-table" aria-hidden="true"></span> Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+        <div id="spreadsheet"></div>
 

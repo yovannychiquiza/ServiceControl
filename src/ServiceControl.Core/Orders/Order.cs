@@ -24,6 +24,7 @@ namespace ServiceControl.Orders
         public DateTime DateBooked { get; set; }
         public string Sgi { get; set; }
         public long SalesRepId { get; set; }
+        [Required]
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
         public string ContactPhone { get; set; }

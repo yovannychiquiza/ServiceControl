@@ -20,10 +20,11 @@ namespace ServiceControl.Orders
 {
     public enum OrderStateEnum
     {
-        Booked = 1,
-        Cancelled = 2,
-        Delayed = 3,
-        Follow = 4
+        Created = 1,
+        Booked = 2,
+        Cancelled = 3,
+        Delayed = 4,
+        Follow = 5
     }
 
     [AbpAuthorize(PermissionNames.Pages_Orders)]
@@ -82,7 +83,7 @@ namespace ServiceControl.Orders
             try
             {
                 input.SalesRepId = _session.UserId.GetValueOrDefault();
-                input.OrderStateId = (int)OrderStateEnum.Booked;
+                input.OrderStateId = (int)OrderStateEnum.Created;
                 input.DateBooked = DateTime.Now;
                 var task = ObjectMapper.Map<Orders>(input);
                 await _orderRepository.InsertAsync(task);
@@ -142,7 +143,6 @@ namespace ServiceControl.Orders
         public async Task GetBookingUpdate(OrderDto input)
         {
             Orders model = _orderRepository.FirstOrDefault(t => t.Id == input.Id);
-            model.Sgi = input.Sgi;
             model.CustomerFirstName = input.CustomerFirstName;
             model.CustomerLastName = input.CustomerLastName;
             model.ContactPhone = input.ContactPhone;
@@ -202,6 +202,11 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("PromoDetails");
                 worksheet.Cells[row, col++].Value = L("TimeSlot");
                 worksheet.Cells[row, col++].Value = L("Notes");
+                worksheet.Cells[row, col++].Value = L("OrderNo");
+                worksheet.Cells[row, col++].Value = L("AccountNo");
+                worksheet.Cells[row, col++].Value = L("InstallDate");
+                worksheet.Cells[row, col++].Value = L("OrderState");
+                worksheet.Cells[row, col++].Value = L("Remarks");
 
                 worksheet.Cells[ExcelRange.GetAddress(1, 1, 1, col)].Style.Font.Bold = true;
 
@@ -229,6 +234,11 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.PromoDetails;
                     worksheet.Cells[row, col++].Value = item.TimeSlot.Name;
                     worksheet.Cells[row, col++].Value = item.Notes;
+                    worksheet.Cells[row, col++].Value = item.OrderNo;
+                    worksheet.Cells[row, col++].Value = item.AccountNo;
+                    worksheet.Cells[row, col++].Value = item.InstallDate.HasValue ? item.InstallDate.Value.ToString(L("DateFormat")) : null;
+                    worksheet.Cells[row, col++].Value = item.OrderState.Name;
+                    worksheet.Cells[row, col++].Value = item.Remarks;
                 }
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
