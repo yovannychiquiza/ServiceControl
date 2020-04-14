@@ -34,6 +34,8 @@ var changed = function (instance, cell, x, y, value) {
     model.installDate = myTable.getValueFromCoords([column++], [y]);
     model.orderStateName = myTable.getValueFromCoords([column++], [y]);
     model.remarks = myTable.getValueFromCoords([column++], [y]);
+    model.followed = myTable.getValueFromCoords([column++], [y]);
+    model.explanation = myTable.getValueFromCoords([column++], [y]);
   
     $.ajax({
         url: "/api/services/app/Order/GetBookingUpdate",
@@ -89,9 +91,13 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
             ]
         },
         { type: 'text', width: '100', title: l('Remarks') },
-       
-       
-
+        {
+            type: 'dropdown', width: '100', title: l('Followed'), source: [
+                "Yes",
+                "No",
+            ]
+        },
+        { type: 'text', width: '100', title: l('Explanation') },
     ],
     onchange: changed
 
@@ -136,6 +142,8 @@ function start() {
                 item.installDate,
                 item.orderState.name,
                 item.remarks,
+                item.followed,
+                item.explanation,
             ]);
             setStyleSpread(item.orderState.name, row++);
         });
@@ -183,6 +191,8 @@ function setStyleSpread(orderState, row) {
         myTable.setStyle('W' + row, 'background-color', color);
         myTable.setStyle('X' + row, 'background-color', color);
         myTable.setStyle('Y' + row, 'background-color', color);
+        myTable.setStyle('Z' + row, 'background-color', color);
+        myTable.setStyle('AA' + row, 'background-color', color);
     }
 
 }

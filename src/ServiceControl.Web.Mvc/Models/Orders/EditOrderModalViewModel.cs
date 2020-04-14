@@ -12,5 +12,7 @@ namespace ServiceControl.Web.Models.Orders
         public List<SelectListItem> FirstIdentification { get; set; }
         public List<SelectListItem> SecondIdentification { get; set; }
         public List<SelectListItem> TimeSlot { get; set; }
+        public List<SelectListItem> Followed { get; set; }
+        
     }
 }

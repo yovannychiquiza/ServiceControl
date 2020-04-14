@@ -141,5 +141,7 @@
     <text name="InstallDate" value="Install Date" />
     <text name="Remarks" value="Remarks" />
     <text name="Booking" value="Booking" />
+    <text name="Followed" value="Followed" />
+    <text name="Explanation" value="Explanation" />
   </texts>
 </localizationDictionary>

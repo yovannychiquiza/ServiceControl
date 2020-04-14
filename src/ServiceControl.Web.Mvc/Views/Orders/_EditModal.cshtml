@@ -132,6 +132,26 @@
                 @Html.DropDownList("TimeSlotId", Model.TimeSlot, new { @class = "form-control", id = "TimeSlotId" })
             </div>
         </div>
+        @if (Model.Order.OrderStateId == (int)ServiceControl.Orders.OrderStateEnum.Cancelled)
+        {
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Followed">@L("Followed")</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("Followed", Model.Followed, new { @class = "form-control", id = "Followed" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Explanation">@L("Explanation")</label>
+                <div class="col-md-9">
+                    <input id="Explanation" type="text" class="form-control" name="Explanation" value="@Model.Order.Explanation" maxlength="@AbpUserBase.MaxUserNameLength">
+                </div>
+            </div>
+        }
+        else
+        {
+            <input type="hidden" name="Followed" value="@Model.Order.Followed" />
+            <input type="hidden" name="Explanation" value="@Model.Order.Explanation" />
+        }
     </div>
     @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
 </form>

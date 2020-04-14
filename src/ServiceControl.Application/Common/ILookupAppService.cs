@@ -11,7 +11,7 @@ namespace ServiceControl.Common
     {
         Task<ListResultDto<ComboboxItemDto>> GetOrderStateComboboxItems();
         Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems();
-        ListResultDto<ComboboxItemDto> GetExistingAccountNoItems();
+        ListResultDto<ComboboxItemDto> GetYesNoItems();
         Task<ListResultDto<ComboboxItemDto>> GetTimeSlotComboboxItems();
         Task<ListResultDto<ComboboxItemDto>> GetFirstIdentificationItems();
         Task<ListResultDto<ComboboxItemDto>> GetSecondIdentificationItems();

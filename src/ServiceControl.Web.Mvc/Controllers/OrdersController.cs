@@ -78,7 +78,15 @@ namespace ServiceControl.Web.Controllers
                                                  Value = res.Value,
                                                  Selected = res.Value == order.TimeSlotId.ToString()
                                              }).ToList();
-           
+
+            var yesNoList = _lookupAppService.GetYesNoItems();
+            var yesNoSelectListItems = (from res in yesNoList.Items
+                                           select new SelectListItem()
+                                           {
+                                               Text = res.DisplayText,
+                                               Value = res.Value,
+                                               Selected = res.Value == (order.Followed)
+                                           }).ToList();
 
             var model = new EditOrderModalViewModel
             {
@@ -87,7 +95,8 @@ namespace ServiceControl.Web.Controllers
                 Company = companySelectListItems,
                 FirstIdentification = firstIdentificationSelectListItems,
                 SecondIdentification = secondIdentificationSelectListItems,
-                TimeSlot = timeSlotSelectListItems
+                TimeSlot = timeSlotSelectListItems,
+                Followed = yesNoSelectListItems
             };
 
             return PartialView("_EditModal", model);

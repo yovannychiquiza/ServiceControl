@@ -182,6 +182,16 @@
             },
             {
                 targets: 27,
+                data: 'followed',
+                sortable: false,
+            },
+            {
+                targets: 28,
+                data: 'explanation',
+                sortable: false,
+            },
+            {
+                targets: 29,
                 data: null,
                 sortable: false,
                 autoWidth: false,

@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace ServiceControl.Common
 {
-    public enum ExistingAccountNoEnum
+    public enum YesNoEnum
     {
         Yes = 1,
-        No = 2,
+        No = 0,
     }
    
    
@@ -62,12 +62,12 @@ namespace ServiceControl.Common
                 list.Select(p => new ComboboxItemDto(p.Id.ToString("D"), p.Name)).ToList()
             );
         }
-        public ListResultDto<ComboboxItemDto> GetExistingAccountNoItems()
+        public ListResultDto<ComboboxItemDto> GetYesNoItems()
         {
             var list = new List<ComboboxItemDto>
             {
-                new ComboboxItemDto { DisplayText = ExistingAccountNoEnum.Yes.ToString(), Value = ExistingAccountNoEnum.Yes.ToString()},
-                new ComboboxItemDto { DisplayText = ExistingAccountNoEnum.No.ToString(), Value = ExistingAccountNoEnum.No.ToString()}
+                new ComboboxItemDto { DisplayText = YesNoEnum.Yes.ToString(), Value = YesNoEnum.Yes.ToString()},
+                new ComboboxItemDto { DisplayText = YesNoEnum.No.ToString(), Value = YesNoEnum.No.ToString()}
             };
 
             ListResultDto<ComboboxItemDto> lis = new ListResultDto<ComboboxItemDto>();

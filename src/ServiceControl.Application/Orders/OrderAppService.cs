@@ -160,6 +160,12 @@ namespace ServiceControl.Orders
             model.AccountNo = input.AccountNo;
             model.InstallDate = input.InstallDate;
             model.Remarks = input.Remarks;
+
+            if (OrderStateEnum.Cancelled.ToString().Equals(input.OrderStateName))
+            {
+                model.Followed = input.Followed;
+                model.Explanation = input.Explanation;
+            }
             if (OrderStateEnum.Booked.ToString().Equals(input.OrderStateName))
                 model.OrderStateId = (int)OrderStateEnum.Booked;
             if (OrderStateEnum.Cancelled.ToString().Equals(input.OrderStateName))
@@ -207,6 +213,8 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("InstallDate");
                 worksheet.Cells[row, col++].Value = L("OrderState");
                 worksheet.Cells[row, col++].Value = L("Remarks");
+                worksheet.Cells[row, col++].Value = L("Followed");
+                worksheet.Cells[row, col++].Value = L("Explanation");
 
                 worksheet.Cells[ExcelRange.GetAddress(1, 1, 1, col)].Style.Font.Bold = true;
 
@@ -239,6 +247,8 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.InstallDate.HasValue ? item.InstallDate.Value.ToString(L("DateFormat")) : null;
                     worksheet.Cells[row, col++].Value = item.OrderState.Name;
                     worksheet.Cells[row, col++].Value = item.Remarks;
+                    worksheet.Cells[row, col++].Value = item.Followed;
+                    worksheet.Cells[row, col++].Value = item.Explanation;
                 }
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
@@ -260,6 +270,7 @@ namespace ServiceControl.Orders
                 .Include(t => t.TimeSlot)
                 .Include(t => t.FirstIdentification)
                 .Include(t => t.SecondIdentification)
+                .OrderByDescending(t => t.Id)
                 .ToList();
             return new List<OrderDto>(
                 ObjectMapper.Map<List<OrderDto>>(query));
