@@ -87,7 +87,7 @@
         <div class="form-group row required">
             <label class="col-md-3 col-form-label" for="StreetNo">@L("StreetNo")</label>
             <div class="col-md-9">
-                <input id="StreetNo" type="text" class="form-control" name="StreetNo" value="@Model.Order.StreetNo" required maxlength="@AbpUserBase.MaxUserNameLength">
+                <input id="StreetNo" type="text" class="form-control" name="StreetNo" value="@Model.Order.StreetNo" required maxlength="8">
             </div>
         </div>
         <div class="form-group row required">
@@ -96,10 +96,10 @@
                 <input id="CustomerAddress" type="text" class="form-control" name="CustomerAddress" value="@Model.Order.CustomerAddress" required maxlength="@AbpUserBase.MaxUserNameLength">
             </div>
         </div>
-        <div class="form-group row required">
+        <div class="form-group row">
             <label class="col-md-3 col-form-label" for="Unit">@L("Unit")</label>
             <div class="col-md-9">
-                <input id="Unit" type="text" class="form-control" name="Unit" value="@Model.Order.Unit" required maxlength="@AbpUserBase.MaxUserNameLength">
+                <input id="Unit" type="text" class="form-control" name="Unit" value="@Model.Order.Unit" maxlength="@AbpUserBase.MaxUserNameLength">
             </div>
         </div>
         <div class="form-group row required">

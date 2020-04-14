@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
   <texts>
-    <text name="DateFormatView" value="mm/dd/yyyy" />
-    <text name="DateFormat" value="MM/dd/yyyy" />
+    <text name="DateFormatView" value="yyyy-mm-dd" />
+    <text name="DateFormat" value="yyyy-MM-dd" />
     <text name="HomePage" value="Home page" />
     <text name="About" value="About" />
     <text name="WelcomeMessage" value="Welcome to ServiceControl!" />
@@ -143,5 +143,13 @@
     <text name="Booking" value="Booking" />
     <text name="Followed" value="Followed" />
     <text name="Explanation" value="Explanation" />
+    <text name="NotCancelled" value="Not saved by Order State is not Cancelled" />
+    <text name="Booked" value="Booked" />
+    <text name="Cancelled" value="Cancelled" />
+    <text name="Delayed" value="Delayed" />
+    <text name="Follow" value="Follow" />
+    <text name="Green" value="green" />
+    <text name="Red" value="red" />
+    <text name="Yellow" value="yellow" />
   </texts>
 </localizationDictionary>

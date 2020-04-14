@@ -7,7 +7,7 @@ var l = abp.localization.getSource('ServiceControl');
 var changed = function (instance, cell, x, y, value) {
     var model = {};
     var column = 0;
-   
+
     var dateSaved = myTable.getValueFromCoords([x], [y]);
     model.id = myTable.getValueFromCoords([column++], [y]);
     model.serial = myTable.getValueFromCoords([column++], [y]);
@@ -36,19 +36,24 @@ var changed = function (instance, cell, x, y, value) {
     model.remarks = myTable.getValueFromCoords([column++], [y]);
     model.followed = myTable.getValueFromCoords([column++], [y]);
     model.explanation = myTable.getValueFromCoords([column++], [y]);
-  
-    $.ajax({
-        url: "/api/services/app/Order/GetBookingUpdate",
-        data: model
-    })
-    .done(function (msg) {
-        abp.notify.info(l('SavedSuccessfully') + " " + dateSaved);
-        setStyleSpread(model.orderStateName, parseInt(y) + 1);
-    })
-    .fail(function (xhr, status, error) {
-        abp.message.error(xhr.responseJSON.error.details, xhr.responseJSON.error.message);
-        abp.notify.error(xhr.responseJSON.error.details);
-    });
+
+    if ((x === '25' || x === '26') && model.orderStateName !== l('Cancelled')) {
+        abp.notify.error(l('NotCancelled'));
+    } else {
+
+        $.ajax({
+            url: "/api/services/app/Order/GetBookingUpdate",
+            data: model
+        })
+        .done(function (msg) {
+            abp.notify.info(l('SavedSuccessfully') + " " + dateSaved);
+            setStyleSpread(model.orderStateName, parseInt(y) + 1);
+        })
+        .fail(function (xhr, status, error) {
+            abp.message.error(xhr.responseJSON.error.details, xhr.responseJSON.error.message);
+            abp.notify.error(xhr.responseJSON.error.details);
+        });
+    }
 
 };
 
@@ -58,6 +63,8 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
     data : data1,
     rowResize: true,
     columnDrag: true,
+    tableOverflow: true,
+    tableWidth: ($('.card').width() - 2) +"px",
     columns: [
         { type: 'text', width: '50', title: l('Id'), readOnly: true },
         { type: 'text', width: '100', title: l('Serial'), readOnly: true, },
@@ -84,17 +91,17 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
         { type: 'text', width: '200', title: l('InstallDate') },
         {
             type: 'dropdown', width: '150', title: l('OrderState'), source: [
-                "Booked",
-                "Cancelled",
-                "Delayed",
-                "Follow",
+                l("Booked"),
+                l("Cancelled"),
+                l("Delayed"),
+                l("Follow"),
             ]
         },
         { type: 'text', width: '100', title: l('Remarks') },
         {
             type: 'dropdown', width: '100', title: l('Followed'), source: [
-                "Yes",
-                "No",
+                l("Yes"),
+                l("No"),
             ]
         },
         { type: 'text', width: '100', title: l('Explanation') },
@@ -154,14 +161,14 @@ function start() {
 
 function setStyleSpread(orderState, row) {
     var color = '';
-    if (orderState === 'Booked')
-        color = 'green';
-    if (orderState === 'Cancelled')
-        color = 'red';
-    if (orderState === 'Delayed')
-        color = 'yellow';
-    if (orderState === 'Follow')
-        color = 'yellow';
+    if (orderState === l('Booked'))
+        color = l('Green');
+    if (orderState === l('Cancelled'))
+        color = l('Red');
+    if (orderState === l('Delayed'))
+        color = l('Yellow');
+    if (orderState === l('Follow'))
+        color = l('Yellow');
 
     var style = myTable.getStyle('A' + row);
 
