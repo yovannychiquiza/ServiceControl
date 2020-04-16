@@ -303,7 +303,7 @@
     });
 
     $('.txt-search').on('keypress', (e) => {
-        if (e.which == 13) {
+        if (e.which === 13) {
             _$ordersTable.ajax.reload();
             return false;
         }

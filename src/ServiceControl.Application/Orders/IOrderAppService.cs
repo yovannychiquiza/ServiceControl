@@ -16,7 +16,6 @@ namespace ServiceControl.Orders
         Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems(long id);
         Task GetOrderBooking(OrderDto input);
         Task GetBookingUpdate(OrderDto input);
-        List<OrderDto> GetBooking();
 
     }
 

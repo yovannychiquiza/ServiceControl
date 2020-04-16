@@ -3,6 +3,12 @@
 })(jQuery);
 
 var l = abp.localization.getSource('ServiceControl');
+var _spreadsheet = 'spreadsheet';
+var isReadOnly = !abp.auth.isGranted('Pages.Booking');
+
+$('.datepicker').datepicker({
+    format: l('DateFormatView')
+});
 
 var changed = function (instance, cell, x, y, value) {
     var model = {};
@@ -59,7 +65,7 @@ var changed = function (instance, cell, x, y, value) {
 
 var data1 = [[]];
 
-var myTable = jexcel(document.getElementById('spreadsheet'), {
+var myTable = jexcel(document.getElementById(_spreadsheet), {
     data : data1,
     rowResize: true,
     columnDrag: true,
@@ -86,11 +92,11 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
         { type: 'text', width: '100', title: l('PromoDetails') },
         { type: 'text', width: '100', title: l('TimeSlot'), readOnly: true,},
         { type: 'text', width: '100', title: l('Notes') },
-        { type: 'text', width: '100', title: l('OrderNo') },
+        { type: 'text', width: '100', title: l('OrderNo'), },
         { type: 'text', width: '100', title: l('AccountNo') },
         { type: 'text', width: '200', title: l('InstallDate') },
         {
-            type: 'dropdown', width: '150', title: l('OrderState'), source: [
+            type: 'dropdown', width: '150', title: l('OrderState'), readOnly: isReadOnly, source: [
                 l("Booked"),
                 l("Cancelled"),
                 l("Delayed"),
@@ -110,19 +116,26 @@ var myTable = jexcel(document.getElementById('spreadsheet'), {
 
 });
 
-$(document).on('click', '.booking', function () {
-    start();
-});
+search();
 
-start();
+function search() {
+    abp.ui.setBusy($('#' + _spreadsheet));
+    var filter = $('#OrdersSearchForm').serializeFormToObject(true);
+    filter.maxResultCount = 1000;
+    filter.skipCount = 0;
 
-function start() {
     $.ajax({
-        url: "/api/services/app/Order/GetBooking"
+        url: "/api/services/app/Order/GetAll",
+        data: filter
     })
-        .done(function (result) {
-            var row = 2;
-        result.result.forEach(function (item) {
+    .done(function (result) {
+        myTable.insertRow([[]], 0);
+        myTable.deleteRow(0, 1);
+        if (myTable.records.length !== 1) {
+            myTable.deleteRow(1, myTable.records.length);
+        }
+        var row = 2;
+        result.result.data.items.forEach(function (item) {
             myTable.insertRow([
                 item.id,
                 item.serial,
@@ -154,9 +167,24 @@ function start() {
             ]);
             setStyleSpread(item.orderState.name, row++);
         });
-        myTable.deleteRow(0, 1);
+        if (myTable.records.length > 1 )
+            myTable.deleteRow(0, 1);
+    })
+    .always(function () {
+        abp.ui.clearBusy($('#' + _spreadsheet));
     });
 }
+
+$('.btn-search').on('click', (e) => {
+    search();
+});
+
+$('.txt-search').on('keypress', (e) => {
+    if (e.which === 13) {
+        search();
+        return false;
+    }
+});
 
 
 function setStyleSpread(orderState, row) {

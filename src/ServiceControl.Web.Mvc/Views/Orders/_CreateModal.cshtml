@@ -113,10 +113,10 @@
                             <input id="PromoDetails" type="text" class="form-control" name="PromoDetails" value="@Model.Order.PromoDetails" required maxlength="@AbpUserBase.MaxUserNameLength">
                         </div>
                     </div>
-                    <div class="form-group row required">
+                    <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="Notes">@L("Notes")</label>
                         <div class="col-md-9">
-                            <input id="Notes" type="text" class="form-control" name="Notes" value="@Model.Order.Notes" required maxlength="@AbpUserBase.MaxUserNameLength">
+                            <input id="Notes" type="text" class="form-control" name="Notes" value="@Model.Order.Notes" maxlength="@AbpUserBase.MaxUserNameLength">
                         </div>
                     </div>
                     <div class="form-group row required">

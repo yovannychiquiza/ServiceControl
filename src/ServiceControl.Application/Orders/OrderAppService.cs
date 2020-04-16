@@ -47,13 +47,19 @@ namespace ServiceControl.Orders
         public async Task<PagedOrderResultResponseDto> GetAll(PagedOrderResultRequestDto input)
         {
             var query = _orderRepository.GetAll();
-
-            if (!input.Keyword.IsNullOrWhiteSpace())
-                query = query.Where(x => x.Serial.Contains(input.Keyword) || x.Company.Name.Contains(input.Keyword) || x.OrderState.Name.Contains(input.Keyword));
+            string[] arrayKey = !input.Keyword.IsNullOrEmpty() ? input.Keyword.Split(",") : new string[0];
+           
             if (input.DateFrom.HasValue)
-                query = query.Where(x => x.DateBooked >= input.DateFrom);
+                query = query.Where(x => x.DateBooked.Date >= input.DateFrom.Value.Date);
             if (input.DateTo.HasValue)
-                query = query.Where(x => x.DateBooked <= input.DateTo);
+                query = query.Where(x => x.DateBooked.Date <= input.DateTo.Value.Date);
+
+            if (arrayKey.Length >= 1)
+                query = query.Where(x => arrayKey.Contains(x.Company.Name) || arrayKey.Contains(x.OrderState.Name));
+
+            var listCompany = _salesRepCompanyRepository.GetAll()
+               .Where(t => t.SalesRepId == _session.UserId.GetValueOrDefault()).Select(t => t.Company.Id).ToArray();
+            query = query.Where(x => listCompany.Contains(x.Company.Id));
 
             var ordersList = query
                 .Include(t => t.OrderState)
@@ -96,7 +102,7 @@ namespace ServiceControl.Orders
         public async Task GetOrderDelete(long id)
         {
             var model = _orderRepository.FirstOrDefault(t => t.Id == id);
-            _orderRepository.DeleteAsync(model);
+            await _orderRepository.DeleteAsync(model);
         }
         public async Task Update(OrderDto input)
         {
@@ -260,20 +266,6 @@ namespace ServiceControl.Orders
 
                 return response;
             }
-        }
-
-        public List<OrderDto> GetBooking()
-        {
-            var query = _orderRepository.GetAll()
-                .Include(t => t.OrderState)
-                .Include(t => t.Company)
-                .Include(t => t.TimeSlot)
-                .Include(t => t.FirstIdentification)
-                .Include(t => t.SecondIdentification)
-                .OrderByDescending(t => t.Id)
-                .ToList();
-            return new List<OrderDto>(
-                ObjectMapper.Map<List<OrderDto>>(query));
         }
     }
 }
