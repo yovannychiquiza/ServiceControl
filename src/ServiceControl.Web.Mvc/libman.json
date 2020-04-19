@@ -193,6 +193,22 @@
       "provider": "jsdelivr",
       "destination": "wwwroot/libs/jsuites"
     },
+    {
+      "library": "@dashboardcode/bsmultiselect@0.5.45",
+      "provider": "jsdelivr",
+      "destination": "wwwroot/libs/multiSelect",
+      "files": [
+        "dist/js/BsMultiSelect.min.js",
+        "dist/css/BsMultiSelect.min.css"
+      ]
+    },
+    {
+      "library": "popper.js@1.14.0",
+      "destination": "wwwroot/libs/popper",
+      "files": [
+        "umd/popper.min.js" 
+      ]
+    },
     //admin-lte libs end
 
     //other libs start

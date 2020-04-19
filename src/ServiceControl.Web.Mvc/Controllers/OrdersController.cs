@@ -152,8 +152,6 @@ namespace ServiceControl.Web.Controllers
                                             Value = res.Value,
                                         }).ToList();
 
-            orderStateSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
-            companySelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
             yesNoSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
 
             var model = new EditOrderModalViewModel
@@ -224,8 +222,6 @@ namespace ServiceControl.Web.Controllers
                                             Value = res.Value,
                                         }).ToList();
 
-            orderStateSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
-            companySelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
             yesNoSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
 
             var model = new EditOrderModalViewModel

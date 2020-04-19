@@ -12,11 +12,11 @@
         </div>
         <div class="form-group col-md-2">
             <label for="company">@L("Company")</label>
-            @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId" })
+            @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId", multiple = "multiple"})
         </div>
         <div class="form-group col-md-2">
             <label for="OrderStateId">@L("OrderState")</label>
-            @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control", id = "OrderStateId" })
+            @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control", id = "OrderStateId", multiple = "multiple" })
         </div>
         <div class="form-group col-md-2">
             <label for="Followed">@L("Followed")</label>
@@ -28,12 +28,9 @@
             </button>
         </div>
         <div class="form-group col-md-1">
-            @if (IsGranted(ServiceControl.Authorization.PermissionNames.Pages_Orders_Admin))
-            {
-                <button type="button" class="btn bg-green btn-search export-button">
-                    <span class="fas fa-table" aria-hidden="true"></span> Excel
-                </button>
-            }
+            <button type="button" class="btn bg-green btn-search export-button">
+                <span class="fas fa-table" aria-hidden="true"></span> Excel
+            </button>
         </div>
     </div>
 </form>

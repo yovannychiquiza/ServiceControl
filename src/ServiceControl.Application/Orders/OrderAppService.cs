@@ -47,26 +47,22 @@ namespace ServiceControl.Orders
         public async Task<PagedOrderResultResponseDto> GetAll(PagedOrderResultRequestDto input)
         {
             var query = _orderRepository.GetAll();
-            //string[] arrayKey = !input.Keyword.IsNullOrEmpty() ? input.Keyword.Split(",") : new string[0];
            
             if (input.DateFrom.HasValue)
                 query = query.Where(x => x.DateBooked.Date >= input.DateFrom.Value.Date);
             if (input.DateTo.HasValue)
                 query = query.Where(x => x.DateBooked.Date <= input.DateTo.Value.Date);
-            if (!input.CompanyId.IsNullOrEmpty())
-            {
-                int company = Int32.Parse(input.CompanyId);
-                query = query.Where(x => x.CompanyId == company);
-            }
-            if (!input.OrderStateId.IsNullOrEmpty())
-            {
-                int state = Int32.Parse(input.OrderStateId);
-                query = query.Where(x => x.OrderStateId == state);
-            }
+           
             if (!input.Followed.IsNullOrEmpty())
                 query = query.Where(x => x.Followed == input.Followed);
-            //if (arrayKey.Length >= 1)
-            //  query = query.Where(x => arrayKey.Contains(x.Company.Name) || arrayKey.Contains(x.OrderState.Name));
+
+            int[] arrayCompany = ConvertToArrayInt(input.CompanyId);
+            if (arrayCompany.Length >= 1)
+                query = query.Where(x => arrayCompany.Contains(x.CompanyId));
+
+            int[] arrayOrderState = ConvertToArrayInt(input.OrderStateId);
+            if (arrayOrderState.Length >= 1)
+                query = query.Where(x => arrayOrderState.Contains(x.OrderStateId));
 
             var listCompany = _salesRepCompanyRepository.GetAll()
                .Where(t => t.SalesRepId == _session.UserId.GetValueOrDefault()).Select(t => t.Company.Id).ToArray();
@@ -79,7 +75,6 @@ namespace ServiceControl.Orders
             {
                 query = query.Where(x => x.IsReady == true);
             }
-
 
             var ordersList = query
                 .Include(t => t.OrderState)
@@ -102,6 +97,22 @@ namespace ServiceControl.Orders
                 ObjectMapper.Map<List<OrderListDto>>(newList));
 
             return pagedOrderResultResponseDto;
+        }
+
+        public int[] ConvertToArrayInt(string data) {
+            List<int> arrayInt = new List<int>();
+            if (data != null)
+            {
+                var array =  data.Split(",");
+                foreach (var item in array)
+                {
+                    if (!item.IsNullOrWhiteSpace())
+                    {
+                        arrayInt.Add(Int32.Parse(item));
+                    }
+                }
+            }
+            return arrayInt.ToArray();
         }
 
         public async Task Create(OrderDto input)

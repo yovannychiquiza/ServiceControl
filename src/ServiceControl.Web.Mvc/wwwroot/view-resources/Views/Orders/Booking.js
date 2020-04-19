@@ -2,6 +2,9 @@
 
 })(jQuery);
 
+$("#CompanyId").bsMultiSelect();
+$("#OrderStateId").bsMultiSelect();
+
 var l = abp.localization.getSource('ServiceControl');
 var _spreadsheet = 'spreadsheet';
 var isBookingAdmin = abp.auth.isGranted('Pages.Booking.Admin');
@@ -131,6 +134,9 @@ function search() {
     filter.maxResultCount = 1000;
     filter.skipCount = 0;
 
+    filter.companyId = getSelectValues('#CompanyId');
+    filter.orderStateId = getSelectValues('#OrderStateId');
+
     $.ajax({
         url: "/api/services/app/Order/GetAll",
         data: filter
@@ -244,4 +250,5 @@ function setStyleSpread(orderState, row, followed) {
     }
 
 }
+
 

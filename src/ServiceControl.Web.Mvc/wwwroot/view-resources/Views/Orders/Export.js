@@ -22,3 +22,12 @@
 
    
 })(jQuery);
+
+function getSelectValues(select) {
+    var selectedValues = "";
+    $(select + " :selected").each(function () {
+        selectedValues = selectedValues + $(this).val() + ",";
+    });
+    selectedValues = selectedValues.substring(0, selectedValues.length - 1);
+    return selectedValues;
+}

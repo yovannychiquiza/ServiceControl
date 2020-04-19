@@ -1,5 +1,8 @@
 ﻿(function ($) {
 
+    $("#CompanyId").bsMultiSelect();
+    $("#OrderStateId").bsMultiSelect();
+
     var displayAdmin = abp.auth.isGranted('Pages.Orders.Admin') === true ? '': 'none';
     var displayBooking = abp.auth.isGranted('Pages.Booking') === true ? '': 'none';
 
@@ -20,6 +23,9 @@
             var filter = $('#OrdersSearchForm').serializeFormToObject(true);
             filter.maxResultCount = data.length;
             filter.skipCount = data.start;
+
+            filter.companyId = getSelectValues('#CompanyId');
+            filter.orderStateId = getSelectValues('#OrderStateId');
 
             abp.ui.setBusy(_$table);
             _orderService.getAll(filter).done(function (result) {
