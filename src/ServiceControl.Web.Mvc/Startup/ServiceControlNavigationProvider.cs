@@ -58,62 +58,63 @@ namespace ServiceControl.Web.Startup
                             )
                 )
 
-                .AddItem( // Menu items below is just for demonstration!
-                    new MenuItemDefinition(
-                        "MultiLevelMenu",
-                        L("MultiLevelMenu"),
-                        icon: "fas fa-circle"
-                    ).AddItem(
-                        new MenuItemDefinition(
-                            "AspNetBoilerplate",
-                            new FixedLocalizableString("Orders"),
-                            icon: "far fa-circle"
-                        ).AddItem(
-                            new MenuItemDefinition(
-                                "AspNetBoilerplateHome",
-                                new FixedLocalizableString("Booking status"),
-                                url: "Orders",
-                                icon: "far fa-dot-circle"
-                            )
-                        ).AddItem(
-                            new MenuItemDefinition(
-                                "AspNetBoilerplateTemplates",
-                                new FixedLocalizableString("Statistics"),
-                                url: "",
-                                icon: "far fa-dot-circle"
-                            )
-                        )
+                //.AddItem( // Menu items below is just for demonstration!
+                //    new MenuItemDefinition(
+                //        "MultiLevelMenu",
+                //        L("MultiLevelMenu"),
+                //        icon: "fas fa-circle"
+                //    ).AddItem(
+                //        new MenuItemDefinition(
+                //            "AspNetBoilerplate",
+                //            new FixedLocalizableString("Orders"),
+                //            icon: "far fa-circle"
+                //        ).AddItem(
+                //            new MenuItemDefinition(
+                //                "AspNetBoilerplateHome",
+                //                new FixedLocalizableString("Booking status"),
+                //                url: "Orders",
+                //                icon: "far fa-dot-circle"
+                //            )
+                //        ).AddItem(
+                //            new MenuItemDefinition(
+                //                "AspNetBoilerplateTemplates",
+                //                new FixedLocalizableString("Statistics"),
+                //                url: "",
+                //                icon: "far fa-dot-circle"
+                //            )
+                //        )
                        
-                    ).AddItem(
-                        new MenuItemDefinition(
-                            "AspNetZero",
-                            new FixedLocalizableString("Report"),
-                            icon: "far fa-circle"
-                        ).AddItem(
-                            new MenuItemDefinition(
-                                "AspNetZeroHome",
-                                new FixedLocalizableString("Invoice"),
-                                url: "",
-                                icon: "far fa-dot-circle"
-                            )
-                        ).AddItem(
-                            new MenuItemDefinition(
-                                "AspNetZeroFeatures",
-                                new FixedLocalizableString("Montly"),
-                                url: "",
-                                icon: "far fa-dot-circle"
-                            )
-                        ).AddItem(
-                            new MenuItemDefinition(
-                                "AspNetZeroPricing",
-                                new FixedLocalizableString("Sales"),
-                                url: "",
-                                icon: "far fa-dot-circle"
-                            )
-                        )
+                //    ).AddItem(
+                //        new MenuItemDefinition(
+                //            "AspNetZero",
+                //            new FixedLocalizableString("Report"),
+                //            icon: "far fa-circle"
+                //        ).AddItem(
+                //            new MenuItemDefinition(
+                //                "AspNetZeroHome",
+                //                new FixedLocalizableString("Invoice"),
+                //                url: "",
+                //                icon: "far fa-dot-circle"
+                //            )
+                //        ).AddItem(
+                //            new MenuItemDefinition(
+                //                "AspNetZeroFeatures",
+                //                new FixedLocalizableString("Montly"),
+                //                url: "",
+                //                icon: "far fa-dot-circle"
+                //            )
+                //        ).AddItem(
+                //            new MenuItemDefinition(
+                //                "AspNetZeroPricing",
+                //                new FixedLocalizableString("Sales"),
+                //                url: "",
+                //                icon: "far fa-dot-circle"
+                //            )
+                //        )
                        
-                    )
-                );
+                //    )
+                //)
+                ;
         }
 
         private static ILocalizableString L(string name)

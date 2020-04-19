@@ -1,45 +1,39 @@
-﻿<form id="OrdersSearchForm" class="form-horizontal">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="form-group row">
-                <label class="col-md-5 col-form-label" for="dateFrom">@L("DateFrom")</label>
-                <div class="col-md-7">
-                    <input id="dateFrom" type="text" class="form-control datepicker" name="dateFrom">
-                </div>
-            </div>
+﻿@using ServiceControl.Web.Models.Orders
+@model EditOrderModalViewModel
+<form id="OrdersSearchForm" class="form-horizontal">
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label for="dateFrom">@L("DateFrom")</label>
+            <input id="dateFrom" type="text" class="form-control datepicker" name="dateFrom">
         </div>
-        <div class="col-md-3">
-            <div class="form-group row">
-                <label class="col-md-4 col-form-label" for="dateTo">@L("DateTo")</label>
-                <div class="col-md-8">
-                    <input id="dateTo" type="text" class="form-control datepicker" name="dateTo">
-                </div>
-            </div>
+        <div class="form-group col-md-2">
+            <label for="dateTo">@L("DateTo")</label>
+            <input id="dateTo" type="text" class="form-control datepicker" name="dateTo">
         </div>
-        <div class="col-md-4">
-            <div class="abp-advanced-search">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <button type="button" class="btn bg-blue btn-search">
-                            <span class="fas fa-search" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <input type="text" name="Keyword" class="form-control txt-search" />
-                </div>
-            </div>
+        <div class="form-group col-md-2">
+            <label for="company">@L("Company")</label>
+            @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId" })
         </div>
-        <div class="col-md-2">
-            <div class="form-group row">
-                <div class="col-md-4"></div>
-                @if (IsGranted(ServiceControl.Authorization.PermissionNames.Pages_Orders_Admin))
-                {
-                    <div class="col-md-8">
-                        <button type="button" class="btn bg-green btn-search export-button">
-                            <span class="fas fa-table" aria-hidden="true"></span> Excel
-                        </button>
-                    </div>
-                }
-             </div>
+        <div class="form-group col-md-2">
+            <label for="OrderStateId">@L("OrderState")</label>
+            @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control", id = "OrderStateId" })
+        </div>
+        <div class="form-group col-md-2">
+            <label for="Followed">@L("Followed")</label>
+            @Html.DropDownList("Followed", Model.Followed, new { @class = "form-control", id = "Followed" })
+        </div>
+        <div class="form-group col-md-1">
+            <button type="button" class="btn bg-blue btn-search">
+                <span class="fas fa-search" aria-hidden="true"></span> Find
+            </button>
+        </div>
+        <div class="form-group col-md-1">
+            @if (IsGranted(ServiceControl.Authorization.PermissionNames.Pages_Orders_Admin))
+            {
+                <button type="button" class="btn bg-green btn-search export-button">
+                    <span class="fas fa-table" aria-hidden="true"></span> Excel
+                </button>
+            }
         </div>
     </div>
 </form>

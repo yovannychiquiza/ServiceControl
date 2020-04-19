@@ -14,6 +14,9 @@ namespace ServiceControl.Authorization
             context.CreatePermission(PermissionNames.Pages_Orders, L("Orders"));
             context.CreatePermission(PermissionNames.Pages_Orders_Admin, L("OrdersAdmin"));
             context.CreatePermission(PermissionNames.Pages_Booking, L("Booking"));
+            context.CreatePermission(PermissionNames.Pages_Booking_Admin, L("BookingAdmin"));
+            context.CreatePermission(PermissionNames.Order_Ready, L("OrderReady"));
+            context.CreatePermission(PermissionNames.Order_Admin_Ready, L("OrderAdminReady"));
         }
 
         private static ILocalizableString L(string name)

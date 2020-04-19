@@ -4,7 +4,10 @@
 
 var l = abp.localization.getSource('ServiceControl');
 var _spreadsheet = 'spreadsheet';
-var isReadOnly = !abp.auth.isGranted('Pages.Booking');
+var isBookingAdmin = abp.auth.isGranted('Pages.Booking.Admin');
+var isOrderAdminReady = abp.auth.isGranted('Order.Admin.Ready');
+var FOLLOWED = 26;
+var EXPLANATION = 27;
 
 $('.datepicker').datepicker({
     format: l('DateFormatView')
@@ -16,6 +19,7 @@ var changed = function (instance, cell, x, y, value) {
 
     var dateSaved = myTable.getValueFromCoords([x], [y]);
     model.id = myTable.getValueFromCoords([column++], [y]);
+    model.company = myTable.getValueFromCoords([column++], [y]);
     model.serial = myTable.getValueFromCoords([column++], [y]);
     model.dateBooked = myTable.getValueFromCoords([column++], [y]);
     model.sgi = myTable.getValueFromCoords([column++], [y]);
@@ -42,8 +46,9 @@ var changed = function (instance, cell, x, y, value) {
     model.remarks = myTable.getValueFromCoords([column++], [y]);
     model.followed = myTable.getValueFromCoords([column++], [y]);
     model.explanation = myTable.getValueFromCoords([column++], [y]);
+    model.isReady = myTable.getValueFromCoords([column++], [y]);
 
-    if ((x === '25' || x === '26') && model.orderStateName !== l('Cancelled')) {
+    if ((x === FOLLOWED.toString() || x === EXPLANATION.toString()) && model.orderStateName !== l('Cancelled')) {
         abp.notify.error(l('NotCancelled'));
     } else {
 
@@ -53,7 +58,7 @@ var changed = function (instance, cell, x, y, value) {
         })
         .done(function (msg) {
             abp.notify.info(l('SavedSuccessfully') + " " + dateSaved);
-            setStyleSpread(model.orderStateName, parseInt(y) + 1);
+            setStyleSpread(model.orderStateName, parseInt(y) + 1, model.followed);
         })
         .fail(function (xhr, status, error) {
             abp.message.error(xhr.responseJSON.error.details, xhr.responseJSON.error.message);
@@ -73,6 +78,7 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
     tableWidth: ($('.card').width() - 2) +"px",
     columns: [
         { type: 'text', width: '50', title: l('Id'), readOnly: true },
+        { type: 'text', width: '100', title: l('Company'), readOnly: true, },
         { type: 'text', width: '100', title: l('Serial'), readOnly: true, },
         { type: 'text', width: '100', title: l('DateBooked'), readOnly: true, },
         { type: 'text', width: '100', title: l('Sgi'), readOnly: true, },
@@ -92,18 +98,18 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
         { type: 'text', width: '100', title: l('PromoDetails') },
         { type: 'text', width: '100', title: l('TimeSlot'), readOnly: true,},
         { type: 'text', width: '100', title: l('Notes') },
-        { type: 'text', width: '100', title: l('OrderNo'), },
-        { type: 'text', width: '100', title: l('AccountNo') },
-        { type: 'text', width: '200', title: l('InstallDate') },
+        { type: 'text', width: '100', title: l('OrderNo'), readOnly: !isBookingAdmin },
+        { type: 'text', width: '100', title: l('AccountNo'), readOnly: !isBookingAdmin },
+        { type: 'text', width: '200', title: l('InstallDate'), readOnly: !isBookingAdmin },
         {
-            type: 'dropdown', width: '150', title: l('OrderState'), readOnly: isReadOnly, source: [
+            type: 'dropdown', width: '150', title: l('OrderState'), readOnly: !isBookingAdmin, source: [
                 l("Booked"),
                 l("Cancelled"),
                 l("Delayed"),
                 l("Follow"),
             ]
         },
-        { type: 'text', width: '100', title: l('Remarks') },
+        { type: 'text', width: '100', title: l('Remarks'), readOnly: !isBookingAdmin },
         {
             type: 'dropdown', width: '100', title: l('Followed'), source: [
                 l("Yes"),
@@ -111,6 +117,7 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
             ]
         },
         { type: 'text', width: '100', title: l('Explanation') },
+        { type: 'checkbox', width: '100', title: l('IsReady'), readOnly: !isOrderAdminReady},
     ],
     onchange: changed
 
@@ -129,15 +136,16 @@ function search() {
         data: filter
     })
     .done(function (result) {
-        myTable.insertRow([[]], 0);
-        myTable.deleteRow(0, 1);
+        myTable.insertRow([[]], 0);//insert new empty row after first row
+        myTable.deleteRow(0, 1);//delete first row
         if (myTable.records.length !== 1) {
-            myTable.deleteRow(1, myTable.records.length);
+            myTable.deleteRow(1, myTable.records.length);//delete all rows except first row
         }
         var row = 2;
         result.result.data.items.forEach(function (item) {
             myTable.insertRow([
                 item.id,
+                item.company.name,
                 item.serial,
                 item.dateBooked,
                 item.sgi,
@@ -164,11 +172,12 @@ function search() {
                 item.remarks,
                 item.followed,
                 item.explanation,
+                item.isReady,
             ]);
-            setStyleSpread(item.orderState.name, row++);
+            setStyleSpread(item.orderState.name, row++, item.followed);
         });
         if (myTable.records.length > 1 )
-            myTable.deleteRow(0, 1);
+            myTable.deleteRow(0, 1);//if table has more than one record, delete first row
     })
     .always(function () {
         abp.ui.clearBusy($('#' + _spreadsheet));
@@ -187,7 +196,7 @@ $('.txt-search').on('keypress', (e) => {
 });
 
 
-function setStyleSpread(orderState, row) {
+function setStyleSpread(orderState, row, followed) {
     var color = '';
     if (orderState === l('Booked'))
         color = l('Green');
@@ -196,6 +205,8 @@ function setStyleSpread(orderState, row) {
     if (orderState === l('Delayed'))
         color = l('Yellow');
     if (orderState === l('Follow'))
+        color = l('Yellow');
+    if (orderState === l('Cancelled') && followed === 'Yes')
         color = l('Yellow');
 
     var style = myTable.getStyle('A' + row);
@@ -228,6 +239,8 @@ function setStyleSpread(orderState, row) {
         myTable.setStyle('Y' + row, 'background-color', color);
         myTable.setStyle('Z' + row, 'background-color', color);
         myTable.setStyle('AA' + row, 'background-color', color);
+        myTable.setStyle('AB' + row, 'background-color', color);
+        myTable.setStyle('AC' + row, 'background-color', color);
     }
 
 }

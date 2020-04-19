@@ -151,5 +151,10 @@
     <text name="Green" value="green" />
     <text name="Red" value="red" />
     <text name="Yellow" value="yellow" />
+    <text name="Choose" value="Choose" />
+    <text name="IsReady" value="Is Ready" />
+    <text name="OrderReady" value="Order Ready" />
+    <text name="OrderAdminReady" value="Order Admin Ready" />
+    <text name="BookingAdmin" value="Booking Admin" />
   </texts>
 </localizationDictionary>

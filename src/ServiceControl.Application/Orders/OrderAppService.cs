@@ -27,7 +27,7 @@ namespace ServiceControl.Orders
         Follow = 5
     }
 
-    [AbpAuthorize(PermissionNames.Pages_Orders)]
+    [AbpAuthorize(PermissionNames.Pages_Orders, PermissionNames.Pages_Booking)]
     public class OrderAppService : ApplicationService, IOrderAppService
     {
 
@@ -47,19 +47,39 @@ namespace ServiceControl.Orders
         public async Task<PagedOrderResultResponseDto> GetAll(PagedOrderResultRequestDto input)
         {
             var query = _orderRepository.GetAll();
-            string[] arrayKey = !input.Keyword.IsNullOrEmpty() ? input.Keyword.Split(",") : new string[0];
+            //string[] arrayKey = !input.Keyword.IsNullOrEmpty() ? input.Keyword.Split(",") : new string[0];
            
             if (input.DateFrom.HasValue)
                 query = query.Where(x => x.DateBooked.Date >= input.DateFrom.Value.Date);
             if (input.DateTo.HasValue)
                 query = query.Where(x => x.DateBooked.Date <= input.DateTo.Value.Date);
-
-            if (arrayKey.Length >= 1)
-                query = query.Where(x => arrayKey.Contains(x.Company.Name) || arrayKey.Contains(x.OrderState.Name));
+            if (!input.CompanyId.IsNullOrEmpty())
+            {
+                int company = Int32.Parse(input.CompanyId);
+                query = query.Where(x => x.CompanyId == company);
+            }
+            if (!input.OrderStateId.IsNullOrEmpty())
+            {
+                int state = Int32.Parse(input.OrderStateId);
+                query = query.Where(x => x.OrderStateId == state);
+            }
+            if (!input.Followed.IsNullOrEmpty())
+                query = query.Where(x => x.Followed == input.Followed);
+            //if (arrayKey.Length >= 1)
+            //  query = query.Where(x => arrayKey.Contains(x.Company.Name) || arrayKey.Contains(x.OrderState.Name));
 
             var listCompany = _salesRepCompanyRepository.GetAll()
                .Where(t => t.SalesRepId == _session.UserId.GetValueOrDefault()).Select(t => t.Company.Id).ToArray();
             query = query.Where(x => listCompany.Contains(x.Company.Id));
+
+            var permissionOrderReady = PermissionChecker.IsGranted(PermissionNames.Order_Ready);
+            var permissionOrderAdminReady = PermissionChecker.IsGranted(PermissionNames.Order_Admin_Ready);
+
+            if (permissionOrderReady && !permissionOrderAdminReady)//validation for order ready to booking
+            {
+                query = query.Where(x => x.IsReady == true);
+            }
+
 
             var ordersList = query
                 .Include(t => t.OrderState)
@@ -166,6 +186,7 @@ namespace ServiceControl.Orders
             model.AccountNo = input.AccountNo;
             model.InstallDate = input.InstallDate;
             model.Remarks = input.Remarks;
+            model.IsReady = input.IsReady;
 
             if (OrderStateEnum.Cancelled.ToString().Equals(input.OrderStateName))
             {

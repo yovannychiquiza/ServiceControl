@@ -15,7 +15,7 @@ using Abp.Runtime.Session;
 
 namespace ServiceControl.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Orders)]
+    [AbpMvcAuthorize(PermissionNames.Pages_Orders, PermissionNames.Pages_Booking)]
     public class OrdersController : ServiceControlControllerBase
     {
         private readonly IOrderAppService _orderAppService;
@@ -144,6 +144,18 @@ namespace ServiceControl.Web.Controllers
                                                Value = res.Value,
                                            }).ToList();
 
+            var yesNoList = _lookupAppService.GetYesNoItems();
+            var yesNoSelectListItems = (from res in yesNoList.Items
+                                        select new SelectListItem()
+                                        {
+                                            Text = res.DisplayText,
+                                            Value = res.Value,
+                                        }).ToList();
+
+            orderStateSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+            companySelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+            yesNoSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+
             var model = new EditOrderModalViewModel
             {
                 Order = new OrderDto(),
@@ -151,7 +163,9 @@ namespace ServiceControl.Web.Controllers
                 Company = companySelectListItems,
                 FirstIdentification = firstIdentificationSelectListItems,
                 SecondIdentification = secondIdentificationSelectListItems,
-                TimeSlot = timeSlotSelectListItems
+                TimeSlot = timeSlotSelectListItems,
+                Followed = yesNoSelectListItems
+
             };
             return View(model);
         }
@@ -187,7 +201,41 @@ namespace ServiceControl.Web.Controllers
 
         public ActionResult Booking()
         {
-            return View();
+            var orderStateList = _lookupAppService.GetOrderStateComboboxItems().Result;
+            var orderStateSelectListItems = (from res in orderStateList.Items
+                                             select new SelectListItem()
+                                             {
+                                                 Text = res.DisplayText,
+                                                 Value = res.Value,
+                                             }).ToList();
+            var companyList = _orderAppService.GetCompanyComboboxItems(_session.UserId.GetValueOrDefault()).Result;
+            var companySelectListItems = (from res in companyList.Items
+                                          select new SelectListItem()
+                                          {
+                                              Text = res.DisplayText,
+                                              Value = res.Value,
+                                          }).ToList();
+
+            var yesNoList = _lookupAppService.GetYesNoItems();
+            var yesNoSelectListItems = (from res in yesNoList.Items
+                                        select new SelectListItem()
+                                        {
+                                            Text = res.DisplayText,
+                                            Value = res.Value,
+                                        }).ToList();
+
+            orderStateSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+            companySelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+            yesNoSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+
+            var model = new EditOrderModalViewModel
+            {
+                Order = new OrderDto(),
+                OrderState = orderStateSelectListItems,
+                Company = companySelectListItems,
+                Followed = yesNoSelectListItems
+            };
+            return View(model);
         }
     }
 }

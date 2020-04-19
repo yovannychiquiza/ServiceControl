@@ -51,5 +51,7 @@ namespace ServiceControl.Orders.Dto
         public string Remarks { get; set; }
         public string Followed { get; set; }
         public string Explanation { get; set; }
+        public Boolean IsReady { get; set; }
+
     }
 }
