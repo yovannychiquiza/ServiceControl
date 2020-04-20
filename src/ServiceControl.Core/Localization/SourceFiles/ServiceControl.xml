@@ -2,7 +2,7 @@
 <localizationDictionary culture="en">
   <texts>
     <text name="DateFormatView" value="yyyy-mm-dd" />
-    <text name="DateFormat" value="yyyy-MM-dd" />
+    <text name="DateTimeFormatView" value="YYYY-MM-DD HH:MI" />
     <text name="HomePage" value="Home page" />
     <text name="About" value="About" />
     <text name="WelcomeMessage" value="Welcome to ServiceControl!" />

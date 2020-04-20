@@ -47,11 +47,11 @@ namespace ServiceControl.Orders.Dto
         public SecondIdentification SecondIdentification { get; set; }
         public string OrderNo { get; set; }
         public string AccountNo { get; set; }
-        public DateTime? InstallDate { get; set; }
+        public string InstallDate { get; set; }
         public string Remarks { get; set; }
         public string Followed { get; set; }
         public string Explanation { get; set; }
-        public Boolean IsReady { get; set; }
+        public string IsReady { get; set; }
 
     }
 }

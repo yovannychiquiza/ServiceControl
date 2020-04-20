@@ -137,8 +137,8 @@ namespace ServiceControl.Orders
         }
         public async Task Update(OrderDto input)
         {
-            var task = ObjectMapper.Map<Orders>(input);
-            await _orderRepository.UpdateAsync(task);
+            var order = ObjectMapper.Map<Orders>(input);
+            await _orderRepository.UpdateAsync(order);
         }
 
         public Task<OrderDto> GetOrder(long id)
@@ -167,7 +167,7 @@ namespace ServiceControl.Orders
                 Orders model = _orderRepository.FirstOrDefault(t => t.Id == input.Id);
                 model.OrderNo = input.OrderNo;
                 model.AccountNo = input.AccountNo;
-                model.InstallDate = input.InstallDate;
+                model.InstallDate = DateTime.Parse(input.InstallDate);
                 model.Remarks = input.Remarks;
                 model.OrderStateId = input.OrderStateId;
                 await _orderRepository.UpdateAsync(model);
@@ -195,9 +195,15 @@ namespace ServiceControl.Orders
             model.Notes = input.Notes;
             model.OrderNo = input.OrderNo;
             model.AccountNo = input.AccountNo;
-            model.InstallDate = input.InstallDate;
             model.Remarks = input.Remarks;
-            model.IsReady = input.IsReady;
+            model.IsReady = Boolean.Parse(input.IsReady);
+            if (input.InstallDate.IsNullOrEmpty()){ 
+                model.InstallDate = null;
+            }
+            else
+            {
+                model.InstallDate = DateTime.Parse(input.InstallDate);
+            }
 
             if (OrderStateEnum.Cancelled.ToString().Equals(input.OrderStateName))
             {
@@ -262,13 +268,13 @@ namespace ServiceControl.Orders
                     col = 1;
                     worksheet.Cells[row, col++].Value = item.Company.Name;
                     worksheet.Cells[row, col++].Value = item.Serial;
-                    worksheet.Cells[row, col++].Value = item.DateBooked.ToString(L("DateFormat"));
+                    worksheet.Cells[row, col++].Value = item.DateBooked.ToString(AppConsts.DateFormat);
                     worksheet.Cells[row, col++].Value = item.SalesRep.Name;
                     worksheet.Cells[row, col++].Value = item.CustomerFirstName;
                     worksheet.Cells[row, col++].Value = item.CustomerLastName;
                     worksheet.Cells[row, col++].Value = item.ContactPhone;
                     worksheet.Cells[row, col++].Value = item.Email;
-                    worksheet.Cells[row, col++].Value = item.DateOfBirth.ToString(L("DateFormat"));
+                    worksheet.Cells[row, col++].Value = item.DateOfBirth.ToString(AppConsts.DateFormat);
                     worksheet.Cells[row, col++].Value = item.FirstIdentification.Name;
                     worksheet.Cells[row, col++].Value = item.SecondIdentification.Name;
                     worksheet.Cells[row, col++].Value = item.ExistingAccountNo;
@@ -282,7 +288,7 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.Notes;
                     worksheet.Cells[row, col++].Value = item.OrderNo;
                     worksheet.Cells[row, col++].Value = item.AccountNo;
-                    worksheet.Cells[row, col++].Value = item.InstallDate.HasValue ? item.InstallDate.Value.ToString(L("DateFormat")) : null;
+                    worksheet.Cells[row, col++].Value = item.InstallDate;
                     worksheet.Cells[row, col++].Value = item.OrderState.Name;
                     worksheet.Cells[row, col++].Value = item.Remarks;
                     worksheet.Cells[row, col++].Value = item.Followed;

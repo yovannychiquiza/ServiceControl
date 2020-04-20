@@ -103,7 +103,7 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
         { type: 'text', width: '100', title: l('Notes') },
         { type: 'text', width: '100', title: l('OrderNo'), readOnly: !isBookingAdmin },
         { type: 'text', width: '100', title: l('AccountNo'), readOnly: !isBookingAdmin },
-        { type: 'text', width: '200', title: l('InstallDate'), readOnly: !isBookingAdmin },
+        { type: 'calendar', width: '200', title: l('InstallDate'), options: { format: l('DateTimeFormatView'), time: 1 }, readOnly: !isBookingAdmin },
         {
             type: 'dropdown', width: '150', title: l('OrderState'), readOnly: !isBookingAdmin, source: [
                 l("Booked"),
@@ -178,7 +178,7 @@ function search() {
                 item.remarks,
                 item.followed,
                 item.explanation,
-                item.isReady,
+                $.parseJSON(item.isReady.toLowerCase()),
             ]);
             setStyleSpread(item.orderState.name, row++, item.followed);
         });
