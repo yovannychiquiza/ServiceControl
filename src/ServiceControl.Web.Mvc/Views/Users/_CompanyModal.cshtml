@@ -10,12 +10,17 @@
     <input type="hidden" name="Id" value="@Model.User.Id" />
     <div class="modal-body">
         <div role="tabpanel" class="tab-pane container animated fadeIn" id="edit-user-company">
-            <div class="row">
+            <div class="card-body">
                 @foreach (var item in Model.Company)
                 {
-                    <div class="col-md-6">
-                        <input type="checkbox" name="company" value="@item.Id" title="@item.Name" class="filled-in" id="@($"company{item.Id}")" @(Model.UserIsInCompany(item) ? "checked" : "") />
-                        <label for="@($"company{item.Id}")" title="@item.Name">@item.Name</label>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <input type="checkbox" name="company" value="@item.Id" title="@item.Name" class="filled-in" id="@($"company{item.Id}")" @(Model.UserIsInCompany(item) ? "checked" : "") />
+                            <label for="@($"company{item.Id}")" title="@item.Name">@item.Name</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" name="code" value="@(Model.UserIsInCompanyCode(item))" class="form-control" id="@($"companyCode{item.Id}")" placeholder="Enter code">
+                        </div>
                     </div>
                 }
             </div>

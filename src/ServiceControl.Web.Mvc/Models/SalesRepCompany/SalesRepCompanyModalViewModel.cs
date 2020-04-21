@@ -18,5 +18,15 @@ namespace ServiceControl.Web.Models.Users
         {
             return SalesRepCompanyDto != null && SalesRepCompanyDto.Any(r => r.Company.Id == company.Id);
         }
+        public string UserIsInCompanyCode(Company company)
+        {
+            string code = "";
+            if (SalesRepCompanyDto != null && SalesRepCompanyDto.Count > 0)
+            {
+                var model = SalesRepCompanyDto.Where(r => r.Company.Id == company.Id).FirstOrDefault();
+                code = model != null ? model.Code : null;
+            }
+            return code;
+        }
     }
 }

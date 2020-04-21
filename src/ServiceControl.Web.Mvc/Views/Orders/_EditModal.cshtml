@@ -16,6 +16,7 @@
     <input type="hidden" name="InstallDate" value="@Model.Order.InstallDate" />
     <input type="hidden" name="Remarks" value="@Model.Order.Remarks" />
     <input type="hidden" name="IsReady" value="@Model.Order.IsReady" />
+    <input type="hidden" name="Sgi" value="@Model.Order.Sgi" />
 
     <div class="modal-body">
         <div class="form-group row required">
@@ -28,13 +29,6 @@
             <label class="col-md-3 col-form-label" for="serial">@L("Serial")</label>
             <div class="col-md-9">
                 <input id="serial" type="text" class="form-control" name="Serial" value="@Model.Order.Serial" required maxlength="@AbpUserBase.MaxNameLength">
-            </div>
-        </div>
-
-        <div class="form-group row required">
-            <label class="col-md-3 col-form-label" for="sgi">@L("Sgi")</label>
-            <div class="col-md-9">
-                <input id="sgi" type="text" class="form-control" name="sgi" value="@Model.Order.Sgi" required maxlength="@AbpUserBase.MaxUserNameLength">
             </div>
         </div>
         <div class="form-group row required">

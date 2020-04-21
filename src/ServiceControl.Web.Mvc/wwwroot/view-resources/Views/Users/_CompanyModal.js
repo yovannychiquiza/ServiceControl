@@ -15,7 +15,12 @@
         if (_$companyCheckboxes) {
             for (var companyIndex = 0; companyIndex < _$companyCheckboxes.length; companyIndex++) {
                 var _$companyCheckbox = $(_$companyCheckboxes[companyIndex]);
-                user.companyList.push(_$companyCheckbox.val());
+                var companyId = _$companyCheckbox.val();
+                var code = $("#companyCode" + companyId).val();
+                var model = {};
+                model.id = companyId;
+                model.code = code;
+                user.companyList.push(model);
             }
         }
 

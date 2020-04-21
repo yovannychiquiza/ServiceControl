@@ -53,20 +53,29 @@ namespace ServiceControl.UserCompany
             foreach (var item in companies)
             {
                 bool exist = false;
+                string code = "";
                 foreach (var companyView in input.CompanyList)
                 {
-                    if (item.Id == int.Parse(companyView)){ exist = true; }
+                    code = companyView.Code;
+                    if (item.Id == int.Parse(companyView.Id)) { exist = true; break; }
                 }
 
                 if (exist)//if company is selected
                 {
                     var existsalesRepCompany = _salesRepCompanyRepository.GetAll().Where(t => t.SalesRepId == input.Id
                     && t.CompanyId == item.Id);
-                    if (!existsalesRepCompany.Any())//if company is not saved
+                    if (existsalesRepCompany.Any())//if company is not saved
+                    {
+                        var model = existsalesRepCompany.FirstOrDefault();
+                        model.Code = code;
+                        await _salesRepCompanyRepository.UpdateAsync(model);//update 
+                    }
+                    else
                     {
                         SalesRepCompany salesRepCompany = new SalesRepCompany();
                         salesRepCompany.CompanyId = item.Id;
                         salesRepCompany.SalesRepId = input.Id;
+                        salesRepCompany.Code = code;
                         await _salesRepCompanyRepository.InsertAsync(salesRepCompany);//create 
                     }
                 }

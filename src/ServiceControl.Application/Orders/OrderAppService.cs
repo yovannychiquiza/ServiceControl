@@ -124,18 +124,14 @@ namespace ServiceControl.Orders
 
         public async Task Create(OrderDto input)
         {
-            try
-            {
-                input.SalesRepId = _session.UserId.GetValueOrDefault();
-                input.OrderStateId = (int)OrderStateEnum.Created;
-                input.DateBooked = DateTime.Now;
-                var task = ObjectMapper.Map<Orders>(input);
-                await _orderRepository.InsertAsync(task);
-            }
-            catch (Exception e)
-            {
-                string mess = e.Message;
-            }
+            input.SalesRepId = _session.UserId.GetValueOrDefault();
+            input.OrderStateId = (int)OrderStateEnum.Created;
+            input.DateBooked = DateTime.Now;
+
+            var salesRepCompany = _salesRepCompanyRepository.FirstOrDefault(t => t.CompanyId == input.CompanyId && t.SalesRepId == input.SalesRepId);
+            input.Sgi = salesRepCompany.Code != null ? salesRepCompany.Code : "";
+            var task = ObjectMapper.Map<Orders>(input);
+            await _orderRepository.InsertAsync(task);
         }
         public async Task GetOrderDelete(long id)
         {
