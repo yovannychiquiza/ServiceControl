@@ -12,7 +12,10 @@ var isOrderAdminReady = abp.auth.isGranted('Order.Admin.Ready');
 var FOLLOWED = 26;
 var EXPLANATION = 27;
 
-$('.datepicker').datepicker({
+jSuites.calendar(document.getElementById('dateFrom'), {
+    format: l('DateFormatView')
+});
+jSuites.calendar(document.getElementById('dateTo'), {
     format: l('DateFormatView')
 });
 

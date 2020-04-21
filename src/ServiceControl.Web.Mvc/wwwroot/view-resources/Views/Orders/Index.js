@@ -12,6 +12,12 @@
         _$form = _$modal.find('form'),
         _$table = $('#OrdersTable');
 
+    jSuites.calendar(document.getElementById('dateFrom'), {
+        format: l('DateFormatView')
+    });
+    jSuites.calendar(document.getElementById('dateTo'), {
+        format: l('DateFormatView')
+    });
     $('.datepicker').datepicker({
         format: l('DateFormatView')
     });

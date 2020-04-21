@@ -19,5 +19,8 @@
         public const string Order_Ready = "Order.Ready";
 
         public const string Order_Admin_Ready = "Order.Admin.Ready";
+
+        public const string Order_See_All = "Order.See.All";
+
     }
 }

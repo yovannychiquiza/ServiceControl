@@ -46,26 +46,33 @@ namespace ServiceControl.Orders
 
         public async Task<PagedOrderResultResponseDto> GetAll(PagedOrderResultRequestDto input)
         {
+            var userId =_session.UserId.GetValueOrDefault();
             var query = _orderRepository.GetAll();
            
-            if (input.DateFrom.HasValue)
+            if (input.DateFrom.HasValue)//Filter by DateFrom
                 query = query.Where(x => x.DateBooked.Date >= input.DateFrom.Value.Date);
-            if (input.DateTo.HasValue)
+            if (input.DateTo.HasValue)//Filter by DateTo
                 query = query.Where(x => x.DateBooked.Date <= input.DateTo.Value.Date);
            
-            if (!input.Followed.IsNullOrEmpty())
+            if (!input.Followed.IsNullOrEmpty())//Filter by Followed
                 query = query.Where(x => x.Followed == input.Followed);
 
-            int[] arrayCompany = ConvertToArrayInt(input.CompanyId);
+            int[] arrayCompany = ConvertToArrayInt(input.CompanyId);//Filter by company
             if (arrayCompany.Length >= 1)
                 query = query.Where(x => arrayCompany.Contains(x.CompanyId));
 
-            int[] arrayOrderState = ConvertToArrayInt(input.OrderStateId);
+            int[] arrayOrderState = ConvertToArrayInt(input.OrderStateId);//Filter by order state
             if (arrayOrderState.Length >= 1)
                 query = query.Where(x => arrayOrderState.Contains(x.OrderStateId));
 
-            var listCompany = _salesRepCompanyRepository.GetAll()
-               .Where(t => t.SalesRepId == _session.UserId.GetValueOrDefault()).Select(t => t.Company.Id).ToArray();
+            var permissionOrderSeeAll = PermissionChecker.IsGranted(PermissionNames.Order_See_All);
+            if (!permissionOrderSeeAll)
+            {
+                query = query.Where(x => x.SalesRepId == userId);
+            }
+
+            var listCompany = _salesRepCompanyRepository.GetAll()//validation for see only company assigned
+               .Where(t => t.SalesRepId == userId).Select(t => t.Company.Id).ToArray();
             query = query.Where(x => listCompany.Contains(x.Company.Id));
 
             var permissionOrderReady = PermissionChecker.IsGranted(PermissionNames.Order_Ready);
