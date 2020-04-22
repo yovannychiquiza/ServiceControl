@@ -249,7 +249,13 @@ function setStyleSpread(orderState, row, followed) {
         myTable.setStyle('Z' + row, 'background-color', color);
         myTable.setStyle('AA' + row, 'background-color', color);
         myTable.setStyle('AB' + row, 'background-color', color);
-        myTable.setStyle('AC' + row, 'background-color', color);
+        if (orderState === l('Booked')) {
+            myTable.setStyle('AC' + row, 'visibility', 'hidden');
+        }
+        else {
+            myTable.setStyle('AC' + row, 'visibility', 'visible');
+            myTable.setStyle('AC' + row, 'background-color', color);
+        }
     }
 
 }
