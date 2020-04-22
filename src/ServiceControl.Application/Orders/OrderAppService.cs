@@ -34,13 +34,20 @@ namespace ServiceControl.Orders
         private readonly IRepository<Orders> _orderRepository;
         private readonly IAbpSession _session;
         private readonly IRepository<SalesRepCompany> _salesRepCompanyRepository;
+        private readonly IRepository<SalesRepSerial> _salesRepSerialRepository;
 
-        public OrderAppService(IRepository<Orders> repository, IAbpSession session, IRepository<SalesRepCompany> salesRepCompanyRepository)
+
+        public OrderAppService(IRepository<Orders> repository, 
+            IAbpSession session, 
+            IRepository<SalesRepCompany> salesRepCompanyRepository,
+            IRepository<SalesRepSerial> salesRepSerialRepository
+            )
         {
             LocalizationSourceName = ServiceControlConsts.LocalizationSourceName;
             _orderRepository = repository;
             _session = session;
             _salesRepCompanyRepository = salesRepCompanyRepository;
+            _salesRepSerialRepository = salesRepSerialRepository;
         }
 
 
@@ -48,7 +55,7 @@ namespace ServiceControl.Orders
         {
             var userId =_session.UserId.GetValueOrDefault();
             var query = _orderRepository.GetAll();
-           
+            //////Filters by page
             if (input.DateFrom.HasValue)//Filter by DateFrom
                 query = query.Where(x => x.DateBooked.Date >= input.DateFrom.Value.Date);
             if (input.DateTo.HasValue)//Filter by DateTo
@@ -64,8 +71,9 @@ namespace ServiceControl.Orders
             int[] arrayOrderState = ConvertToArrayInt(input.OrderStateId);//Filter by order state
             if (arrayOrderState.Length >= 1)
                 query = query.Where(x => arrayOrderState.Contains(x.OrderStateId));
+            //////Filters by page
 
-            var permissionOrderSeeAll = PermissionChecker.IsGranted(PermissionNames.Order_See_All);
+            var permissionOrderSeeAll = PermissionChecker.IsGranted(PermissionNames.Order_See_All); //validation for see all orders
             if (!permissionOrderSeeAll)
             {
                 query = query.Where(x => x.SalesRepId == userId);
@@ -129,10 +137,39 @@ namespace ServiceControl.Orders
             input.DateBooked = DateTime.Now;
 
             var salesRepCompany = _salesRepCompanyRepository.FirstOrDefault(t => t.CompanyId == input.CompanyId && t.SalesRepId == input.SalesRepId);
-            input.Sgi = salesRepCompany.Code != null ? salesRepCompany.Code : "";
-            var task = ObjectMapper.Map<Orders>(input);
-            await _orderRepository.InsertAsync(task);
+            input.Sgi = salesRepCompany.Code != null ? salesRepCompany.Code : "";//assing Sgi code
+
+            var order = ObjectMapper.Map<Orders>(input);
+            order.Serial = string.Empty;
+            var orderId = await _orderRepository.InsertAndGetIdAsync(order);
+            order.Serial = GetSerial();
+            await _orderRepository.UpdateAsync(order);
         }
+        /// <summary>
+        /// return serial number by user
+        /// </summary>
+        /// <returns></returns>
+        public string GetSerial()
+        {
+            string serial = String.Empty;
+            var salesRepSerial = _salesRepSerialRepository.FirstOrDefault(t => t.SalesRepId == _session.UserId.GetValueOrDefault());
+            if (salesRepSerial != null)///if serial by user exist then get next serial
+            {
+                salesRepSerial.Serial = salesRepSerial.Serial + 1;
+                serial = salesRepSerial.Serial.ToString();
+                _salesRepSerialRepository.Update(salesRepSerial);
+            }
+            else///if serial by user does not exist then create a new one
+            {
+                serial = "1";
+                SalesRepSerial salesRepSerial1 = new SalesRepSerial();
+                salesRepSerial1.SalesRepId = _session.UserId.GetValueOrDefault();
+                salesRepSerial1.Serial = 1;
+                _salesRepSerialRepository.Insert(salesRepSerial1);
+            }
+            return serial;
+        }
+
         public async Task GetOrderDelete(long id)
         {
             var model = _orderRepository.FirstOrDefault(t => t.Id == id);

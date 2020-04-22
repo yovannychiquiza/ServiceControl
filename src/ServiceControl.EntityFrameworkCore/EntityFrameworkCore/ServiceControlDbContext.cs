@@ -4,6 +4,7 @@ using ServiceControl.Authorization.Roles;
 using ServiceControl.Authorization.Users;
 using ServiceControl.MultiTenancy;
 using ServiceControl.UserCompany;
+using ServiceControl.Orders;
 
 namespace ServiceControl.EntityFrameworkCore
 {
@@ -17,7 +18,7 @@ namespace ServiceControl.EntityFrameworkCore
         public DbSet<ServiceControl.Orders.SecondIdentification> SecondIdentification { get; set; }
         public DbSet<ServiceControl.Orders.TimeSlot> TimeSlot { get; set; }
         public DbSet<SalesRepCompany> SalesRepCompany { get; set; }
-        
+        public DbSet<SalesRepSerial> SalesRepSerial { get; set; }
 
         public ServiceControlDbContext(DbContextOptions<ServiceControlDbContext> options)
             : base(options)
