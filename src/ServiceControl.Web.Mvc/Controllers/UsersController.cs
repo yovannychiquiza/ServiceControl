@@ -6,9 +6,8 @@ using ServiceControl.Authorization;
 using ServiceControl.Controllers;
 using ServiceControl.Users;
 using ServiceControl.Web.Models.Users;
-using ServiceControl.Common;
-using ServiceControl.Orders;
 using ServiceControl.UserCompany;
+using ServiceControl.SubUser;
 
 namespace ServiceControl.Web.Controllers
 {
@@ -17,13 +16,17 @@ namespace ServiceControl.Web.Controllers
     {
         private readonly IUserAppService _userAppService;
         private readonly ICompanyAppService _salesRepCompanyAppService;
+        private readonly ISubSalesRepAppService _subSalesRepAppService;
 
 
-        public UsersController(IUserAppService userAppService, ICompanyAppService salesRepCompanyAppService)
+        public UsersController(IUserAppService userAppService,
+            ICompanyAppService salesRepCompanyAppService,
+            ISubSalesRepAppService subSalesRepAppService
+            )
         {
             _userAppService = userAppService;
             _salesRepCompanyAppService = salesRepCompanyAppService;
-
+            _subSalesRepAppService = subSalesRepAppService;
         }
 
         public async Task<ActionResult> Index()
@@ -61,6 +64,21 @@ namespace ServiceControl.Web.Controllers
                 SalesRepCompanyDto = salesRepCompanyDto
             };
             return PartialView("_CompanyModal", model);
+        }
+
+        public async Task<ActionResult> EditSubSalesRepModal(long userId)
+        {
+            var user = await _userAppService.GetAsync(new EntityDto<long>(userId));
+            var userList = await _subSalesRepAppService.GetSalesRep();
+            var subSalesRepDto = await _subSalesRepAppService.GetSubSalesRep(userId);
+
+            var model = new SubSalesRepModalViewModel
+            {
+                User = user,
+                SalesRep = userList,
+                SubSalesRepDto = subSalesRepDto
+            };
+            return PartialView("_SubSalesRepModal", model);
         }
 
         public ActionResult ChangePassword()

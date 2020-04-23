@@ -19,7 +19,8 @@ namespace ServiceControl.EntityFrameworkCore
         public DbSet<ServiceControl.Orders.TimeSlot> TimeSlot { get; set; }
         public DbSet<SalesRepCompany> SalesRepCompany { get; set; }
         public DbSet<SalesRepSerial> SalesRepSerial { get; set; }
-
+        public DbSet<SubSalesRep> SubSalesRep { get; set; }
+        
         public ServiceControlDbContext(DbContextOptions<ServiceControlDbContext> options)
             : base(options)
         {

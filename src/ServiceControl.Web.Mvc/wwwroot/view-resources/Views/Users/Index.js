@@ -80,6 +80,9 @@
                         `   <button type="button" class="btn btn-sm bg-primary edit-company" data-user-id="${row.id}" data-toggle="modal" data-target="#UserEditModal">`,
                         `       <i class="fas fa-building"></i> ${l('Company')}`,
                         '   </button>',
+                        `   <button type="button" class="btn btn-sm bg-secondary edit-subSalesRep" data-user-id="${row.id}" data-toggle="modal" data-target="#UserEditModal">`,
+                        `       <i class="fas fa-sitemap"></i> ${l('SalesRep')}`,
+                        '   </button>',
                     ].join('');
                 }
             }
@@ -196,6 +199,21 @@
         e.preventDefault();
         abp.ajax({
             url: abp.appPath + 'Users/EditCompanyModal?userId=' + userId,
+            type: 'POST',
+            dataType: 'html',
+            success: function (content) {
+                $('#UserEditModal div.modal-content').html(content);
+            },
+            error: function (e) { }
+        });
+    });
+
+    $(document).on('click', '.edit-subSalesRep', function (e) {
+        var userId = $(this).attr("data-user-id");
+
+        e.preventDefault();
+        abp.ajax({
+            url: abp.appPath + 'Users/EditSubSalesRepModal?userId=' + userId,
             type: 'POST',
             dataType: 'html',
             success: function (content) {

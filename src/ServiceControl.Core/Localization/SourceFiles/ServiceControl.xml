@@ -157,5 +157,6 @@
     <text name="OrderAdminReady" value="Order Admin Ready" />
     <text name="BookingAdmin" value="Booking Admin" />
     <text name="OrderSeeAll" value="Order See All" />
+    <text name="SubSalesRep" value="Sub Sales Rep" />
   </texts>
 </localizationDictionary>

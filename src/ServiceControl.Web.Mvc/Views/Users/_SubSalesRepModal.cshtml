@@ -1,0 +1,29 @@
+﻿@using Abp.Authorization.Users
+@using ServiceControl.Web.Models.Common.Modals
+@using ServiceControl.Web.Models.Users
+@model SubSalesRepModalViewModel
+@{
+    Layout = null;
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("SubSalesRep")))
+<form name="UserEditForm" role="form" class="form-horizontal">
+    <input type="hidden" name="Id" value="@Model.User.Id" />
+    <div class="modal-body">
+        <div role="tabpanel" class="tab-pane container animated fadeIn" id="edit-user">
+            <div class="card-body">
+                @foreach (var item in Model.SalesRep)
+                {
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <input type="checkbox" name="user" value="@item.Id" title="@item.Name" class="filled-in" id="@($"company{item.Id}")" @(Model.SubSalesRepIsInSalesRep(item) ? "checked" : "") />
+                            <label for="@($"user{item.Id}")" title="@item.Name">@item.Name</label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</form>
+
+<script src="~/view-resources/Views/Users/_SubSalesRepModal.js" asp-append-version="true"></script>
