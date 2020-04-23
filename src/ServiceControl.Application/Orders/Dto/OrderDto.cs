@@ -52,6 +52,6 @@ namespace ServiceControl.Orders.Dto
         public string Followed { get; set; }
         public string Explanation { get; set; }
         public string IsReady { get; set; }
-
+        public long? SubSalesRepId { get; set; }
     }
 }

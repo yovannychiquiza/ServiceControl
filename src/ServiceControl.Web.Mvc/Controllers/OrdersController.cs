@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Collections.Generic;
 using Abp.Runtime.Session;
+using ServiceControl.SubUser;
 
 namespace ServiceControl.Web.Controllers
 {
@@ -20,14 +21,16 @@ namespace ServiceControl.Web.Controllers
     {
         private readonly IOrderAppService _orderAppService;
         private readonly ILookupAppService _lookupAppService;
+        private readonly ISubSalesRepAppService _subSalesRepAppService;
         private readonly IAbpSession _session;
 
 
-        public OrdersController(IOrderAppService orderAppService, ILookupAppService lookupAppService, IAbpSession session)
+        public OrdersController(IOrderAppService orderAppService, ILookupAppService lookupAppService, IAbpSession session, ISubSalesRepAppService subSalesRepAppService)
         {
             _orderAppService = orderAppService;
             _lookupAppService = lookupAppService;
             _session = session;
+            _subSalesRepAppService = subSalesRepAppService;
         }
 
         public async Task<ActionResult> EditModal(long orderId)
@@ -152,7 +155,18 @@ namespace ServiceControl.Web.Controllers
                                             Value = res.Value,
                                         }).ToList();
 
+
+            var subSalesRepList = _subSalesRepAppService.GetSubSalesRepComboboxItems(_session.UserId.GetValueOrDefault()).Result;
+            var subSalesRepSelectListItems = (from res in subSalesRepList.Items
+                                        select new SelectListItem()
+                                        {
+                                            Text = res.DisplayText,
+                                            Value = res.Value,
+                                        }).ToList();
+
+            subSalesRepSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
             yesNoSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+
 
             var model = new EditOrderModalViewModel
             {
@@ -162,8 +176,8 @@ namespace ServiceControl.Web.Controllers
                 FirstIdentification = firstIdentificationSelectListItems,
                 SecondIdentification = secondIdentificationSelectListItems,
                 TimeSlot = timeSlotSelectListItems,
-                Followed = yesNoSelectListItems
-
+                Followed = yesNoSelectListItems,
+                SubSalesRep = subSalesRepSelectListItems
             };
             return View(model);
         }

@@ -35,12 +35,14 @@ namespace ServiceControl.Orders
         private readonly IAbpSession _session;
         private readonly IRepository<SalesRepCompany> _salesRepCompanyRepository;
         private readonly IRepository<SalesRepSerial> _salesRepSerialRepository;
+        private readonly IRepository<SubSalesRep> _subSalesRepRepository;
 
 
         public OrderAppService(IRepository<Orders> repository, 
             IAbpSession session, 
             IRepository<SalesRepCompany> salesRepCompanyRepository,
-            IRepository<SalesRepSerial> salesRepSerialRepository
+            IRepository<SalesRepSerial> salesRepSerialRepository,
+            IRepository<SubSalesRep> subSalesRepRepository
             )
         {
             LocalizationSourceName = ServiceControlConsts.LocalizationSourceName;
@@ -48,6 +50,7 @@ namespace ServiceControl.Orders
             _session = session;
             _salesRepCompanyRepository = salesRepCompanyRepository;
             _salesRepSerialRepository = salesRepSerialRepository;
+            _subSalesRepRepository = subSalesRepRepository;
         }
 
 
@@ -76,16 +79,26 @@ namespace ServiceControl.Orders
             var permissionOrderSeeAll = PermissionChecker.IsGranted(PermissionNames.Order_See_All); //validation for see all orders
             if (!permissionOrderSeeAll)
             {
-                query = query.Where(x => x.SalesRepId == userId);
+                var listSubSalesRep = _subSalesRepRepository.GetAll()//validation for sub salesRep
+                .Where(t => t.SalesRepId == userId).Select(t => t.SubSalesRepr.Id).ToList();
+                if(listSubSalesRep.Count() >= 1)
+                {
+                    listSubSalesRep.Add(userId);
+                    query = query.Where(x => listSubSalesRep.Contains(x.SalesRepId));
+                }
+                else
+                {
+                    query = query.Where(x => x.SalesRepId == userId);
+                }
             }
 
             var listCompany = _salesRepCompanyRepository.GetAll()//validation for see only company assigned
-               .Where(t => t.SalesRepId == userId).Select(t => t.Company.Id).ToArray();
+            .Where(t => t.SalesRepId == userId).Select(t => t.Company.Id).ToArray();
             query = query.Where(x => listCompany.Contains(x.Company.Id));
 
             var permissionOrderReady = PermissionChecker.IsGranted(PermissionNames.Order_Ready);
             var permissionOrderAdminReady = PermissionChecker.IsGranted(PermissionNames.Order_Admin_Ready);
-
+            
             if (permissionOrderReady && !permissionOrderAdminReady)//validation for order ready to booking
             {
                 query = query.Where(x => x.IsReady == true);
@@ -132,27 +145,27 @@ namespace ServiceControl.Orders
 
         public async Task Create(OrderDto input)
         {
-            input.SalesRepId = _session.UserId.GetValueOrDefault();
+            input.SalesRepId = input.SubSalesRepId != null ? input.SubSalesRepId.Value : _session.UserId.GetValueOrDefault();
             input.OrderStateId = (int)OrderStateEnum.Created;
             input.DateBooked = DateTime.Now;
 
             var salesRepCompany = _salesRepCompanyRepository.FirstOrDefault(t => t.CompanyId == input.CompanyId && t.SalesRepId == input.SalesRepId);
-            input.Sgi = salesRepCompany.Code != null ? salesRepCompany.Code : "";//assing Sgi code
+            input.Sgi = salesRepCompany != null && salesRepCompany.Code != null ? salesRepCompany.Code : "";//assing Sgi code
 
             var order = ObjectMapper.Map<Orders>(input);
             order.Serial = string.Empty;
             var orderId = await _orderRepository.InsertAndGetIdAsync(order);
-            order.Serial = GetSerial();
+            order.Serial = GetSerial(input.SalesRepId);
             await _orderRepository.UpdateAsync(order);
         }
         /// <summary>
         /// return serial number by user
         /// </summary>
         /// <returns></returns>
-        public string GetSerial()
+        public string GetSerial(long salesRepId)
         {
             string serial = String.Empty;
-            var salesRepSerial = _salesRepSerialRepository.FirstOrDefault(t => t.SalesRepId == _session.UserId.GetValueOrDefault());
+            var salesRepSerial = _salesRepSerialRepository.FirstOrDefault(t => t.SalesRepId == salesRepId);
             if (salesRepSerial != null)///if serial by user exist then get next serial
             {
                 salesRepSerial.Serial = salesRepSerial.Serial + 1;
@@ -163,7 +176,7 @@ namespace ServiceControl.Orders
             {
                 serial = "1";
                 SalesRepSerial salesRepSerial1 = new SalesRepSerial();
-                salesRepSerial1.SalesRepId = _session.UserId.GetValueOrDefault();
+                salesRepSerial1.SalesRepId = salesRepId;
                 salesRepSerial1.Serial = 1;
                 _salesRepSerialRepository.Insert(salesRepSerial1);
             }

@@ -13,6 +13,7 @@ namespace ServiceControl.Web.Models.Orders
         public List<SelectListItem> SecondIdentification { get; set; }
         public List<SelectListItem> TimeSlot { get; set; }
         public List<SelectListItem> Followed { get; set; }
-        
+        public List<SelectListItem> SubSalesRep { get; set; }
+
     }
 }

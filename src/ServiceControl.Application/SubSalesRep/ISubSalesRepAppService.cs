@@ -13,6 +13,7 @@ namespace ServiceControl.SubUser
         Task<List<SubSalesRepDto>> GetSubSalesRep(long id);
         Task<List<User>> GetSalesRep();
         Task Update(SubSalesRepReponseDto input);
+        Task<ListResultDto<ComboboxItemDto>> GetSubSalesRepComboboxItems(long id);
     }
 
 }

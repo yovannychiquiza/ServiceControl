@@ -9,6 +9,7 @@ using Abp.Authorization;
 using ServiceControl.Authorization;
 using ServiceControl.Authorization.Users;
 using ServiceControl.SubUser.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServiceControl.SubUser
 {
@@ -80,6 +81,17 @@ namespace ServiceControl.SubUser
                     }
                 }
             }
+        }
+
+        public async Task<ListResultDto<ComboboxItemDto>> GetSubSalesRepComboboxItems(long id)
+        {
+            List<SubSalesRep> list = _subSalesRepRepository.GetAll()
+                .Include(t => t.SalesRep)
+                .Include(t => t.SubSalesRepr)
+                .Where(t => t.SalesRepId == id).ToList();
+            return new ListResultDto<ComboboxItemDto>(
+                list.Select(p => new ComboboxItemDto(p.SubSalesRepr.Id.ToString("D"), p.SubSalesRepr.Name)).ToList()
+            );
         }
     }
 }

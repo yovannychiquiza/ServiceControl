@@ -13,12 +13,12 @@
             <div class="card-body">
                 @foreach (var item in Model.SalesRep)
                 {
-                    <div class="form-group row">
-                        <div class="col-md-2">
-                            <input type="checkbox" name="user" value="@item.Id" title="@item.Name" class="filled-in" id="@($"company{item.Id}")" @(Model.SubSalesRepIsInSalesRep(item) ? "checked" : "") />
-                            <label for="@($"user{item.Id}")" title="@item.Name">@item.Name</label>
-                        </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="user" value="@item.Id" title="@item.Name" class="filled-in" id="@($"company{item.Id}")" @(Model.SubSalesRepIsInSalesRep(item) ? "checked" : "") />
+                        <label for="@($"user{item.Id}")" title="@item.Name">@item.Name</label>
                     </div>
+                </div>
                 }
             </div>
         </div>
