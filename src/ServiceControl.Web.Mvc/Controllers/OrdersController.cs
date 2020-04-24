@@ -164,9 +164,9 @@ namespace ServiceControl.Web.Controllers
                                             Value = res.Value,
                                         }).ToList();
 
-            subSalesRepSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
             yesNoSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
-
+            if(subSalesRepSelectListItems.Count >= 1)
+                subSalesRepSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
 
             var model = new EditOrderModalViewModel
             {

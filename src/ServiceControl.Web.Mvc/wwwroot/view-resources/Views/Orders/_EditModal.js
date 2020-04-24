@@ -5,7 +5,7 @@
         _$modal = $('#OrderEditModal'),
         _$form = _$modal.find('form');
 
-    $('.datepicker').datepicker({
+    jSuites.calendar(document.getElementById('DateOfBirthView'), {
         format: l('DateFormatView')
     });
 

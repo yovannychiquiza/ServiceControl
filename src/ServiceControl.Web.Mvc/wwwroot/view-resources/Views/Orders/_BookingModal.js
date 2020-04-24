@@ -5,8 +5,9 @@
         _$modal = $('#OrderEditModal'),
         _$form = _$modal.find('form');
 
-    $('.datepicker').datepicker({
-        format: l('DateFormatView')
+    jSuites.calendar(document.getElementById('InstallDate'), {
+        format: l('DateTimeFormatView'),
+        time: true,
     });
 
     function save() {

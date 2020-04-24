@@ -24,7 +24,7 @@ namespace ServiceControl.Orders.Dto
         public string CustomerLastName { get; set; }
         public string ContactPhone { get; set; }
         public string Email { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
         public int FirstIdentificationId { get; set; }
         public int SecondIdentificationId { get; set; }
         public string ExistingAccountNo { get; set; }

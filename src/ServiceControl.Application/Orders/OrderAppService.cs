@@ -117,8 +117,6 @@ namespace ServiceControl.Orders
             int count = ordersList.Count();
             var newList = ordersList.Skip(input.SkipCount).Take(input.MaxResultCount);
 
-            ListResultDto<OrderListDto> ss = new ListResultDto<OrderListDto>();
-
             PagedOrderResultResponseDto pagedOrderResultResponseDto = new PagedOrderResultResponseDto();
             pagedOrderResultResponseDto.TotalCount = count;
             pagedOrderResultResponseDto.Data = new ListResultDto<OrderListDto>(
@@ -237,7 +235,7 @@ namespace ServiceControl.Orders
             model.CustomerLastName = input.CustomerLastName;
             model.ContactPhone = input.ContactPhone;
             model.Email = input.Email;
-            model.DateOfBirth = input.DateOfBirth;
+            model.DateOfBirth = DateTime.Parse(input.DateOfBirth);
             model.ExistingAccountNo = input.ExistingAccountNo;
             model.StreetNo = input.StreetNo;
             model.CustomerAddress = input.CustomerAddress;
@@ -327,7 +325,7 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.CustomerLastName;
                     worksheet.Cells[row, col++].Value = item.ContactPhone;
                     worksheet.Cells[row, col++].Value = item.Email;
-                    worksheet.Cells[row, col++].Value = item.DateOfBirth.ToString(AppConsts.DateFormat);
+                    worksheet.Cells[row, col++].Value = item.DateOfBirth;
                     worksheet.Cells[row, col++].Value = item.FirstIdentification.Name;
                     worksheet.Cells[row, col++].Value = item.SecondIdentification.Name;
                     worksheet.Cells[row, col++].Value = item.ExistingAccountNo;

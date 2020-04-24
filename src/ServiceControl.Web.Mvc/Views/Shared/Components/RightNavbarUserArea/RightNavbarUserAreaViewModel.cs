@@ -18,7 +18,7 @@ namespace ServiceControl.Web.Views.Shared.Components.RightNavbarUserArea
             }
 
             return LoginInformations.Tenant == null
-                ? ".\\" + userName
+                ? userName
                 : LoginInformations.Tenant.TenancyName + "\\" + userName;
         }
     }

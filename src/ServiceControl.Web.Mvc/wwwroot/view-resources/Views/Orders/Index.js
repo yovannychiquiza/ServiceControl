@@ -18,7 +18,7 @@
     jSuites.calendar(document.getElementById('dateTo'), {
         format: l('DateFormatView')
     });
-    $('.datepicker').datepicker({
+    jSuites.calendar(document.getElementById('DateOfBirth'), {
         format: l('DateFormatView')
     });
 

@@ -13,6 +13,7 @@ namespace ServiceControl.Orders.Dto
             CreateMap<Orders, OrderDto>();
             CreateMap<DateTime?, string>().ConvertUsing(new DateTimeTypeConverter());
             CreateMap<string, DateTime?>().ConvertUsing(new DateTimeStringTypeConverter());
+            CreateMap<DateTime, string>().ConvertUsing(s => s.ToString(AppConsts.DateFormat));
         }
     }
     public class DateTimeTypeConverter : ITypeConverter<DateTime?, string>

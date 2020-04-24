@@ -81,7 +81,8 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
     rowResize: true,
     columnDrag: true,
     tableOverflow: true,
-    tableWidth: ($('.card').width() - 2) +"px",
+    tableWidth: ($('.card').width() - 2) + "px",
+    tableHeight: '400px',
     columns: [
         { type: 'text', width: '50', title: l('Id'), readOnly: true },
         { type: 'text', width: '100', title: l('Company'), readOnly: true, },
@@ -92,7 +93,7 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
         { type: 'text', width: '100', title: l('CustomerLastName') },
         { type: 'text', width: '100', title: l('ContactPhone') },
         { type: 'text', width: '100', title: l('Email') },
-        { type: 'text', width: '100', title: l('DateOfBirth') },
+        { type: 'calendar', width: '100', title: l('DateOfBirth'), options: { format: l('DateFormatView')} },
         { type: 'text', width: '100', title: l('FirstIdentification'), readOnly: true, },
         { type: 'text', width: '100', title: l('SecondIdentification'), readOnly: true, },
         { type: 'text', width: '100', title: l('ExistingAccountNo') },

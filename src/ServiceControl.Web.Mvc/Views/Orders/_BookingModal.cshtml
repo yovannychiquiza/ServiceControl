@@ -9,6 +9,12 @@
 <form name="OrderEditForm" role="form" class="form-horizontal">
     <input type="hidden" name="Id" value="@Model.Order.Id" />
     <div class="modal-body">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="InstallDate">@L("InstallDate")</label>
+            <div class="col-md-9">
+                <input id="InstallDate" type="text" class="form-control datepicker" name="InstallDate" value="@Model.Order.InstallDate" maxlength="@AbpUserBase.MaxUserNameLength">
+            </div>
+        </div>
         <div class="form-group row required">
             <label class="col-md-3 col-form-label" for="OrderNo">@L("OrderNo")</label>
             <div class="col-md-9">
@@ -19,12 +25,6 @@
             <label class="col-md-3 col-form-label" for="AccountNo">@L("AccountNo")</label>
             <div class="col-md-9">
                 <input id="AccountNo" type="text" class="form-control" name="AccountNo" value="@Model.Order.AccountNo" required maxlength="@AbpUserBase.MaxUserNameLength">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="InstallDate">@L("InstallDate")</label>
-            <div class="col-md-9">
-                <input id="InstallDate" type="text" class="form-control datepicker" name="InstallDate" value="@Model.Order.InstallDate" maxlength="@AbpUserBase.MaxUserNameLength">
             </div>
         </div>
         <div class="form-group row">
