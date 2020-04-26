@@ -91,6 +91,16 @@ namespace ServiceControl.Web.Controllers
                                                Selected = res.Value == (order.Followed)
                                            }).ToList();
 
+            var productTypeList = _lookupAppService.GetProductTypeItems().Result;
+            var dic = order.OrdersProductType.ToList().ToDictionary(t => t.ProductTypeId.ToString(), t => t.ProductTypeId);
+            var productTypeSelectListItems = (from res in productTypeList.Items
+                                              select new SelectListItem()
+                                              {
+                                                  Text = res.DisplayText,
+                                                  Value = res.Value,
+                                                  Selected = dic.ContainsKey(res.Value)
+                                              }).ToList();
+
             var model = new EditOrderModalViewModel
             {
                 Order = order,
@@ -99,7 +109,8 @@ namespace ServiceControl.Web.Controllers
                 FirstIdentification = firstIdentificationSelectListItems,
                 SecondIdentification = secondIdentificationSelectListItems,
                 TimeSlot = timeSlotSelectListItems,
-                Followed = yesNoSelectListItems
+                Followed = yesNoSelectListItems,
+                ProductType = productTypeSelectListItems
             };
 
             return PartialView("_EditModal", model);
@@ -168,6 +179,14 @@ namespace ServiceControl.Web.Controllers
             if(subSalesRepSelectListItems.Count >= 1)
                 subSalesRepSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
 
+            var productTypeList = _lookupAppService.GetProductTypeItems().Result;
+            var productTypeSelectListItems = (from res in productTypeList.Items
+                                              select new SelectListItem()
+                                              {
+                                                  Text = res.DisplayText,
+                                                  Value = res.Value,
+                                              }).ToList();
+
             var model = new EditOrderModalViewModel
             {
                 Order = new OrderDto(),
@@ -177,16 +196,11 @@ namespace ServiceControl.Web.Controllers
                 SecondIdentification = secondIdentificationSelectListItems,
                 TimeSlot = timeSlotSelectListItems,
                 Followed = yesNoSelectListItems,
-                SubSalesRep = subSalesRepSelectListItems
+                SubSalesRep = subSalesRepSelectListItems,
+                ProductType = productTypeSelectListItems
             };
             return View(model);
         }
-
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
-
 
 
         public async Task<ActionResult> BookingModal(long orderId)

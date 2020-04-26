@@ -1,7 +1,7 @@
 ﻿(function ($) {
 
-    $("#CompanyId").bsMultiSelect();
-    $("#OrderStateId").bsMultiSelect();
+    $(".multiselect").bsMultiSelect();
+
 
     var displayAdmin = abp.auth.isGranted('Pages.Orders.Admin') === true ? '': 'none';
     var displayBooking = abp.auth.isGranted('Pages.Booking') === true ? '': 'none';
@@ -242,7 +242,7 @@
         }
 
         var order = _$form.serializeFormToObject();
-
+        order.ProductTypeId = getSelectValues('#ProductTypeId');
         abp.ui.setBusy(_$modal);
         _orderService.create(order).done(function () {
             _$modal.modal('hide');

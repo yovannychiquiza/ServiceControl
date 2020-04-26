@@ -82,7 +82,7 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
     columnDrag: true,
     tableOverflow: true,
     tableWidth: ($('.card').width() - 2) + "px",
-    tableHeight: '400px',
+    tableHeight: '450px',
     columns: [
         { type: 'text', width: '50', title: l('Id'), readOnly: true },
         { type: 'text', width: '100', title: l('Company'), readOnly: true, },

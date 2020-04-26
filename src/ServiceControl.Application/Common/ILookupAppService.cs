@@ -15,5 +15,6 @@ namespace ServiceControl.Common
         Task<ListResultDto<ComboboxItemDto>> GetTimeSlotComboboxItems();
         Task<ListResultDto<ComboboxItemDto>> GetFirstIdentificationItems();
         Task<ListResultDto<ComboboxItemDto>> GetSecondIdentificationItems();
+        Task<ListResultDto<ComboboxItemDto>> GetProductTypeItems();
     }
 }

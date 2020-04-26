@@ -20,6 +20,8 @@ namespace ServiceControl.EntityFrameworkCore
         public DbSet<SalesRepCompany> SalesRepCompany { get; set; }
         public DbSet<SalesRepSerial> SalesRepSerial { get; set; }
         public DbSet<SubSalesRep> SubSalesRep { get; set; }
+        public DbSet<ProductType> ProductType { get; set; }
+        public DbSet<OrdersProductType> OrdersProductType { get; set; }
         
         public ServiceControlDbContext(DbContextOptions<ServiceControlDbContext> options)
             : base(options)

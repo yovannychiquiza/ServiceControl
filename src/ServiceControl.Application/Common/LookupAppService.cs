@@ -25,13 +25,15 @@ namespace ServiceControl.Common
         private readonly IRepository<FirstIdentification, int> _firstIdentificationRepository;
         private readonly IRepository<SecondIdentification, int> _secondIdentificationRepository;
         private readonly IRepository<TimeSlot, int> _timeSlotRepository;
+        private readonly IRepository<ProductType, int> _productTypeRepository;
 
         public LookupAppService(
             IRepository<OrderState, int> orderStateRepository,
             IRepository<Company, int> companyRepository,
             IRepository<FirstIdentification, int> firstIdentificationRepository,
             IRepository<SecondIdentification, int> secondIdentificationRepository,
-            IRepository<TimeSlot, int> timeSlotRepository
+            IRepository<TimeSlot, int> timeSlotRepository,
+            IRepository<ProductType, int> productTypeRepository
             )
         {
             _orderStateRepository = orderStateRepository;
@@ -39,6 +41,7 @@ namespace ServiceControl.Common
             _firstIdentificationRepository = firstIdentificationRepository;
             _secondIdentificationRepository = secondIdentificationRepository;
             _timeSlotRepository = timeSlotRepository;
+            _productTypeRepository = productTypeRepository;
         }
 
         public async Task<ListResultDto<ComboboxItemDto>> GetOrderStateComboboxItems()
@@ -89,8 +92,14 @@ namespace ServiceControl.Common
                 list.Select(p => new ComboboxItemDto(p.Id.ToString("D"), p.Name)).ToList()
             );
         }
+        public async Task<ListResultDto<ComboboxItemDto>> GetProductTypeItems()
+        {
+            var list = await _productTypeRepository.GetAllListAsync();
+            return new ListResultDto<ComboboxItemDto>(
+                list.Select(p => new ComboboxItemDto(p.Id.ToString("D"), p.Name)).ToList()
+            );
+        }
 
-       
 
     }
 }

@@ -11,7 +11,7 @@
             @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("CreateNewOrder")))
             <form name="orderCreateForm" role="form" class="form-horizontal">
                 <div class="modal-body">
-                    @if(Model.SubSalesRep.Count >= 1)
+                    @if (Model.SubSalesRep.Count >= 1)
                     {
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="SubSalesRep">@L("SubSalesRep")</label>
@@ -24,6 +24,12 @@
                         <label class="col-md-3 col-form-label" for="company">@L("Company")</label>
                         <div class="col-md-9">
                             @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId" })
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="ProductTypeId">@L("ProductType")</label>
+                        <div class="col-md-9">
+                            @Html.DropDownList("ProductTypeId", Model.ProductType, new { @class = "form-control multiselect", id = "ProductTypeId", multiple = "multiple" })
                         </div>
                     </div>
                     <div class="form-group row required">

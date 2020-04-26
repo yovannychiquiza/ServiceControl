@@ -53,5 +53,9 @@ namespace ServiceControl.Orders.Dto
         public string Explanation { get; set; }
         public string IsReady { get; set; }
         public long? SubSalesRepId { get; set; }
+        public string ProductTypeId { get; set; }
+
+        public ICollection<OrdersProductType> OrdersProductType { get; set; }
+
     }
 }

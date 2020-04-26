@@ -13,6 +13,10 @@ namespace ServiceControl.Orders
     [Table("Orders")]
     public class Orders : Entity
     {
+        public Orders()
+        {
+            OrdersProductType = new HashSet<OrdersProductType>();
+        }
         public const int MaxTitleLength = 256;
         public const int MaxDescriptionLength = 64 * 1024; //64KB
 
@@ -60,6 +64,8 @@ namespace ServiceControl.Orders
         public string Followed { get; set; }
         public string Explanation { get; set; }
         public Boolean IsReady { get; set; }
-        
+
+        public virtual ICollection<OrdersProductType> OrdersProductType { get; set; }
+
     }
 }

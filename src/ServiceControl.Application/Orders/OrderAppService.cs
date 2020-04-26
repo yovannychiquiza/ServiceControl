@@ -36,13 +36,17 @@ namespace ServiceControl.Orders
         private readonly IRepository<SalesRepCompany> _salesRepCompanyRepository;
         private readonly IRepository<SalesRepSerial> _salesRepSerialRepository;
         private readonly IRepository<SubSalesRep> _subSalesRepRepository;
-
+        private readonly IRepository<ProductType, int> _productTypeRepository;
+        private readonly IRepository<OrdersProductType, int> _orders_ProductTypeRepository;
+        
 
         public OrderAppService(IRepository<Orders> repository, 
             IAbpSession session, 
             IRepository<SalesRepCompany> salesRepCompanyRepository,
             IRepository<SalesRepSerial> salesRepSerialRepository,
-            IRepository<SubSalesRep> subSalesRepRepository
+            IRepository<SubSalesRep> subSalesRepRepository,
+            IRepository<ProductType, int> productTypeRepository,
+            IRepository<OrdersProductType, int> orders_ProductTypeRepository
             )
         {
             LocalizationSourceName = ServiceControlConsts.LocalizationSourceName;
@@ -51,6 +55,8 @@ namespace ServiceControl.Orders
             _salesRepCompanyRepository = salesRepCompanyRepository;
             _salesRepSerialRepository = salesRepSerialRepository;
             _subSalesRepRepository = subSalesRepRepository;
+            _productTypeRepository = productTypeRepository;
+            _orders_ProductTypeRepository = orders_ProductTypeRepository;
         }
 
 
@@ -155,6 +161,44 @@ namespace ServiceControl.Orders
             var orderId = await _orderRepository.InsertAndGetIdAsync(order);
             order.Serial = GetSerial(input.SalesRepId);
             await _orderRepository.UpdateAsync(order);
+            input.Id = orderId;
+            await ProductType(input);
+        }
+ 
+        public async Task ProductType(OrderDto orderDto)
+        {
+            var productType = _productTypeRepository.GetAll().ToList();
+
+            foreach (var item in productType)
+            {
+                bool isSelected = false;
+                foreach (var product in orderDto.ProductTypeId.Split(","))
+                {
+                    if (item.Id.ToString() == product) { isSelected = true; break; }
+                }
+
+                if (isSelected)//if product is selected
+                {
+                    var existProduct = _orders_ProductTypeRepository.GetAll().Where(t => t.OrdersId == orderDto.Id
+                    && t.ProductTypeId == item.Id);
+                    if (!existProduct.Any())//if product is not saved
+                    {
+                        OrdersProductType orders_ProductType = new OrdersProductType();
+                        orders_ProductType.OrdersId = Int32.Parse(orderDto.Id.ToString());
+                        orders_ProductType.ProductTypeId = item.Id;
+                        await _orders_ProductTypeRepository.InsertAsync(orders_ProductType);
+                    }
+                }
+                else//if product is not selected
+                {
+                    var existProduct = _orders_ProductTypeRepository.GetAll().Where(t => t.OrdersId == orderDto.Id
+                    && t.ProductTypeId == item.Id);
+                    if (existProduct.Any())//if product is saved
+                    {
+                        await _orders_ProductTypeRepository.DeleteAsync(existProduct.First());//delete
+                    }
+                }
+            }
         }
         /// <summary>
         /// return serial number by user
@@ -189,12 +233,15 @@ namespace ServiceControl.Orders
         public async Task Update(OrderDto input)
         {
             var order = ObjectMapper.Map<Orders>(input);
+            ProductType(input);
             await _orderRepository.UpdateAsync(order);
         }
 
         public Task<OrderDto> GetOrder(long id)
         {
-            Orders model = _orderRepository.FirstOrDefault(t => t.Id == id);
+            Orders model = _orderRepository.GetAll()
+                .Include(t => t.OrdersProductType)
+                .FirstOrDefault(t => t.Id == id);
             OrderDto dto = new OrderDto();
             dto = ObjectMapper.Map(model, dto);
             return Task.FromResult(dto);

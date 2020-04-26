@@ -1,5 +1,7 @@
 ﻿(function ($) {
 
+    $(".multiselect").bsMultiSelect();
+
     var _orderService = abp.services.app.order,
         l = abp.localization.getSource('ServiceControl'),
         _$modal = $('#OrderEditModal'),
@@ -15,6 +17,7 @@
         }
 
         var order = _$form.serializeFormToObject();
+        order.ProductTypeId = getSelectValues('#ProductTypeIdView');
 
         abp.ui.setBusy(_$form);
         _orderService.update(order).done(function () {

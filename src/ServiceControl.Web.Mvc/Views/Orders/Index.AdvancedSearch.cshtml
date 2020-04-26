@@ -12,11 +12,11 @@
         </div>
         <div class="form-group col-md-2">
             <label for="company">@L("Company")</label>
-            @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control", id = "CompanyId", multiple = "multiple"})
+            @Html.DropDownList("CompanyId", Model.Company, new { @class = "form-control multiselect", id = "CompanyId", multiple = "multiple"})
         </div>
         <div class="form-group col-md-2">
             <label for="OrderStateId">@L("OrderState")</label>
-            @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control", id = "OrderStateId", multiple = "multiple" })
+            @Html.DropDownList("OrderStateId", Model.OrderState, new { @class = "form-control multiselect", id = "OrderStateId", multiple = "multiple" })
         </div>
         <div class="form-group col-md-2">
             <label for="Followed">@L("Followed")</label>
