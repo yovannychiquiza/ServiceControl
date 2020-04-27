@@ -22,5 +22,7 @@
 
         public const string Order_See_All = "Order.See.All";
 
+        public const string Assign_Company = "Assign.Company";
+
     }
 }

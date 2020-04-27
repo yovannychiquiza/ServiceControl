@@ -10,6 +10,7 @@ using ServiceControl.Authorization;
 using ServiceControl.Authorization.Users;
 using ServiceControl.SubUser.Dto;
 using Microsoft.EntityFrameworkCore;
+using Abp.Runtime.Session;
 
 namespace ServiceControl.SubUser
 {
@@ -19,16 +20,20 @@ namespace ServiceControl.SubUser
         private readonly UserManager _userManager;
         private readonly IRepository<SubSalesRep> _subSalesRepRepository;
         private readonly IRepository<User, long> _repositoryUser;
+        private readonly IAbpSession _session;
+
 
         public SubSalesRepAppService(IRepository<SubSalesRep> repository,
             UserManager userManager,
-            IRepository<User, long> repositoryUser
+            IRepository<User, long> repositoryUser,
+            IAbpSession session
             )
         {
             LocalizationSourceName = ServiceControlConsts.LocalizationSourceName;
             _subSalesRepRepository = repository;
             _userManager = userManager;
             _repositoryUser = repositoryUser;
+            _session = session;
         }
 
         public async Task<List<SubSalesRepDto>> GetSubSalesRep(long id)
@@ -43,8 +48,25 @@ namespace ServiceControl.SubUser
 
         public async Task<List<User>> GetSalesRep()
         {
-            var list = await _repositoryUser.GetAllListAsync();
-            return list;
+            var userId = _session.UserId.GetValueOrDefault();
+            var query = _repositoryUser.GetAll();
+
+            var permissionOrderSeeAll = PermissionChecker.IsGranted(PermissionNames.Order_See_All); //validation for see all orders
+            if (!permissionOrderSeeAll)
+            {
+                var listSubSalesRep = _subSalesRepRepository.GetAll()//validation for sub salesRep
+                .Where(t => t.SalesRepId == userId).Select(t => t.SubSalesRepr.Id).ToList();
+                if (listSubSalesRep.Count() >= 1)
+                {
+                    query = query.Where(x => listSubSalesRep.Contains(x.Id));
+                }
+                else
+                {
+                    query = query.Where(x => x.Id == 0);
+                }
+            }
+            
+            return query.ToList();
         }
 
         public async Task Update(SubSalesRepReponseDto input)

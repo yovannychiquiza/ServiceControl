@@ -159,5 +159,6 @@
     <text name="OrderSeeAll" value="Order See All" />
     <text name="SubSalesRep" value="Sub Sales Rep" />
     <text name="ProductType" value="Product Type" />
+    <text name="AssignCompany" value="Assign Company" />
   </texts>
 </localizationDictionary>

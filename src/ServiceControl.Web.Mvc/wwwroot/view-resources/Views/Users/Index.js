@@ -4,6 +4,7 @@
         _$modal = $('#UserCreateModal'),
         _$form = _$modal.find('form'),
         _$table = $('#UsersTable');
+    var displayCompany = abp.auth.isGranted('Assign.Company') === true ? '' : 'none';
 
     var _$usersTable = _$table.DataTable({
         paging: true,
@@ -77,7 +78,7 @@
                         `   <button type="button" class="btn btn-sm bg-danger edit-user delete-user" data-user-id="${row.id}" data-user-name="${row.name}">`,
                         `       <i class="fas fa-trash"></i> ${l('Delete')}`,
                         '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-primary edit-company" data-user-id="${row.id}" data-toggle="modal" data-target="#UserEditModal">`,
+                        `   <button type="button" style="display:${displayCompany}" class="btn btn-sm bg-primary edit-company" data-user-id="${row.id}" data-toggle="modal" data-target="#UserEditModal">`,
                         `       <i class="fas fa-building"></i> ${l('Company')}`,
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-secondary edit-subSalesRep" data-user-id="${row.id}" data-toggle="modal" data-target="#UserEditModal">`,

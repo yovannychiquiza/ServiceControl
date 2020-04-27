@@ -21,6 +21,7 @@ using ServiceControl.Roles.Dto;
 using ServiceControl.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ServiceControl.Orders;
 
 namespace ServiceControl.Users
 {
@@ -33,6 +34,7 @@ namespace ServiceControl.Users
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IAbpSession _abpSession;
         private readonly LogInManager _logInManager;
+        private readonly IRepository<SubSalesRep> _subSalesRepRepository;
 
         public UserAppService(
             IRepository<User, long> repository,
@@ -41,6 +43,7 @@ namespace ServiceControl.Users
             IRepository<Role> roleRepository,
             IPasswordHasher<User> passwordHasher,
             IAbpSession abpSession,
+            IRepository<SubSalesRep> subSalesRepRepository,
             LogInManager logInManager)
             : base(repository)
         {
@@ -50,6 +53,7 @@ namespace ServiceControl.Users
             _passwordHasher = passwordHasher;
             _abpSession = abpSession;
             _logInManager = logInManager;
+            _subSalesRepRepository = subSalesRepRepository;
         }
 
         public override async Task<UserDto> CreateAsync(CreateUserDto input)
@@ -141,9 +145,34 @@ namespace ServiceControl.Users
 
         protected override IQueryable<User> CreateFilteredQuery(PagedUserResultRequestDto input)
         {
-            return Repository.GetAllIncluding(x => x.Roles)
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.UserName.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.EmailAddress.Contains(input.Keyword))
-                .WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive);
+            var userId = _abpSession.UserId.GetValueOrDefault();
+            var query = Repository.GetAllIncluding(x => x.Roles);
+
+            var permissionOrderSeeAll = PermissionChecker.IsGranted(PermissionNames.Order_See_All); //validation for see all orders
+            if (!permissionOrderSeeAll)
+            {
+                var listSubSalesRep = _subSalesRepRepository.GetAll()//validation for sub salesRep
+                .Where(t => t.SalesRepId == userId).Select(t => t.SubSalesRepr.Id).ToList();
+                if (listSubSalesRep.Count() >= 1)
+                {
+                    query = query.Where(x => listSubSalesRep.Contains(x.Id));
+                }
+                else
+                {
+                    query = query.Where(x => x.Id == 0);
+                }
+            }
+
+            if (!input.Keyword.IsNullOrWhiteSpace())
+            {
+                query = query.Where(x => x.UserName.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.EmailAddress.Contains(input.Keyword));
+            }
+            if (input.IsActive.HasValue)
+            {
+                query = query.Where(x => x.IsActive == input.IsActive);
+            }
+
+            return query;
         }
 
         protected override async Task<User> GetEntityByIdAsync(long id)

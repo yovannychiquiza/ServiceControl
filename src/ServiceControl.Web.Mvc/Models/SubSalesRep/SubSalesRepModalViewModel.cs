@@ -16,7 +16,7 @@ namespace ServiceControl.Web.Models.Users
 
         public bool SubSalesRepIsInSalesRep(User user)
         {
-            return SubSalesRepDto != null && SubSalesRepDto.Any(r => r.SubSalesRepr.Id == user.Id);
+            return SubSalesRepDto != null && SubSalesRepDto.Any(r => r.SubSalesRepr != null && r.SubSalesRepr.Id == user.Id);
         }
         
     }
