@@ -11,6 +11,8 @@ var isBookingAdmin = abp.auth.isGranted('Pages.Booking.Admin');
 var isOrderAdminReady = abp.auth.isGranted('Order.Admin.Ready');
 var FOLLOWED = 26;
 var EXPLANATION = 27;
+var LAST_COLUMN = 28;
+var isLoaded = false;
 
 jSuites.calendar(document.getElementById('dateFrom'), {
     format: l('DateFormatView')
@@ -82,7 +84,7 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
     columnDrag: true,
     tableOverflow: true,
     tableWidth: ($('.card').width() - 2) + "px",
-    tableHeight: '450px',
+    tableHeight: '350px',
     columns: [
         { type: 'text', width: '50', title: l('Id'), readOnly: true },
         { type: 'text', width: '100', title: l('Company'), readOnly: true, },
@@ -146,6 +148,7 @@ function search() {
         data: filter
     })
     .done(function (result) {
+        prductsColumn(result.result.productType);
         myTable.insertRow([[]], 0);//insert new empty row after first row
         myTable.deleteRow(0, 1);//delete first row
         if (myTable.records.length !== 1) {
@@ -153,7 +156,7 @@ function search() {
         }
         var row = 2;
         result.result.data.items.forEach(function (item) {
-            myTable.insertRow([
+            var data = [
                 item.id,
                 item.company.name,
                 item.serial,
@@ -183,7 +186,10 @@ function search() {
                 item.followed,
                 item.explanation,
                 $.parseJSON(item.isReady.toLowerCase()),
-            ]);
+            ];
+            setProductType(result.result.productType, item.ordersProductType, data);
+
+            myTable.insertRow(data);
             setStyleSpread(item.orderState.name, row++, item.followed);
         });
         if (myTable.records.length > 1 )
@@ -261,4 +267,30 @@ function setStyleSpread(orderState, row, followed) {
 
 }
 
+//create product columns
+function prductsColumn(products) {
+    if (!isLoaded) {
+        isLoaded = true;        
+        products.forEach(function (item) {
+            myTable.insertColumn(1, LAST_COLUMN++, 0, { type: 'text', width: '100', title: item.name, readOnly: true});
+        });
+    }
+}
+///function to populate products
+function setProductType(products, productsOrder, arr) {
+    products.forEach(function (product) {
+        var isSelected = false;
+        for (var i = 0; i < productsOrder.length; i++) {
+            if (product.id === productsOrder[i].productTypeId.toString()) {
+                isSelected = true;
+                break;
+            }
+        }
+        if (isSelected)
+            arr.push("1");
+        else
+            arr.push("0");
+    });        
+    return arr; 
+}
 

@@ -11,6 +11,8 @@ namespace ServiceControl.Orders.Dto
         {
             CreateMap<OrderDto, Orders>();
             CreateMap<Orders, OrderDto>();
+            CreateMap<ProductType, ProductTypeDto>();
+            CreateMap<OrdersProductType, OrdersProductTypeDto>();
             CreateMap<DateTime?, string>().ConvertUsing(new DateTimeTypeConverter());
             CreateMap<string, DateTime?>().ConvertUsing(new DateTimeStringTypeConverter());
             CreateMap<DateTime, string>().ConvertUsing(s => s.ToString(AppConsts.DateFormat));

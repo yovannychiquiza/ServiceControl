@@ -117,14 +117,20 @@ namespace ServiceControl.Orders
                 .Include(t => t.TimeSlot)
                 .Include(t => t.FirstIdentification)
                 .Include(t => t.SecondIdentification)
+                .Include(t => t.OrdersProductType)
                 .OrderByDescending(t => t.Id)
                 .ToList();
 
             int count = ordersList.Count();
             var newList = ordersList.Skip(input.SkipCount).Take(input.MaxResultCount);
 
+            var product = _productTypeRepository.GetAll().ToList();
+            List<ProductTypeDto> productTypeDto = new List<ProductTypeDto>();
+            productTypeDto = ObjectMapper.Map(product, productTypeDto);
+
             PagedOrderResultResponseDto pagedOrderResultResponseDto = new PagedOrderResultResponseDto();
             pagedOrderResultResponseDto.TotalCount = count;
+            pagedOrderResultResponseDto.ProductType = productTypeDto;
             pagedOrderResultResponseDto.Data = new ListResultDto<OrderListDto>(
                 ObjectMapper.Map<List<OrderListDto>>(newList));
 
@@ -324,6 +330,8 @@ namespace ServiceControl.Orders
         {
             var result = GetAll(input).Result.Data.Items;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            var products = _productTypeRepository.GetAll().ToList();
+
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Orders");
@@ -358,6 +366,11 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("Followed");
                 worksheet.Cells[row, col++].Value = L("Explanation");
 
+                foreach (var product in products)
+                {
+                    worksheet.Cells[row, col++].Value = product.Name;
+                }
+
                 worksheet.Cells[ExcelRange.GetAddress(1, 1, 1, col)].Style.Font.Bold = true;
 
                 foreach (var item in result.ToList())
@@ -391,6 +404,13 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.Remarks;
                     worksheet.Cells[row, col++].Value = item.Followed;
                     worksheet.Cells[row, col++].Value = item.Explanation;
+
+                    var dic = item.OrdersProductType.ToList().ToDictionary(t => t.ProductTypeId, t => t.ProductTypeId);
+                    foreach (var product in products)
+                    {
+                        worksheet.Cells[row, col++].Value = dic.ContainsKey(product.Id) ? "1": "0";
+                    }
+                    
                 }
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();

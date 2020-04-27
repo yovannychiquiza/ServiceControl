@@ -11,14 +11,9 @@ namespace ServiceControl.Orders
     [Table("ProductType")]
     public class ProductType : Entity
     {
-        public ProductType()
-        {
-            OrdersProductType = new HashSet<OrdersProductType>();
-        }
         [Required]
         public string Name { get; set; }
         public bool IsActive { get; set; }
-        public virtual ICollection<OrdersProductType> OrdersProductType { get; set; }
 
     }
 }
