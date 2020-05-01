@@ -109,7 +109,6 @@ namespace ServiceControl.Web.Controllers
                                                Value = res.Value,
                                                Selected = res.Value == order.PaymentStatusId.ToString()
                                            }).ToList();
-            paymentStatusSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
 
             var model = new EditOrderModalViewModel
             {

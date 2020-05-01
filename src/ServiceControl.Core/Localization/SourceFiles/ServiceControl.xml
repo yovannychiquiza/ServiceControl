@@ -163,5 +163,7 @@
     <text name="OrderAdminInvoice" value="Order Admin Invoice" />
     <text name="PaymentStatus" value="Payment Status" />
     <text name="InvoiceNo" value="Invoice No" />
+    <text name="Done" value="Done" />
+    <text name="Deduction" value="Deduction" />
   </texts>
 </localizationDictionary>

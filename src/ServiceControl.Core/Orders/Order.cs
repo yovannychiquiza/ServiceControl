@@ -64,7 +64,7 @@ namespace ServiceControl.Orders
         public string Followed { get; set; }
         public string Explanation { get; set; }
         public Boolean IsReady { get; set; }
-        public int? PaymentStatusId { get; set; }
+        public int PaymentStatusId { get; set; }
         [ForeignKey(nameof(PaymentStatusId))]
         public PaymentStatus PaymentStatus { get; set; }
 

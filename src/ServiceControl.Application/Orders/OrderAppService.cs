@@ -26,6 +26,12 @@ namespace ServiceControl.Orders
         Delayed = 4,
         Follow = 5
     }
+    public enum PaymentStatusEnum
+    {
+        Pending = 1,
+        Done = 2,
+        Deduction = 3
+    }
 
     [AbpAuthorize(PermissionNames.Pages_Orders, PermissionNames.Pages_Booking)]
     public class OrderAppService : ApplicationService, IOrderAppService
@@ -38,6 +44,8 @@ namespace ServiceControl.Orders
         private readonly IRepository<SubSalesRep> _subSalesRepRepository;
         private readonly IRepository<ProductType, int> _productTypeRepository;
         private readonly IRepository<OrdersProductType, int> _orders_ProductTypeRepository;
+        private readonly IRepository<PaymentStatus, int> _paymentStatusRepository;
+        private readonly IRepository<OrderState, int> _orderStateRepository;
         
 
         public OrderAppService(IRepository<Orders> repository, 
@@ -46,7 +54,9 @@ namespace ServiceControl.Orders
             IRepository<SalesRepSerial> salesRepSerialRepository,
             IRepository<SubSalesRep> subSalesRepRepository,
             IRepository<ProductType, int> productTypeRepository,
-            IRepository<OrdersProductType, int> orders_ProductTypeRepository
+            IRepository<OrdersProductType, int> orders_ProductTypeRepository,
+            IRepository<PaymentStatus, int> paymentStatusRepository,
+            IRepository<OrderState, int> orderStateRepository
             )
         {
             LocalizationSourceName = ServiceControlConsts.LocalizationSourceName;
@@ -57,6 +67,8 @@ namespace ServiceControl.Orders
             _subSalesRepRepository = subSalesRepRepository;
             _productTypeRepository = productTypeRepository;
             _orders_ProductTypeRepository = orders_ProductTypeRepository;
+            _paymentStatusRepository = paymentStatusRepository;
+            _orderStateRepository = orderStateRepository;
         }
 
 
@@ -158,6 +170,7 @@ namespace ServiceControl.Orders
         {
             input.SalesRepId = input.SubSalesRepId != null ? input.SubSalesRepId.Value : _session.UserId.GetValueOrDefault();
             input.OrderStateId = (int)OrderStateEnum.Created;
+            input.PaymentStatusId = (int)PaymentStatusEnum.Pending;
             input.DateBooked = DateTime.Now;
 
             var salesRepCompany = _salesRepCompanyRepository.FirstOrDefault(t => t.CompanyId == input.CompanyId && t.SalesRepId == input.SalesRepId);
@@ -301,6 +314,7 @@ namespace ServiceControl.Orders
             model.OrderNo = input.OrderNo;
             model.AccountNo = input.AccountNo;
             model.Remarks = input.Remarks;
+            model.InvoiceNo = input.InvoiceNo;
             model.IsReady = Boolean.Parse(input.IsReady);
             if (input.InstallDate.IsNullOrEmpty()){ 
                 model.InstallDate = null;
@@ -323,6 +337,12 @@ namespace ServiceControl.Orders
                 model.OrderStateId = (int)OrderStateEnum.Delayed;
             if (OrderStateEnum.Follow.ToString().Equals(input.OrderStateName))
                 model.OrderStateId = (int)OrderStateEnum.Follow;
+
+
+            if (PaymentStatusEnum.Done.ToString().Equals(input.PaymentStatusName))
+                model.PaymentStatusId = (int)PaymentStatusEnum.Done;
+            if (PaymentStatusEnum.Deduction.ToString().Equals(input.PaymentStatusName))
+                model.PaymentStatusId = (int)PaymentStatusEnum.Deduction;
 
             await _orderRepository.UpdateAsync(model);
         }

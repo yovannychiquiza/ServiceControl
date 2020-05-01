@@ -9,9 +9,10 @@ var l = abp.localization.getSource('ServiceControl');
 var _spreadsheet = 'spreadsheet';
 var isBookingAdmin = abp.auth.isGranted('Pages.Booking.Admin');
 var isOrderAdminReady = abp.auth.isGranted('Order.Admin.Ready');
+var isOrderAdminInvoice = abp.auth.isGranted('Order.Admin.Invoice');
 var FOLLOWED = 26;
 var EXPLANATION = 27;
-var LAST_COLUMN = 28;
+var IS_READY = 30;
 var isLoaded = false;
 
 jSuites.calendar(document.getElementById('dateFrom'), {
@@ -54,6 +55,8 @@ var changed = function (instance, cell, x, y, value) {
     model.remarks = myTable.getValueFromCoords([column++], [y]);
     model.followed = myTable.getValueFromCoords([column++], [y]);
     model.explanation = myTable.getValueFromCoords([column++], [y]);
+    model.PaymentStatusName = myTable.getValueFromCoords([column++], [y]);
+    model.invoiceNo = myTable.getValueFromCoords([column++], [y]);
     model.isReady = myTable.getValueFromCoords([column++], [y]);
 
     if ((x === FOLLOWED.toString() || x === EXPLANATION.toString()) && model.orderStateName !== l('Cancelled')) {
@@ -126,6 +129,13 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
             ]
         },
         { type: 'text', width: '100', title: l('Explanation') },
+        {
+            type: 'dropdown', width: '100', title: l('PaymentStatus'), readOnly: !isOrderAdminInvoice, source: [
+                l("Done"),
+                l("Deduction"),
+            ]
+        },
+        { type: 'text', width: '100', title: l('InvoiceNo'), readOnly: !isOrderAdminInvoice},        
         { type: 'checkbox', width: '100', title: l('IsReady'), readOnly: !isOrderAdminReady},
     ],
     onchange: changed
@@ -185,6 +195,8 @@ function search() {
                 item.remarks,
                 item.followed,
                 item.explanation,
+                item.paymentStatus.name,
+                item.invoiceNo,
                 $.parseJSON(item.isReady.toLowerCase()),
             ];
             setProductType(result.result.productType, item.ordersProductType, data);
@@ -212,7 +224,7 @@ $('.txt-search').on('keypress', (e) => {
 });
 
 
-function setStyleSpread(orderState, row, followed) {
+function setStyleSpread(orderState, row, followed) {    
     var color = '';
     if (orderState === l('Booked'))
         color = l('Green');
@@ -228,51 +240,24 @@ function setStyleSpread(orderState, row, followed) {
     var style = myTable.getStyle('A' + row);
 
     if (!style.includes(color)) {
-        myTable.setStyle('A' + row, 'background-color', color);
-        myTable.setStyle('B' + row, 'background-color', color);
-        myTable.setStyle('C' + row, 'background-color', color);
-        myTable.setStyle('D' + row, 'background-color', color);
-        myTable.setStyle('E' + row, 'background-color', color);
-        myTable.setStyle('F' + row, 'background-color', color);
-        myTable.setStyle('G' + row, 'background-color', color);
-        myTable.setStyle('H' + row, 'background-color', color);
-        myTable.setStyle('I' + row, 'background-color', color);
-        myTable.setStyle('J' + row, 'background-color', color);
-        myTable.setStyle('K' + row, 'background-color', color);
-        myTable.setStyle('L' + row, 'background-color', color);
-        myTable.setStyle('M' + row, 'background-color', color);
-        myTable.setStyle('N' + row, 'background-color', color);
-        myTable.setStyle('O' + row, 'background-color', color);
-        myTable.setStyle('P' + row, 'background-color', color);
-        myTable.setStyle('Q' + row, 'background-color', color);
-        myTable.setStyle('R' + row, 'background-color', color);
-        myTable.setStyle('S' + row, 'background-color', color);
-        myTable.setStyle('T' + row, 'background-color', color);
-        myTable.setStyle('U' + row, 'background-color', color);
-        myTable.setStyle('V' + row, 'background-color', color);
-        myTable.setStyle('W' + row, 'background-color', color);
-        myTable.setStyle('X' + row, 'background-color', color);
-        myTable.setStyle('Y' + row, 'background-color', color);
-        myTable.setStyle('Z' + row, 'background-color', color);
-        myTable.setStyle('AA' + row, 'background-color', color);
-        myTable.setStyle('AB' + row, 'background-color', color);
-        myTable.setStyle('AC' + row, 'background-color', color);
-        if (orderState === l('Booked')) {
-            myTable.setStyle('AC' + row, 'visibility', 'hidden');
+        for (var i = 0; i < IS_READY; i++) {
+            myTable.setStyle(jexcel.getColumnNameFromId([i, row - 1]) , 'background-color', color);
         }
-        else {
-            myTable.setStyle('AC' + row, 'visibility', 'visible');
-        }
-    }
+        if (orderState === l('Booked'))
+            myTable.setStyle(jexcel.getColumnNameFromId([IS_READY, row - 1]), 'visibility', 'hidden');
+        else
+            myTable.setStyle(jexcel.getColumnNameFromId([IS_READY, row - 1]), 'visibility', 'visible');
 
+    }
 }
 
 //create product columns
 function prductsColumn(products) {
+    var last = IS_READY;
     if (!isLoaded) {
         isLoaded = true;        
         products.forEach(function (item) {
-            myTable.insertColumn(1, LAST_COLUMN++, 0, { type: 'text', width: '100', title: item.name, readOnly: true});
+            myTable.insertColumn(1, last++, 0, { type: 'text', width: '100', title: item.name, readOnly: true});
         });
     }
 }

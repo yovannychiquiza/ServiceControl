@@ -54,8 +54,9 @@ namespace ServiceControl.Orders.Dto
         public string IsReady { get; set; }
         public long? SubSalesRepId { get; set; }
         public string ProductTypeId { get; set; }
-        public int? PaymentStatusId { get; set; }
+        public int PaymentStatusId { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
+        public string PaymentStatusName { get; set; }
         public string InvoiceNo { get; set; }
 
         public ICollection<OrdersProductType> OrdersProductType { get; set; }
