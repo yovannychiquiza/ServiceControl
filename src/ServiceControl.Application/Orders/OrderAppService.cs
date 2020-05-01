@@ -118,6 +118,7 @@ namespace ServiceControl.Orders
                 .Include(t => t.FirstIdentification)
                 .Include(t => t.SecondIdentification)
                 .Include(t => t.OrdersProductType)
+                .Include(t => t.PaymentStatus)
                 .OrderByDescending(t => t.Id)
                 .ToList();
 

@@ -24,5 +24,8 @@
 
         public const string Assign_Company = "Assign.Company";
 
+        public const string Order_Admin_Invoice = "Order.Admin.Invoice";
+
+
     }
 }

@@ -148,6 +148,27 @@
             <input type="hidden" name="Followed" value="@Model.Order.Followed" />
             <input type="hidden" name="Explanation" value="@Model.Order.Explanation" />
         }
+        @if (IsGranted(ServiceControl.Authorization.PermissionNames.Order_Admin_Invoice))
+        {
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="PaymentStatus">@L("PaymentStatus")</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("PaymentStatusId", Model.PaymentStatus, new { @class = "form-control", id = "PaymentStatusId" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="InvoiceNo">@L("InvoiceNo")</label>
+                <div class="col-md-9">
+                    <input id="InvoiceNo" type="text" class="form-control" name="InvoiceNo" value="@Model.Order.InvoiceNo" maxlength="@AbpUserBase.MaxUserNameLength">
+                </div>
+            </div>
+        }
+        else
+        {
+            <input type="hidden" name="PaymentStatusId" value="@Model.Order.PaymentStatusId" />
+            <input type="hidden" name="InvoiceNo" value="@Model.Order.InvoiceNo" />
+        }
+
     </div>
     @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
 </form>

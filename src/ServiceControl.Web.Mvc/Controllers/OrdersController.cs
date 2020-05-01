@@ -101,6 +101,16 @@ namespace ServiceControl.Web.Controllers
                                                   Selected = dic.ContainsKey(res.Value)
                                               }).ToList();
 
+            var paymentStatusList = _lookupAppService.GetPaymentStatusItems().Result;
+            var paymentStatusSelectListItems = (from res in paymentStatusList.Items
+                                           select new SelectListItem()
+                                           {
+                                               Text = res.DisplayText,
+                                               Value = res.Value,
+                                               Selected = res.Value == order.PaymentStatusId.ToString()
+                                           }).ToList();
+            paymentStatusSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
+
             var model = new EditOrderModalViewModel
             {
                 Order = order,
@@ -110,7 +120,8 @@ namespace ServiceControl.Web.Controllers
                 SecondIdentification = secondIdentificationSelectListItems,
                 TimeSlot = timeSlotSelectListItems,
                 Followed = yesNoSelectListItems,
-                ProductType = productTypeSelectListItems
+                ProductType = productTypeSelectListItems,
+                PaymentStatus = paymentStatusSelectListItems
             };
 
             return PartialView("_EditModal", model);

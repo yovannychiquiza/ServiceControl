@@ -49,6 +49,10 @@ namespace ServiceControl.Orders.Dto
         public string Followed { get; set; }
         public string Explanation { get; set; }
         public string IsReady { get; set; }
+        public int? PaymentStatusId { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
+        public string InvoiceNo { get; set; }
+
         public ICollection<OrdersProductTypeDto> OrdersProductType { get; set; }
 
     }

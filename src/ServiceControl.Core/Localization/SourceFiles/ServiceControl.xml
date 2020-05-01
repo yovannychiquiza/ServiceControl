@@ -160,5 +160,8 @@
     <text name="SubSalesRep" value="Sub Sales Rep" />
     <text name="ProductType" value="Product Type" />
     <text name="AssignCompany" value="Assign Company" />
+    <text name="OrderAdminInvoice" value="Order Admin Invoice" />
+    <text name="PaymentStatus" value="Payment Status" />
+    <text name="InvoiceNo" value="Invoice No" />
   </texts>
 </localizationDictionary>

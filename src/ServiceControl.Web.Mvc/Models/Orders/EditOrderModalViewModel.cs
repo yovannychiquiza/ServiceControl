@@ -15,6 +15,7 @@ namespace ServiceControl.Web.Models.Orders
         public List<SelectListItem> Followed { get; set; }
         public List<SelectListItem> SubSalesRep { get; set; }
         public List<SelectListItem> ProductType { get; set; }
+        public List<SelectListItem> PaymentStatus { get; set; }
 
     }
 }

@@ -19,6 +19,7 @@ namespace ServiceControl.Authorization
             context.CreatePermission(PermissionNames.Order_Admin_Ready, L("OrderAdminReady"));
             context.CreatePermission(PermissionNames.Order_See_All, L("OrderSeeAll"));
             context.CreatePermission(PermissionNames.Assign_Company, L("AssignCompany"));
+            context.CreatePermission(PermissionNames.Order_Admin_Invoice, L("OrderAdminInvoice"));
         }
 
         private static ILocalizableString L(string name)
