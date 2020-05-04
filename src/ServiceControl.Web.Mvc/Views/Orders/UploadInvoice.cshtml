@@ -1,0 +1,52 @@
+﻿@using ServiceControl.Web.Startup
+@using ServiceControl.Web.Models.Orders
+@{
+    ViewBag.Title = L("UploadInvoice");
+    ViewBag.CurrentPageName = PageNames.Invoice;
+}
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/view-resources/Views/Orders/UploadInvoice.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/Orders/UploadInvoice.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>@L("UploadInvoice")</h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <form method="post" enctype="multipart/form-data" action="" id="myform">
+                            <div class="form-group row">
+                                <input type="file" id="file" name="file" class="btn bg-gradient-dark"/>
+                            </div>
+                            <div class="form-group row">
+                                <button type="button" class="btn bg-blue" id="but_upload">
+                                    <span class="fa fa-upload" aria-hidden="true"></span> Upload File
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="InvoiceDetails"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

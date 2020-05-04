@@ -8,11 +8,11 @@ namespace ServiceControl.Web.Models.Orders
 {
     public class IndexViewModel
     {
-        public IReadOnlyList<OrderListDto> Orders { get; }
+        public List<OrderListDto> Orders { get; }
 
         public string SelectedTaskState { get; set; }
 
-        public IndexViewModel(IReadOnlyList<OrderListDto> orders)
+        public IndexViewModel(List<OrderListDto> orders)
         {
             Orders = orders;
         }

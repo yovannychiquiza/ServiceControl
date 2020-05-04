@@ -283,6 +283,7 @@
 
     $(document).on('click', '.edit-order', function (e) {
         var orderId = $(this).attr("data-order-id");
+        $('#OrderEditModal div.modal-content').html("");
 
         e.preventDefault();
         abp.ajax({
@@ -325,6 +326,7 @@
 
     $(document).on('click', '.booking-order', function (e) {
         var orderId = $(this).attr("data-order-id");
+        $('#OrderEditModal div.modal-content').html("");
 
         e.preventDefault();
         abp.ajax({

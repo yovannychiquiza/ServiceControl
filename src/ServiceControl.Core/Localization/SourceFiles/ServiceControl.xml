@@ -30,6 +30,8 @@
     <text name="EmailAddress" value="Email address" />
     <text name="Tenants" value="Tenants" />
     <text name="SavedSuccessfully" value="Saved successfully" />
+    <text name="ProcessedSuccessfully" value="Processed Successfully" />
+    <text name="FileNoProcessed" value="File no processed" />
     <text name="CreateNewTenant" value="Create new tenant" />
     <text name="AdminEmailAddress" value="Admin email address" />
     <text name="AdminPassword" value="Admin password" />
@@ -165,5 +167,8 @@
     <text name="InvoiceNo" value="Invoice No" />
     <text name="Done" value="Done" />
     <text name="Deduction" value="Deduction" />
+    <text name="UploadInvoice" value="Upload Invoice" />
+    <text name="Loaded" value="Loaded" />
+    <text name="NoFounded" value="No Founded" />
   </texts>
 </localizationDictionary>

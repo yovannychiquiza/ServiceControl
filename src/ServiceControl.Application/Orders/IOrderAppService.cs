@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Microsoft.AspNetCore.Http;
 using ServiceControl.Orders.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace ServiceControl.Orders
         Task<ListResultDto<ComboboxItemDto>> GetCompanyComboboxItems(long id);
         Task GetOrderBooking(OrderDto input);
         Task GetBookingUpdate(OrderDto input);
+        public List<OrderListDto> ReadInvoiceFile(IFormFile formFile);
 
     }
 

@@ -155,6 +155,7 @@
 
     $(document).on('click', '.edit-user', function (e) {
         var userId = $(this).attr("data-user-id");
+        $('#UserEditModal div.modal-content').html("");
 
         e.preventDefault();
         abp.ajax({
@@ -196,6 +197,7 @@
 
     $(document).on('click', '.edit-company', function (e) {
         var userId = $(this).attr("data-user-id");
+        $('#UserEditModal div.modal-content').html("");
 
         e.preventDefault();
         abp.ajax({
@@ -211,6 +213,7 @@
 
     $(document).on('click', '.edit-subSalesRep', function (e) {
         var userId = $(this).attr("data-user-id");
+        $('#UserEditModal div.modal-content').html("");
 
         e.preventDefault();
         abp.ajax({

@@ -9,5 +9,6 @@
         public const string Roles = "Roles"; 
         public const string Orders = "Orders"; 
         public const string Booking = "Booking"; 
+        public const string Invoice = "Invoice"; 
     }
 }

@@ -5,6 +5,8 @@ using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Runtime.Session;
+using ExcelDataReader;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using ServiceControl.Authorization;
@@ -443,6 +445,69 @@ namespace ServiceControl.Orders
 
                 return response;
             }
+        }
+
+
+        public async Task<bool> UpdateInvoiceOrder(OrderListDto orderDto)
+        {
+            var model = _orderRepository.FirstOrDefault(t => t.AccountNo == orderDto.AccountNo && t.CustomerFirstName == orderDto.CustomerFirstName);
+            bool exist = false;
+            if (model != null)
+            {
+                model.PaymentStatusId = (int)PaymentStatusEnum.Done;
+                await _orderRepository.UpdateAsync(model);
+                exist = true;
+            }
+            return exist;
+        }
+
+
+        public List<OrderListDto> ReadInvoiceFile(IFormFile formFile)
+        {
+            List<OrderListDto> orderDtoList = new List<OrderListDto>();
+
+            int row = 0;
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            int cont = 1;
+            using (var reader = ExcelReaderFactory.CreateReader(formFile.OpenReadStream()))
+            {
+                while (reader.Read()) //Each ROW
+                {
+                    if (row > 0)
+                    {
+                        OrderListDto orderDto = new OrderListDto();
+                        for (int column = 0; column < reader.FieldCount; column++)
+                        {
+                            if (column == 2) orderDto.CustomerFirstName = getValue(reader, column); 
+                            if (column == 14) orderDto.AccountNo = getValue(reader, column);
+                        }
+                        if(orderDto.AccountNo != null)
+                        {
+                            orderDto.Id = cont++;
+                            orderDtoList.Add(orderDto);
+                        }
+                    }
+                    row++;
+                }
+            }
+
+            foreach (var item in orderDtoList)
+            {
+                if (UpdateInvoiceOrder(item).Result)
+                    item.Notes = L("Loaded");
+                else
+                    item.Notes = L("NoFounded");
+            }
+            return orderDtoList;
+        }
+        public static string getValue(IExcelDataReader reader, int column)
+        {
+            string val = null;
+            if (reader.GetValue(column) != null)
+            {
+                val = reader.GetValue(column).ToString();
+            }
+            return val;
         }
     }
 }

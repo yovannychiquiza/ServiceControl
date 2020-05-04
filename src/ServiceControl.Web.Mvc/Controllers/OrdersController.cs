@@ -13,6 +13,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Abp.Runtime.Session;
 using ServiceControl.SubUser;
+using Microsoft.AspNetCore.Http;
 
 namespace ServiceControl.Web.Controllers
 {
@@ -270,6 +271,19 @@ namespace ServiceControl.Web.Controllers
                 Followed = yesNoSelectListItems
             };
             return View(model);
+        }
+        public IActionResult UploadInvoice()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("api/services/app/Order/UploadFileInvoice")]
+        public IActionResult UploadInvoice(IFormFile file)
+        {
+            var orderlist = _orderAppService.ReadInvoiceFile(file);
+            var model = new IndexViewModel(orderlist);
+            return PartialView("_InvoiceDetails", model);
         }
     }
 }

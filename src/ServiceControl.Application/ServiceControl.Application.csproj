@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="5.0.4" />
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServiceControl.Core\ServiceControl.Core.csproj" />

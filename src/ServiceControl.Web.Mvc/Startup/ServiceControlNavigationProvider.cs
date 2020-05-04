@@ -57,6 +57,15 @@ namespace ServiceControl.Web.Startup
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Booking)
                             )
                 )
+                .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Invoice,
+                        L("UploadInvoice"),
+                        url: "Orders/UploadInvoice",
+                        icon: "fas fa-clipboard-list",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Order_Admin_Invoice)
+                            )
+                )
 
                 //.AddItem( // Menu items below is just for demonstration!
                 //    new MenuItemDefinition(
