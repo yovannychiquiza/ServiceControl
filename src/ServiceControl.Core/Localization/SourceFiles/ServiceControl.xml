@@ -3,6 +3,7 @@
   <texts>
     <text name="DateFormatView" value="YYYY-MM-DD" />
     <text name="DateTimeFormatView" value="YYYY-MM-DD HH:MI" />
+    <text name="AppName" value="VMS Solutions" />
     <text name="HomePage" value="Home page" />
     <text name="About" value="About" />
     <text name="WelcomeMessage" value="Welcome to ServiceControl!" />

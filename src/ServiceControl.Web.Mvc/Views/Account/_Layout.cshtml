@@ -11,7 +11,7 @@
     AbpAntiForgeryManager.SetCookie(Context);
 
     var pageTitle = !string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title + " / " : "";
-    pageTitle += "ServiceControl";
+    pageTitle += L("AppName");
 }
 <!DOCTYPE html>
 <html lang="@LanguageManager.CurrentLanguage.Name">
@@ -28,7 +28,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/"><b>Service Control</b></a>
+            <a href="/"><b>@L("AppName")</b></a>
         </div>
         <div class="card">
             @*@if (MultiTenancyConfig.IsEnabled)
