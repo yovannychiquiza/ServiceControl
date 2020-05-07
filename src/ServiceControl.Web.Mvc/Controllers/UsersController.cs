@@ -8,6 +8,7 @@ using ServiceControl.Users;
 using ServiceControl.Web.Models.Users;
 using ServiceControl.UserCompany;
 using ServiceControl.SubUser;
+using Abp.Runtime.Session;
 
 namespace ServiceControl.Web.Controllers
 {
@@ -17,16 +18,19 @@ namespace ServiceControl.Web.Controllers
         private readonly IUserAppService _userAppService;
         private readonly ICompanyAppService _salesRepCompanyAppService;
         private readonly ISubSalesRepAppService _subSalesRepAppService;
+        private readonly IAbpSession _session;
 
 
         public UsersController(IUserAppService userAppService,
             ICompanyAppService salesRepCompanyAppService,
-            ISubSalesRepAppService subSalesRepAppService
+            ISubSalesRepAppService subSalesRepAppService,
+            IAbpSession session
             )
         {
             _userAppService = userAppService;
             _salesRepCompanyAppService = salesRepCompanyAppService;
             _subSalesRepAppService = subSalesRepAppService;
+            _session = session;
         }
 
         public async Task<ActionResult> Index()
@@ -54,7 +58,7 @@ namespace ServiceControl.Web.Controllers
         public async Task<ActionResult> EditCompanyModal(long userId)
         {
             var user = await _userAppService.GetAsync(new EntityDto<long>(userId));
-            var companyList = await _salesRepCompanyAppService.GetCompany();
+            var companyList = await _salesRepCompanyAppService.GetSalesRepCompany(_session.UserId.GetValueOrDefault());
             var salesRepCompanyDto = await _salesRepCompanyAppService.GetSalesRepCompany(userId);
             
             var model = new SalesRepCompanyModalViewModel

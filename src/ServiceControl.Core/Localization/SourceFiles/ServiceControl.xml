@@ -112,50 +112,55 @@
     <text name="SearchWithThreeDot">Search...</text>
     <text name="Orders" value="Orders" />
     <text name="OrdersAdmin" value="Orders Admin" />
-    <text name="Company" value="Company" />
-    <text name="Serial" value="Serial" />
-    <text name="DateBooked" value="Date Booked" />
     <text name="EditOrder" value="Edit Order" />
     <text name="CreateNewOrder" value="Create New Order" />
-    <text name="Sgi" value="Sgi" />
-    <text name="SalesRep" value="Sales Rep" />
+    <text name="Company" value="COMPANY" />
+    <text name="Serial" value="S.No" />
+    <text name="DateBooked" value="Date Booked" />
+    <text name="Sgi" value="Rep ID" />
+    <text name="SalesRep" value="Sales Rep Name" />
+    <text name="RepEmail" value="Rep Email" />
     <text name="CustomerFirstName" value="Customer First Name" />
     <text name="CustomerLastName" value="Customer Last Name" />
-    <text name="ContactPhone" value="Contact Phone" />
-    <text name="Email" value="Email" />
+    <text name="ContactPhone" value="Contact Phone #" />
+    <text name="Email" value="Email address" />
     <text name="DateOfBirth" value="Date Of Birth" />
-    <text name="FirstIdentification" value="First Identification" />
-    <text name="SecondIdentification" value="Second Identification" />
+    <text name="FirstIdentification" value="Primary Id" />
+    <text name="SecondIdentification" value="Secondary Id" />
     <text name="ExistingAccountNo" value="Existing Account No" />
     <text name="StreetNo" value="Street No" />
     <text name="CustomerAddress" value="Customer Address" />
-    <text name="Unit" value="Unit" />
+    <text name="Unit" value="Apt No./Unit No./Bsmt/Floor" />
     <text name="City" value="City" />
     <text name="PostalCode" value="Postal Code" />
     <text name="PromoDetails" value="Promo Details" />
     <text name="Notes" value="Notes" />
-    <text name="CreationDate" value="Creation Date" />
+    <text name="OrderNo" value="Order #" />
+    <text name="AccountNo" value="Account No" />
+    <text name="InstallDate" value="Install Date" />
     <text name="OrderState" value="Order State" />
+    <text name="Remarks" value="Remarks" />
+    <text name="Followed" value="Followed" />
+    <text name="Explanation" value="Explanation" />
+    <text name="IsReady" value="Is Ready" />
+    <text name="PaymentStatus" value="Payment Status" />
+    <text name="InvoiceNo" value="Invoice No" />
+    <text name="Booking" value="Booking" />
     <text name="DateFrom" value="Date From" />
     <text name="DateTo" value="Date To" />
     <text name="TimeSlot" value="Time Slot" />
-    <text name="OrderNo" value="Order No" />
-    <text name="AccountNo" value="Account No" />
-    <text name="InstallDate" value="Install Date" />
-    <text name="Remarks" value="Remarks" />
-    <text name="Booking" value="Booking" />
-    <text name="Followed" value="Followed" />
-    <text name="Explanation" value="Explanation" />
+    <text name="CreationDate" value="Creation Date" />
     <text name="NotCancelled" value="Not saved by Order State is not Cancelled" />
     <text name="Booked" value="Booked" />
     <text name="Cancelled" value="Cancelled" />
     <text name="Delayed" value="Delayed" />
     <text name="Follow" value="Follow" />
-    <text name="Green" value="green" />
-    <text name="Red" value="red" />
-    <text name="Yellow" value="yellow" />
+    <text name="Disconnected" value="Disconnected" />
+    <text name="Green" value="#35db5b" />
+    <text name="Red" value="#ff404f" />
+    <text name="Yellow" value="#f7ff63" />
+    <text name="Purple" value="#e35beb" />
     <text name="Choose" value="Choose" />
-    <text name="IsReady" value="Is Ready" />
     <text name="OrderReady" value="Order Ready" />
     <text name="OrderAdminReady" value="Order Admin Ready" />
     <text name="BookingAdmin" value="Booking Admin" />
@@ -164,8 +169,6 @@
     <text name="ProductType" value="Product Type" />
     <text name="AssignCompany" value="Assign Company" />
     <text name="OrderAdminInvoice" value="Order Admin Invoice" />
-    <text name="PaymentStatus" value="Payment Status" />
-    <text name="InvoiceNo" value="Invoice No" />
     <text name="Done" value="Done" />
     <text name="Deduction" value="Deduction" />
     <text name="UploadInvoice" value="Upload Invoice" />

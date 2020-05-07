@@ -119,6 +119,7 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
                 l("Cancelled"),
                 l("Delayed"),
                 l("Follow"),
+                l("Disconnected"),
             ]
         },
         { type: 'text', width: '100', title: l('Remarks'), readOnly: !isBookingAdmin },
@@ -236,6 +237,8 @@ function setStyleSpread(orderState, row, followed) {
         color = l('Yellow');
     if (orderState === l('Cancelled') && followed === 'Yes')
         color = l('Yellow');
+    if (orderState === l('Disconnected'))
+        color = l('Purple');
 
     var style = myTable.getStyle('A' + row);
 

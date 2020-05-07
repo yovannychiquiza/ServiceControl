@@ -16,7 +16,7 @@ namespace ServiceControl.Orders.Dto
 
         public string Serial { get; set; }
 
-        public DateTime DateBooked { get; set; }
+        public string DateBooked { get; set; }
 
         public string Sgi { get; set; }
         public long SalesRepId { get; set; }

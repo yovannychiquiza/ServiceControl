@@ -15,11 +15,11 @@
                 {
                     <div class="form-group row">
                         <div class="col-md-2">
-                            <input type="checkbox" name="company" value="@item.Id" title="@item.Name" class="filled-in" id="@($"company{item.Id}")" @(Model.UserIsInCompany(item) ? "checked" : "") />
-                            <label for="@($"company{item.Id}")" title="@item.Name">@item.Name</label>
+                            <input type="checkbox" name="company" value="@item.Company.Id" title="@item.Company.Name" class="filled-in" id="@($"company{item.Company.Id}")" @(Model.UserIsInCompany(item.Company) ? "checked" : "") />
+                            <label for="@($"company{item.Company.Id}")" title="@item.Company.Name">@item.Company.Name</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="code" value="@(Model.UserIsInCompanyCode(item))" class="form-control" id="@($"companyCode{item.Id}")" placeholder="Enter code">
+                            <input type="text" name="code" value="@(Model.UserIsInCompanyCode(item.Company))" class="form-control" id="@($"companyCode{item.Company.Id}")" placeholder="Enter code">
                         </div>
                     </div>
                 }

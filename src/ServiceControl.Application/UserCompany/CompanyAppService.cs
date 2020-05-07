@@ -30,7 +30,8 @@ namespace ServiceControl.UserCompany
 
         public async Task<List<SalesRepCompanyDto>> GetSalesRepCompany(long id)
         {
-            List<SalesRepCompany> model = _salesRepCompanyRepository.GetAll().Where(t => t.SalesRepId == id).ToList();
+            List<SalesRepCompany> model = _salesRepCompanyRepository.GetAllIncluding(t => t.Company )
+                .Where(t => t.SalesRepId == id).ToList();
             SalesRepCompanyDto dto = new SalesRepCompanyDto();
 
             var response = new List<SalesRepCompanyDto>(

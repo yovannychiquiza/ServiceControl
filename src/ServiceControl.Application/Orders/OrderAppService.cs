@@ -26,7 +26,8 @@ namespace ServiceControl.Orders
         Booked = 2,
         Cancelled = 3,
         Delayed = 4,
-        Follow = 5
+        Follow = 5,
+        Disconnected = 6
     }
     public enum PaymentStatusEnum
     {
@@ -255,7 +256,10 @@ namespace ServiceControl.Orders
         public async Task Update(OrderDto input)
         {
             var order = ObjectMapper.Map<Orders>(input);
-            ProductType(input);
+            if (order.PaymentStatusId == (int)PaymentStatusEnum.Deduction)
+                order.OrderStateId = (int)OrderStateEnum.Disconnected;
+
+            await ProductType(input);
             await _orderRepository.UpdateAsync(order);
         }
 
@@ -339,12 +343,17 @@ namespace ServiceControl.Orders
                 model.OrderStateId = (int)OrderStateEnum.Delayed;
             if (OrderStateEnum.Follow.ToString().Equals(input.OrderStateName))
                 model.OrderStateId = (int)OrderStateEnum.Follow;
+            if (OrderStateEnum.Disconnected.ToString().Equals(input.OrderStateName))
+                model.OrderStateId = (int)OrderStateEnum.Disconnected;
 
 
             if (PaymentStatusEnum.Done.ToString().Equals(input.PaymentStatusName))
                 model.PaymentStatusId = (int)PaymentStatusEnum.Done;
             if (PaymentStatusEnum.Deduction.ToString().Equals(input.PaymentStatusName))
                 model.PaymentStatusId = (int)PaymentStatusEnum.Deduction;
+
+            if (model.PaymentStatusId == (int)PaymentStatusEnum.Deduction)
+                model.OrderStateId = (int)OrderStateEnum.Disconnected;
 
             await _orderRepository.UpdateAsync(model);
         }
@@ -364,6 +373,7 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("Company");
                 worksheet.Cells[row, col++].Value = L("Serial");
                 worksheet.Cells[row, col++].Value = L("DateBooked");
+                worksheet.Cells[row, col++].Value = L("Sgi");
                 worksheet.Cells[row, col++].Value = L("SalesRep");
                 worksheet.Cells[row, col++].Value = L("CustomerFirstName");
                 worksheet.Cells[row, col++].Value = L("CustomerLastName");
@@ -379,7 +389,12 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("City");
                 worksheet.Cells[row, col++].Value = L("PostalCode");
                 worksheet.Cells[row, col++].Value = L("PromoDetails");
-                worksheet.Cells[row, col++].Value = L("TimeSlot");
+
+                foreach (var product in products)
+                {
+                    worksheet.Cells[row, col++].Value = product.Name;
+                }
+                //worksheet.Cells[row, col++].Value = L("TimeSlot");
                 worksheet.Cells[row, col++].Value = L("Notes");
                 worksheet.Cells[row, col++].Value = L("OrderNo");
                 worksheet.Cells[row, col++].Value = L("AccountNo");
@@ -389,10 +404,6 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("Followed");
                 worksheet.Cells[row, col++].Value = L("Explanation");
 
-                foreach (var product in products)
-                {
-                    worksheet.Cells[row, col++].Value = product.Name;
-                }
 
                 worksheet.Cells[ExcelRange.GetAddress(1, 1, 1, col)].Style.Font.Bold = true;
 
@@ -402,7 +413,8 @@ namespace ServiceControl.Orders
                     col = 1;
                     worksheet.Cells[row, col++].Value = item.Company.Name;
                     worksheet.Cells[row, col++].Value = item.Serial;
-                    worksheet.Cells[row, col++].Value = item.DateBooked.ToString(AppConsts.DateFormat);
+                    worksheet.Cells[row, col++].Value = item.DateBooked;
+                    worksheet.Cells[row, col++].Value = item.Sgi;
                     worksheet.Cells[row, col++].Value = item.SalesRep.Name;
                     worksheet.Cells[row, col++].Value = item.CustomerFirstName;
                     worksheet.Cells[row, col++].Value = item.CustomerLastName;
@@ -418,7 +430,13 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.City;
                     worksheet.Cells[row, col++].Value = item.PostalCode;
                     worksheet.Cells[row, col++].Value = item.PromoDetails;
-                    worksheet.Cells[row, col++].Value = item.TimeSlot.Name;
+                    //worksheet.Cells[row, col++].Value = item.TimeSlot.Name;
+
+                    var dic = item.OrdersProductType.ToList().ToDictionary(t => t.ProductTypeId, t => t.ProductTypeId);
+                    foreach (var product in products)
+                    {
+                        worksheet.Cells[row, col++].Value = dic.ContainsKey(product.Id) ? "1": "0";
+                    }
                     worksheet.Cells[row, col++].Value = item.Notes;
                     worksheet.Cells[row, col++].Value = item.OrderNo;
                     worksheet.Cells[row, col++].Value = item.AccountNo;
@@ -427,13 +445,6 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.Remarks;
                     worksheet.Cells[row, col++].Value = item.Followed;
                     worksheet.Cells[row, col++].Value = item.Explanation;
-
-                    var dic = item.OrdersProductType.ToList().ToDictionary(t => t.ProductTypeId, t => t.ProductTypeId);
-                    foreach (var product in products)
-                    {
-                        worksheet.Cells[row, col++].Value = dic.ContainsKey(product.Id) ? "1": "0";
-                    }
-                    
                 }
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();

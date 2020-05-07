@@ -11,7 +11,7 @@ namespace ServiceControl.Web.Models.Users
         public UserDto User { get; set; }
 
         public List<SalesRepCompanyDto> SalesRepCompanyDto { get; set; }
-        public List<Company> Company { get; set; }
+        public List<SalesRepCompanyDto> Company { get; set; }
 
 
         public bool UserIsInCompany(Company company)
