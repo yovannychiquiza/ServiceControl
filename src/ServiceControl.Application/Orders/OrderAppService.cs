@@ -320,8 +320,6 @@ namespace ServiceControl.Orders
             model.OrderNo = input.OrderNo;
             model.AccountNo = input.AccountNo;
             model.Remarks = input.Remarks;
-            model.InvoiceNo = input.InvoiceNo;
-            model.IsReady = Boolean.Parse(input.IsReady);
             if (input.InstallDate.IsNullOrEmpty()){ 
                 model.InstallDate = null;
             }
@@ -346,14 +344,21 @@ namespace ServiceControl.Orders
             if (OrderStateEnum.Disconnected.ToString().Equals(input.OrderStateName))
                 model.OrderStateId = (int)OrderStateEnum.Disconnected;
 
+            if (PermissionChecker.IsGranted(PermissionNames.Order_Admin_Invoice))
+            {
+                model.InvoiceNo = input.InvoiceNo;
+                if (PaymentStatusEnum.Done.ToString().Equals(input.PaymentStatusName))
+                    model.PaymentStatusId = (int)PaymentStatusEnum.Done;
+                if (PaymentStatusEnum.Deduction.ToString().Equals(input.PaymentStatusName))
+                    model.PaymentStatusId = (int)PaymentStatusEnum.Deduction;
+                if (model.PaymentStatusId == (int)PaymentStatusEnum.Deduction)
+                    model.OrderStateId = (int)OrderStateEnum.Disconnected;
+            }
 
-            if (PaymentStatusEnum.Done.ToString().Equals(input.PaymentStatusName))
-                model.PaymentStatusId = (int)PaymentStatusEnum.Done;
-            if (PaymentStatusEnum.Deduction.ToString().Equals(input.PaymentStatusName))
-                model.PaymentStatusId = (int)PaymentStatusEnum.Deduction;
-
-            if (model.PaymentStatusId == (int)PaymentStatusEnum.Deduction)
-                model.OrderStateId = (int)OrderStateEnum.Disconnected;
+            if (PermissionChecker.IsGranted(PermissionNames.Order_Admin_Ready))
+            {
+                model.IsReady = Boolean.Parse(input.IsReady);
+            }
 
             await _orderRepository.UpdateAsync(model);
         }
@@ -394,7 +399,7 @@ namespace ServiceControl.Orders
                 {
                     worksheet.Cells[row, col++].Value = product.Name;
                 }
-                //worksheet.Cells[row, col++].Value = L("TimeSlot");
+                worksheet.Cells[row, col++].Value = L("TimeSlot");
                 worksheet.Cells[row, col++].Value = L("Notes");
                 worksheet.Cells[row, col++].Value = L("OrderNo");
                 worksheet.Cells[row, col++].Value = L("AccountNo");
@@ -403,7 +408,15 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("Remarks");
                 worksheet.Cells[row, col++].Value = L("Followed");
                 worksheet.Cells[row, col++].Value = L("Explanation");
-
+                if (PermissionChecker.IsGranted(PermissionNames.Order_Admin_Invoice))
+                {
+                    worksheet.Cells[row, col++].Value = L("PaymentStatus");
+                    worksheet.Cells[row, col++].Value = L("InvoiceNo");
+                }
+                if (PermissionChecker.IsGranted(PermissionNames.Order_Admin_Ready))
+                {
+                    worksheet.Cells[row, col++].Value = L("IsReady");
+                }
 
                 worksheet.Cells[ExcelRange.GetAddress(1, 1, 1, col)].Style.Font.Bold = true;
 
@@ -430,13 +443,13 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.City;
                     worksheet.Cells[row, col++].Value = item.PostalCode;
                     worksheet.Cells[row, col++].Value = item.PromoDetails;
-                    //worksheet.Cells[row, col++].Value = item.TimeSlot.Name;
 
                     var dic = item.OrdersProductType.ToList().ToDictionary(t => t.ProductTypeId, t => t.ProductTypeId);
                     foreach (var product in products)
                     {
                         worksheet.Cells[row, col++].Value = dic.ContainsKey(product.Id) ? "1": "0";
                     }
+                    worksheet.Cells[row, col++].Value = item.TimeSlot.Name;
                     worksheet.Cells[row, col++].Value = item.Notes;
                     worksheet.Cells[row, col++].Value = item.OrderNo;
                     worksheet.Cells[row, col++].Value = item.AccountNo;
@@ -445,9 +458,20 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.Remarks;
                     worksheet.Cells[row, col++].Value = item.Followed;
                     worksheet.Cells[row, col++].Value = item.Explanation;
+                    if (PermissionChecker.IsGranted(PermissionNames.Order_Admin_Invoice))
+                    {
+                        worksheet.Cells[row, col++].Value = item.PaymentStatus.Name;
+                        worksheet.Cells[row, col++].Value = item.InvoiceNo;
+                    }
+
+                    if (PermissionChecker.IsGranted(PermissionNames.Order_Admin_Ready))
+                    {
+                        worksheet.Cells[row, col++].Value = item.IsReady;
+                    }
+
                 }
 
-                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
                 var response = Task.FromResult(new ExportResultResponse {
                     FileName = "Orders.xlsx",

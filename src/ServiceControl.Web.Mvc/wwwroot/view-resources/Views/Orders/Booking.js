@@ -10,10 +10,12 @@ var _spreadsheet = 'spreadsheet';
 var isBookingAdmin = abp.auth.isGranted('Pages.Booking.Admin');
 var isOrderAdminReady = abp.auth.isGranted('Order.Admin.Ready');
 var isOrderAdminInvoice = abp.auth.isGranted('Order.Admin.Invoice');
-var FOLLOWED = 26;
-var EXPLANATION = 27;
-var IS_READY = 30;
+var FOLLOWED = 0;
+var EXPLANATION = 0;
+var IS_READY_COLUMN = 0;
 var isLoaded = false;
+var PRODUCTS_COUNT = 0;
+var TOTAL_COLUMNS = 0;
 
 jSuites.calendar(document.getElementById('dateFrom'), {
     format: l('DateFormatView')
@@ -46,6 +48,7 @@ var changed = function (instance, cell, x, y, value) {
     model.city = myTable.getValueFromCoords([column++], [y]);
     model.postalCode = myTable.getValueFromCoords([column++], [y]);
     model.promoDetails = myTable.getValueFromCoords([column++], [y]);
+    column = column + PRODUCTS_COUNT;
     model.timeSlot = myTable.getValueFromCoords([column++], [y]);
     model.notes = myTable.getValueFromCoords([column++], [y]);
     model.orderNo = myTable.getValueFromCoords([column++], [y]);
@@ -55,9 +58,13 @@ var changed = function (instance, cell, x, y, value) {
     model.remarks = myTable.getValueFromCoords([column++], [y]);
     model.followed = myTable.getValueFromCoords([column++], [y]);
     model.explanation = myTable.getValueFromCoords([column++], [y]);
-    model.PaymentStatusName = myTable.getValueFromCoords([column++], [y]);
-    model.invoiceNo = myTable.getValueFromCoords([column++], [y]);
-    model.isReady = myTable.getValueFromCoords([column++], [y]);
+    if (isOrderAdminInvoice) {
+        model.PaymentStatusName = myTable.getValueFromCoords([column++], [y]);
+        model.invoiceNo = myTable.getValueFromCoords([column++], [y]);
+    }
+    if (isOrderAdminReady) {
+        model.isReady = myTable.getValueFromCoords([column++], [y]);
+    }
 
     if ((x === FOLLOWED.toString() || x === EXPLANATION.toString()) && model.orderStateName !== l('Cancelled')) {
         abp.notify.error(l('NotCancelled'));
@@ -88,57 +95,8 @@ var myTable = jexcel(document.getElementById(_spreadsheet), {
     tableOverflow: true,
     tableWidth: ($('.card').width() - 2) + "px",
     tableHeight: '350px',
-    columns: [
-        { type: 'text', width: '50', title: l('Id'), readOnly: true },
-        { type: 'text', width: '100', title: l('Company'), readOnly: true, },
-        { type: 'text', width: '100', title: l('Serial'), readOnly: true, },
-        { type: 'text', width: '100', title: l('DateBooked'), readOnly: true, },
-        { type: 'text', width: '100', title: l('Sgi'), readOnly: true, },
-        { type: 'text', width: '100', title: l('CustomerFirstName') },
-        { type: 'text', width: '100', title: l('CustomerLastName') },
-        { type: 'text', width: '100', title: l('ContactPhone') },
-        { type: 'text', width: '100', title: l('Email') },
-        { type: 'calendar', width: '100', title: l('DateOfBirth'), options: { format: l('DateFormatView')} },
-        { type: 'text', width: '100', title: l('FirstIdentification'), readOnly: true, },
-        { type: 'text', width: '100', title: l('SecondIdentification'), readOnly: true, },
-        { type: 'text', width: '100', title: l('ExistingAccountNo') },
-        { type: 'text', width: '100', title: l('StreetNo') },
-        { type: 'text', width: '100', title: l('CustomerAddress') },
-        { type: 'text', width: '100', title: l('Unit') },
-        { type: 'text', width: '100', title: l('City') },
-        { type: 'text', width: '100', title: l('PostalCode') },
-        { type: 'text', width: '100', title: l('PromoDetails') },
-        { type: 'text', width: '100', title: l('TimeSlot'), readOnly: true,},
-        { type: 'text', width: '100', title: l('Notes') },
-        { type: 'text', width: '100', title: l('OrderNo'), readOnly: !isBookingAdmin },
-        { type: 'text', width: '100', title: l('AccountNo'), readOnly: !isBookingAdmin },
-        { type: 'calendar', width: '200', title: l('InstallDate'), options: { format: l('DateTimeFormatView'), time: 1 }, readOnly: !isBookingAdmin },
-        {
-            type: 'dropdown', width: '150', title: l('OrderState'), readOnly: !isBookingAdmin, source: [
-                l("Booked"),
-                l("Cancelled"),
-                l("Delayed"),
-                l("Follow"),
-                l("Disconnected"),
-            ]
-        },
-        { type: 'text', width: '100', title: l('Remarks'), readOnly: !isBookingAdmin },
-        {
-            type: 'dropdown', width: '100', title: l('Followed'), source: [
-                l("Yes"),
-                l("No"),
-            ]
-        },
-        { type: 'text', width: '100', title: l('Explanation') },
-        {
-            type: 'dropdown', width: '100', title: l('PaymentStatus'), readOnly: !isOrderAdminInvoice, source: [
-                l("Done"),
-                l("Deduction"),
-            ]
-        },
-        { type: 'text', width: '100', title: l('InvoiceNo'), readOnly: !isOrderAdminInvoice},        
-        { type: 'checkbox', width: '100', title: l('IsReady'), readOnly: !isOrderAdminReady},
-    ],
+    search: true,
+    pagination: 10,
     onchange: changed
 
 });
@@ -159,7 +117,7 @@ function search() {
         data: filter
     })
     .done(function (result) {
-        prductsColumn(result.result.productType);
+        createColumns(result.result.productType);
         myTable.insertRow([[]], 0);//insert new empty row after first row
         myTable.deleteRow(0, 1);//delete first row
         if (myTable.records.length !== 1) {
@@ -167,40 +125,45 @@ function search() {
         }
         var row = 2;
         result.result.data.items.forEach(function (item) {
-            var data = [
-                item.id,
-                item.company.name,
-                item.serial,
-                item.dateBooked,
-                item.sgi,
-                item.customerFirstName,
-                item.customerLastName,
-                item.contactPhone,
-                item.email,
-                item.dateOfBirth,
-                item.firstIdentification.name,
-                item.secondIdentification.name,
-                item.existingAccountNo,
-                item.streetNo,
-                item.customerAddress,
-                item.unit,
-                item.city,
-                item.postalCode,
-                item.promoDetails,
-                item.timeSlot.name,
-                item.notes,
-                item.orderNo,
-                item.accountNo,
-                item.installDate,
-                item.orderState.name,
-                item.remarks,
-                item.followed,
-                item.explanation,
-                item.paymentStatus.name,
-                item.invoiceNo,
-                $.parseJSON(item.isReady.toLowerCase()),
-            ];
+            var data = [];
+            data.push(item.id);
+            data.push(item.company.name);
+            data.push(item.serial);
+            data.push(item.dateBooked);
+            data.push(item.sgi);
+            data.push(item.customerFirstName);
+            data.push(item.customerLastName);
+            data.push(item.contactPhone);
+            data.push(item.email);
+            data.push(item.dateOfBirth);
+            data.push(item.firstIdentification.name);
+            data.push(item.secondIdentification.name);
+            data.push(item.existingAccountNo);
+            data.push(item.streetNo);
+            data.push(item.customerAddress);
+            data.push(item.unit);
+            data.push(item.city);
+            data.push(item.postalCode);
+            data.push(item.promoDetails);
             setProductType(result.result.productType, item.ordersProductType, data);
+            data.push(item.timeSlot.name);
+            data.push(item.notes);
+            data.push(item.orderNo);
+            data.push(item.accountNo);
+            data.push(item.installDate);
+            data.push(item.orderState.name);
+            data.push(item.remarks);
+            data.push(item.followed);
+            data.push(item.explanation);
+            if (isOrderAdminInvoice) {
+                data.push(item.paymentStatus.name);
+                data.push(item.invoiceNo);
+            }
+
+            if (isOrderAdminReady) {
+                data.push($.parseJSON(item.isReady.toLowerCase()));
+            }
+            
 
             myTable.insertRow(data);
             setStyleSpread(item.orderState.name, row++, item.followed);
@@ -243,25 +206,91 @@ function setStyleSpread(orderState, row, followed) {
     var style = myTable.getStyle('A' + row);
 
     if (!style.includes(color)) {
-        for (var i = 0; i < IS_READY; i++) {
+        for (var i = 0; i < TOTAL_COLUMNS; i++) {
             myTable.setStyle(jexcel.getColumnNameFromId([i, row - 1]) , 'background-color', color);
         }
-        if (orderState === l('Booked'))
-            myTable.setStyle(jexcel.getColumnNameFromId([IS_READY, row - 1]), 'visibility', 'hidden');
-        else
-            myTable.setStyle(jexcel.getColumnNameFromId([IS_READY, row - 1]), 'visibility', 'visible');
+        if (isOrderAdminReady) {
+            style = myTable.getStyle(getColumnName(IS_READY_COLUMN, row - 1)); 
+            if (orderState === l('Booked') && !style.includes('hidden'))
+                myTable.setStyle(getColumnName(IS_READY_COLUMN, row - 1), 'visibility', 'hidden');
+            if (orderState !== l('Booked') && !style.includes('visible'))
+                myTable.setStyle(getColumnName(IS_READY_COLUMN, row - 1), 'visibility', 'visible');
+        }
 
     }
 }
 
+function getColumnName(col, row) {
+    return jexcel.getColumnNameFromId([col, row]);
+}
+
 //create product columns
-function prductsColumn(products) {
-    var last = IS_READY;
+function createColumns(products) {
     if (!isLoaded) {
         isLoaded = true;        
+
+        var column = 1;
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '50', title: l('Id'), readOnly: true });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Company'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Serial'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('DateBooked'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Sgi'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('CustomerFirstName') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('CustomerLastName') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('ContactPhone') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Email') });
+        myTable.insertColumn(1, column++, 0, { type: 'calendar', width: '100', title: l('DateOfBirth'), options: { format: l('DateFormatView') } });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('FirstIdentification'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('SecondIdentification'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('ExistingAccountNo') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('StreetNo') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('CustomerAddress') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Unit') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('City') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('PostalCode') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('PromoDetails') });
         products.forEach(function (item) {
-            myTable.insertColumn(1, last++, 0, { type: 'text', width: '100', title: item.name, readOnly: true});
+            myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: item.name, readOnly: true });
+            PRODUCTS_COUNT++;
         });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('TimeSlot'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Notes') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('OrderNo'), readOnly: !isBookingAdmin });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('AccountNo'), readOnly: !isBookingAdmin });
+        myTable.insertColumn(1, column++, 0, { type: 'calendar', width: '200', title: l('InstallDate'), options: { format: l('DateTimeFormatView'), time: 1 }, readOnly: !isBookingAdmin });
+        myTable.insertColumn(1, column++, 0, {
+            type: 'dropdown', width: '150', title: l('OrderState'), readOnly: !isBookingAdmin, source: [
+                l("Booked"),
+                l("Cancelled"),
+                l("Delayed"),
+                l("Follow"),
+                l("Disconnected"),
+            ]
+        });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Remarks'), readOnly: !isBookingAdmin });
+        myTable.insertColumn(1, column++, 0, {
+                type: 'dropdown', width: '100', title: l('Followed'), source: [
+                    l("Yes"),
+                    l("No"),
+                ]
+        });
+        FOLLOWED = column - 2;
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Explanation') });
+        EXPLANATION = column - 2;
+        if (isOrderAdminInvoice) {
+            myTable.insertColumn(1, column++, 0, {
+                type: 'dropdown', width: '100', title: l('PaymentStatus'), source: [
+                    l("Done"),
+                    l("Deduction"),
+                ]
+            });
+            myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('InvoiceNo'), readOnly: !isOrderAdminInvoice });
+        }
+        if (isOrderAdminReady) {
+            myTable.insertColumn(1, column++, 0, { type: 'checkbox', width: '100', title: l('IsReady') });
+            IS_READY_COLUMN = column - 2;
+        }
+        TOTAL_COLUMNS = column;
     }
 }
 ///function to populate products
