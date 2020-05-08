@@ -12,6 +12,7 @@ using OfficeOpenXml;
 using ServiceControl.Authorization;
 using ServiceControl.Orders.Dto;
 using ServiceControl.UserCompany;
+using ServiceControl.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -169,8 +170,11 @@ namespace ServiceControl.Orders
             return arrayInt.ToArray();
         }
 
+       
         public async Task Create(OrderDto input)
         {
+            TextFormat(input);
+
             input.SalesRepId = input.SubSalesRepId != null ? input.SubSalesRepId.Value : _session.UserId.GetValueOrDefault();
             input.OrderStateId = (int)OrderStateEnum.Created;
             input.PaymentStatusId = (int)PaymentStatusEnum.Pending;
@@ -253,8 +257,21 @@ namespace ServiceControl.Orders
             var model = _orderRepository.FirstOrDefault(t => t.Id == id);
             await _orderRepository.DeleteAsync(model);
         }
+        public OrderDto TextFormat(OrderDto input)
+        {
+            input.CustomerFirstName = ValidationHelper.ToCapital(input.CustomerFirstName);
+            input.CustomerLastName = ValidationHelper.ToCapital(input.CustomerLastName);
+            input.CustomerAddress = ValidationHelper.ToCapital(input.CustomerAddress);
+            input.Unit = ValidationHelper.ToCapital(input.Unit);
+            input.City = ValidationHelper.ToCapital(input.City);
+            input.Email = ValidationHelper.ToLower(input.Email);
+            input.PostalCode = ValidationHelper.ToUpper(input.PostalCode);
+            return input;
+        }
+
         public async Task Update(OrderDto input)
         {
+            TextFormat(input);
             var order = ObjectMapper.Map<Orders>(input);
             if (order.PaymentStatusId == (int)PaymentStatusEnum.Deduction)
                 order.OrderStateId = (int)OrderStateEnum.Disconnected;
@@ -303,6 +320,7 @@ namespace ServiceControl.Orders
         }
         public async Task GetBookingUpdate(OrderDto input)
         {
+            TextFormat(input);
             Orders model = _orderRepository.FirstOrDefault(t => t.Id == input.Id);
             model.CustomerFirstName = input.CustomerFirstName;
             model.CustomerLastName = input.CustomerLastName;
