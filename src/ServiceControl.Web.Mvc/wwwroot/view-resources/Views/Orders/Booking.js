@@ -231,32 +231,32 @@ function createColumns(products) {
 
         var column = 1;
         myTable.insertColumn(1, column++, 0, { type: 'text', width: '50', title: l('Id'), readOnly: true });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Company'), readOnly: true, });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Serial'), readOnly: true, });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('DateBooked'), readOnly: true, });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Sgi'), readOnly: true, });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('CustomerFirstName') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('CustomerLastName') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('ContactPhone') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Email') });
-        myTable.insertColumn(1, column++, 0, { type: 'calendar', width: '100', title: l('DateOfBirth'), options: { format: l('DateFormatView') } });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('FirstIdentification'), readOnly: true, });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('SecondIdentification'), readOnly: true, });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('ExistingAccountNo') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('StreetNo') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('CustomerAddress') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Unit') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('City') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('PostalCode') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('PromoDetails') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('Company'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('Serial'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('DateBooked'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('Sgi'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('CustomerFirstName') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('CustomerLastName') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('ContactPhone') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('Email') });
+        myTable.insertColumn(1, column++, 0, { type: 'calendar', width: '150', title: l('DateOfBirth'), options: { format: l('DateFormatView') } });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('FirstIdentification'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('SecondIdentification'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('ExistingAccountNo') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('StreetNo') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('CustomerAddress') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('Unit') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('City') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('PostalCode') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('PromoDetails') });
         products.forEach(function (item) {
-            myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: item.name, readOnly: true });
+            myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: item.name, readOnly: true });
             PRODUCTS_COUNT++;
         });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('TimeSlot'), readOnly: true, });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Notes') });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('OrderNo'), readOnly: !isBookingAdmin });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('AccountNo'), readOnly: !isBookingAdmin });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('TimeSlot'), readOnly: true, });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '200', title: l('Notes'), wordWrap: true });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('OrderNo'), readOnly: !isBookingAdmin });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('AccountNo'), readOnly: !isBookingAdmin });
         myTable.insertColumn(1, column++, 0, { type: 'calendar', width: '200', title: l('InstallDate'), options: { format: l('DateTimeFormatView'), time: 1 }, readOnly: !isBookingAdmin });
         myTable.insertColumn(1, column++, 0, {
             type: 'dropdown', width: '150', title: l('OrderState'), readOnly: !isBookingAdmin, source: [
@@ -267,27 +267,27 @@ function createColumns(products) {
                 l("Disconnected"),
             ]
         });
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Remarks'), readOnly: !isBookingAdmin });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('Remarks'), wordWrap: true, readOnly: !isBookingAdmin });
         myTable.insertColumn(1, column++, 0, {
-                type: 'dropdown', width: '100', title: l('Followed'), source: [
+                type: 'dropdown', width: '150', title: l('Followed'), source: [
                     l("Yes"),
                     l("No"),
                 ]
         });
         FOLLOWED = column - 2;
-        myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('Explanation') });
+        myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('Explanation'), wordWrap: true });
         EXPLANATION = column - 2;
         if (isOrderAdminInvoice) {
             myTable.insertColumn(1, column++, 0, {
-                type: 'dropdown', width: '100', title: l('PaymentStatus'), source: [
+                type: 'dropdown', width: '150', title: l('PaymentStatus'), source: [
                     l("Done"),
                     l("Deduction"),
                 ]
             });
-            myTable.insertColumn(1, column++, 0, { type: 'text', width: '100', title: l('InvoiceNo'), readOnly: !isOrderAdminInvoice });
+            myTable.insertColumn(1, column++, 0, { type: 'text', width: '150', title: l('InvoiceNo'), readOnly: !isOrderAdminInvoice });
         }
         if (isOrderAdminReady) {
-            myTable.insertColumn(1, column++, 0, { type: 'checkbox', width: '100', title: l('IsReady') });
+            myTable.insertColumn(1, column++, 0, { type: 'checkbox', width: '150', title: l('IsReady') });
             IS_READY_COLUMN = column - 2;
         }
         TOTAL_COLUMNS = column;

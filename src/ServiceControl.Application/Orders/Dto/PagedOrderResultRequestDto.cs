@@ -10,5 +10,8 @@ namespace ServiceControl.Orders.Dto
         public string CompanyId { get; set; }
         public string OrderStateId { get; set; }
         public string Followed { get; set; }
+        public string Sgi { get; set; }
+        public string InvoiceNo { get; set; }
+        public int PaymentStatusId { get; set; }
     }
 }

@@ -198,6 +198,15 @@ namespace ServiceControl.Web.Controllers
                                                   Value = res.Value,
                                               }).ToList();
 
+            var paymentStatusList = _lookupAppService.GetPaymentStatusItems().Result;
+            var paymentStatusSelectListItems = (from res in paymentStatusList.Items
+                                                select new SelectListItem()
+                                                {
+                                                    Text = res.DisplayText,
+                                                    Value = res.Value,
+                                                }).ToList();
+            paymentStatusSelectListItems.Insert(0, new SelectListItem { Value = "0", Text = L("Choose"), Selected = true });
+
             var model = new EditOrderModalViewModel
             {
                 Order = new OrderDto(),
@@ -208,7 +217,8 @@ namespace ServiceControl.Web.Controllers
                 TimeSlot = timeSlotSelectListItems,
                 Followed = yesNoSelectListItems,
                 SubSalesRep = subSalesRepSelectListItems,
-                ProductType = productTypeSelectListItems
+                ProductType = productTypeSelectListItems,
+                PaymentStatus = paymentStatusSelectListItems
             };
             return View(model);
         }
@@ -263,12 +273,22 @@ namespace ServiceControl.Web.Controllers
 
             yesNoSelectListItems.Insert(0, new SelectListItem { Value = string.Empty, Text = L("Choose"), Selected = true });
 
+            var paymentStatusList = _lookupAppService.GetPaymentStatusItems().Result;
+            var paymentStatusSelectListItems = (from res in paymentStatusList.Items
+                                                select new SelectListItem()
+                                                {
+                                                    Text = res.DisplayText,
+                                                    Value = res.Value,
+                                                }).ToList();
+            paymentStatusSelectListItems.Insert(0, new SelectListItem { Value = "0", Text = L("Choose"), Selected = true });
+
             var model = new EditOrderModalViewModel
             {
                 Order = new OrderDto(),
                 OrderState = orderStateSelectListItems,
                 Company = companySelectListItems,
-                Followed = yesNoSelectListItems
+                Followed = yesNoSelectListItems,
+                PaymentStatus = paymentStatusSelectListItems
             };
             return View(model);
         }

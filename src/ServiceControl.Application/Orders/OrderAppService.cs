@@ -96,6 +96,14 @@ namespace ServiceControl.Orders
             int[] arrayOrderState = ConvertToArrayInt(input.OrderStateId);//Filter by order state
             if (arrayOrderState.Length >= 1)
                 query = query.Where(x => arrayOrderState.Contains(x.OrderStateId));
+
+            if (!input.Sgi.IsNullOrEmpty())//Filter by Sgi
+                query = query.Where(x => x.Sgi == input.Sgi);
+            if (!input.InvoiceNo.IsNullOrEmpty())//Filter by InvoiceNo
+                query = query.Where(x => x.InvoiceNo == input.InvoiceNo);
+            if (input.PaymentStatusId != 0)//Filter by InvoiceNo
+                query = query.Where(x => x.PaymentStatusId == input.PaymentStatusId);
+
             //////Filters by page
 
             var permissionOrderSeeAll = PermissionChecker.IsGranted(PermissionNames.Order_See_All); //validation for see all orders
@@ -398,6 +406,7 @@ namespace ServiceControl.Orders
                 worksheet.Cells[row, col++].Value = L("DateBooked");
                 worksheet.Cells[row, col++].Value = L("Sgi");
                 worksheet.Cells[row, col++].Value = L("SalesRep");
+                worksheet.Cells[row, col++].Value = L("RepEmail");
                 worksheet.Cells[row, col++].Value = L("CustomerFirstName");
                 worksheet.Cells[row, col++].Value = L("CustomerLastName");
                 worksheet.Cells[row, col++].Value = L("ContactPhone");
@@ -447,6 +456,7 @@ namespace ServiceControl.Orders
                     worksheet.Cells[row, col++].Value = item.DateBooked;
                     worksheet.Cells[row, col++].Value = item.Sgi;
                     worksheet.Cells[row, col++].Value = item.SalesRep.Name;
+                    worksheet.Cells[row, col++].Value = item.SalesRep.EmailAddress;
                     worksheet.Cells[row, col++].Value = item.CustomerFirstName;
                     worksheet.Cells[row, col++].Value = item.CustomerLastName;
                     worksheet.Cells[row, col++].Value = item.ContactPhone;
@@ -522,17 +532,28 @@ namespace ServiceControl.Orders
             int row = 0;
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             int cont = 1;
+            int customerFirstName = 0;
+            int accountNo = 0;
+            
             using (var reader = ExcelReaderFactory.CreateReader(formFile.OpenReadStream()))
             {
                 while (reader.Read()) //Each ROW
                 {
-                    if (row > 0)
+                    if(row == 0)//read column numbers
+                    {
+                        for (int column = 0; column < reader.FieldCount; column++)
+                        {
+                            if (getValue(reader, column) == L("CustomerName")) customerFirstName = column;
+                            if (getValue(reader, column) == L("Account")) accountNo = column;
+                        }
+                    }
+                    else
                     {
                         OrderListDto orderDto = new OrderListDto();
                         for (int column = 0; column < reader.FieldCount; column++)
                         {
-                            if (column == 2) orderDto.CustomerFirstName = getValue(reader, column); 
-                            if (column == 14) orderDto.AccountNo = getValue(reader, column);
+                            if (column == customerFirstName) orderDto.CustomerFirstName = getValue(reader, column); 
+                            if (column == accountNo) orderDto.AccountNo = getValue(reader, column);
                         }
                         if(orderDto.AccountNo != null)
                         {

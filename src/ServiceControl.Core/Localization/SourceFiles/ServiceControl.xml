@@ -174,5 +174,7 @@
     <text name="UploadInvoice" value="Upload Invoice" />
     <text name="Loaded" value="Loaded" />
     <text name="NoFounded" value="No Founded" />
+    <text name="Account" value="Account #" />
+    <text name="CustomerName" value="Customer Name" />
   </texts>
 </localizationDictionary>
