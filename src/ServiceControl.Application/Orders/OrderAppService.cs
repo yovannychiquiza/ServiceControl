@@ -377,6 +377,8 @@ namespace ServiceControl.Orders
                     model.PaymentStatusId = (int)PaymentStatusEnum.Done;
                 if (PaymentStatusEnum.Deduction.ToString().Equals(input.PaymentStatusName))
                     model.PaymentStatusId = (int)PaymentStatusEnum.Deduction;
+                if (PaymentStatusEnum.Pending.ToString().Equals(input.PaymentStatusName))
+                    model.PaymentStatusId = (int)PaymentStatusEnum.Pending;
                 if (model.PaymentStatusId == (int)PaymentStatusEnum.Deduction)
                     model.OrderStateId = (int)OrderStateEnum.Disconnected;
             }

@@ -280,6 +280,7 @@ function createColumns(products) {
         if (isOrderAdminInvoice) {
             myTable.insertColumn(1, column++, 0, {
                 type: 'dropdown', width: '150', title: l('PaymentStatus'), source: [
+                    l("Pending"),
                     l("Done"),
                     l("Deduction"),
                 ]
