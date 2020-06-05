@@ -34,6 +34,31 @@
         save();
     });
 
+    _$form.closest('div.modal-content').find(".changePassword-button").click(function (e) {
+        e.preventDefault();
+
+        var user = _$form.serializeFormToObject();
+        abp.ui.setBusy(_$form);
+        $.ajax({
+            url: "/api/services/app/User/GetResetPassword",
+            data: user
+        })
+        .done(function (result) {
+            _$modal.modal('hide');
+            abp.notify.info(l('SavedSuccessfully'));
+            abp.event.trigger('user.edited', user);    
+        })
+        .always(function () {
+            abp.ui.clearBusy(_$form);
+        })
+        .fail(function (xhr, status, error) {
+            abp.message.error(xhr.responseJSON.error.details, xhr.responseJSON.error.message);
+            abp.notify.error(xhr.responseJSON.error.details);
+            abp.ui.clearBusy(_$form);
+        });
+
+    });
+
     _$form.find('input').on('keypress', function (e) {
         if (e.which === 13) {
             e.preventDefault();

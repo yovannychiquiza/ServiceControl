@@ -36,5 +36,6 @@ namespace ServiceControl.Users.Dto
         public DateTime CreationTime { get; set; }
 
         public string[] RoleNames { get; set; }
+        public string NewPassword { get; set; }
     }
 }

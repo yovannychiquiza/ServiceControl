@@ -176,5 +176,6 @@
     <text name="NoFounded" value="No Founded" />
     <text name="Account" value="Account #" />
     <text name="CustomerName" value="Customer Name" />
+    <text name="ChangePassword" value="Change Password" />
   </texts>
 </localizationDictionary>

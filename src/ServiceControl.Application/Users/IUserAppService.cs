@@ -13,5 +13,8 @@ namespace ServiceControl.Users
         Task ChangeLanguage(ChangeUserLanguageDto input);
 
         Task<bool> ChangePassword(ChangePasswordDto input);
+
+        Task<UserDto> GetResetPassword(UserDto input);
+
     }
 }

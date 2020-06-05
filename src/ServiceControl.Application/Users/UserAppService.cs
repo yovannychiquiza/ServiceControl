@@ -251,6 +251,24 @@ namespace ServiceControl.Users
 
             return true;
         }
+
+        public async Task<UserDto> GetResetPassword(UserDto input)
+        {
+            CheckUpdatePermission();
+
+            var user = await _userManager.GetUserByIdAsync(input.Id);
+
+            MapToEntity(input, user);
+
+            CheckErrors(await _userManager.ChangePasswordAsync(user, input.NewPassword));
+
+            if (input.RoleNames != null)
+            {
+                CheckErrors(await _userManager.SetRolesAsync(user, input.RoleNames));
+            }
+
+            return await GetAsync(input);
+        }
     }
 }
 
